@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
@@ -8,6 +8,7 @@ from apps.courses import models as course_models
 from apps.enrollments import models as enrollment_models
 from apps.lessons import models as lesson_models
 from apps.users import routers as user_routers
+from utils.response_utils import create_response
 
 # user_models.Base.metadata.create_all(bind=engine)
 
@@ -35,6 +36,20 @@ app.add_middleware(
 
 def init_db():
     Base.metadata.create_all(bind=engine)
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return create_response(message=str(exc.detail), status_code=exc.status_code)
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    # Log the error here
+    return create_response(
+        message="An unexpected error occurred",
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
 
 
 @app.on_event("startup")

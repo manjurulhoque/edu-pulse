@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 from conf.database import get_db
+from utils.response_utils import create_response
 from . import schemas, helpers
 
 router = APIRouter()
@@ -22,4 +23,5 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     if user:
         raise HTTPException(status_code=409, detail="Email already exists.")
     new_user = helpers.create_user(db, user_data)
-    return new_user
+    del new_user["password"]
+    return create_response(data=new_user, message="User created successfully")
