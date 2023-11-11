@@ -14,3 +14,13 @@ class UserCreate(UserBase):
     class Config:
         # orm_mode = True
         from_attributes = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class OAuth2PasswordRequestFormEmail(BaseModel):
+    email: EmailStr
+    password: str

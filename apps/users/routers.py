@@ -25,3 +25,26 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     new_user = helpers.create_user(db, user_data)
     del new_user["password"]
     return create_response(data=new_user, message="User created successfully")
+
+
+@router.post("/login/", response_model=schemas.Token)
+def login(
+    db: Session = Depends(get_db),
+    form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
+):
+    """generate access token for valid credentials"""
+    user = helpers.authenticate_user(db, form_data.email, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=60 * 24)
+    access_token = helpers.create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return create_response(
+        data={"access_token": access_token, "token_type": "bearer"},
+        message="User logged in successfully",
+    )
