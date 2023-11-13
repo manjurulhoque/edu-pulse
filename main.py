@@ -8,6 +8,7 @@ from apps.courses import models as course_models
 from apps.enrollments import models as enrollment_models
 from apps.lessons import models as lesson_models
 from apps.users import routers as user_routers
+from apps.courses import routers as course_routers
 from utils.response_utils import create_response
 
 # user_models.Base.metadata.create_all(bind=engine)
@@ -63,3 +64,4 @@ def main():
 
 
 app.include_router(user_routers.router, tags=["users"])
+app.include_router(course_routers.router, tags=["courses"])
