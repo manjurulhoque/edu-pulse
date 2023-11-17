@@ -1,18 +1,19 @@
 from datetime import datetime, timedelta
 
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 from jwt import PyJWTError
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 
+from conf.database import get_db
 from . import models, schemas
 
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name='JWT')
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
@@ -47,6 +48,10 @@ def decode_access_token(db, token):
     if user is None:
         raise credentials_exception
     return user
+
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    return decode_access_token(db, token)
 
 
 def verify_password(plain_password, hashed_password):

@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Form, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
@@ -8,6 +8,8 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 from conf.database import get_db
 from utils.response_utils import create_response
 from . import helpers, schemas
+from .helpers import get_current_user
+from .models import User
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -32,10 +34,14 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.post("/login/", response_model=schemas.Token)
 def login(
         db: Session = Depends(get_db),
-        form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
+        email: str = Form(...),
+        password: str = Form(...),
+        # form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
 ):
-    """generate access token for valid credentials"""
-    user = helpers.authenticate_user(db, form_data.email, form_data.password)
+    """
+    Generate access token for valid credentials
+    """
+    user = helpers.authenticate_user(db, email, password)
     if not user:
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED,
@@ -50,3 +56,9 @@ def login(
         data={"access_token": access_token, "token_type": "bearer"},
         message="User logged in successfully",
     )
+
+
+@router.get('/me', summary='Get details of currently logged in user',
+            response_model=schemas.UserReturn)
+async def get_me(user: User = Depends(get_current_user)):
+    return user
