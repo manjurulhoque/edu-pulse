@@ -12,6 +12,7 @@ class User(Base):
     password = Column(String)
     name = Column(String)
 
+    courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")
 
     def __repr__(self):

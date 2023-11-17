@@ -5,9 +5,14 @@ class UserBase(BaseModel):
     email: EmailStr = Field(None, example="user@example.com", title="User email")
 
 
+class UserReturn(UserBase):
+    name: str
+    id: int
+
+
 class UserCreate(UserBase):
     name: str
-    password: str
+    password: str = Field(..., hidden=True)
 
     class Config:
         # orm_mode = True

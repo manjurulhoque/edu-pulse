@@ -13,7 +13,7 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-@router.post("/signup/", response_model=schemas.UserCreate)
+@router.post("/signup/", response_model=schemas.UserReturn)
 def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     """
     Add new user
@@ -22,14 +22,17 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     if user:
         raise HTTPException(status_code=409, detail="Email already exists.")
     new_user = helpers.create_user(db, user_data)
-    del new_user["password"]
-    return create_response(data=new_user, message="User created successfully")
+    user_create_response = schemas.UserCreate.model_validate(new_user).model_dump(
+        exclude={'password'}
+    )
+    user_create_response['id'] = new_user.id
+    return create_response(data=user_create_response, message="User created successfully")
 
 
 @router.post("/login/", response_model=schemas.Token)
 def login(
-    db: Session = Depends(get_db),
-    form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
+        db: Session = Depends(get_db),
+        form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
 ):
     """generate access token for valid credentials"""
     user = helpers.authenticate_user(db, form_data.email, form_data.password)
