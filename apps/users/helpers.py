@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from typing import Optional
 
 from fastapi import Depends, HTTPException
-from jwt import PyJWTError
+from jwt import ExpiredSignatureError, InvalidTokenError, PyJWTError
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
 import jwt
@@ -13,7 +14,7 @@ from . import models, schemas
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name='JWT')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
@@ -28,6 +29,45 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def create_refresh_token(*, data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        # Default expiration time for a refresh token can be longer than for access tokens
+        expire = datetime.utcnow() + timedelta(days=30)  # Example: 30 days
+
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+def verify_refresh_token(token: str) -> Optional[str]:
+    try:
+        # Decode the token
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        # Check if the token has expired
+        if decoded_token.get("exp") and datetime.fromtimestamp(
+            decoded_token["exp"], timezone.utc
+        ) < datetime.now(timezone.utc):
+            return None
+
+        # Extract user identity or other relevant information
+        return decoded_token.get(
+            "sub"
+        )  # 'sub' is typically used for the subject (user identifier)
+
+    except ExpiredSignatureError:
+        # Handle expired token
+        print("Token has expired")
+        return None
+    except InvalidTokenError:
+        # Handle invalid token
+        print("Invalid token")
+        return None
 
 
 def decode_access_token(db, token):
@@ -50,7 +90,9 @@ def decode_access_token(db, token):
     return user
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
     return decode_access_token(db, token)
 
 

@@ -19,6 +19,18 @@ class UserCreate(UserBase):
         from_attributes = True
 
 
+class UserLogin(UserBase):
+    password: str = Field(..., hidden=True)
+
+    class Config:
+        # orm_mode = True
+        from_attributes = True
+
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
