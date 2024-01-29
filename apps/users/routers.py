@@ -29,17 +29,19 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=409, detail="Email already exists.")
     new_user = helpers.create_user(db, user_data)
     user_create_response = schemas.UserCreate.model_validate(new_user).model_dump(
-        exclude={'password'}
+        exclude={"password"}
     )
-    user_create_response['id'] = new_user.id
-    return create_response(data=user_create_response, message="User created successfully")
+    user_create_response["id"] = new_user.id
+    return create_response(
+        data=user_create_response, message="User created successfully"
+    )
 
 
 @router.post("/login/", response_model=schemas.Token)
 def login(
-        input_data: schemas.UserLogin,
-        db: Session = Depends(get_db),
-        # form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
+    input_data: schemas.UserLogin,
+    db: Session = Depends(get_db),
+    # form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
 ):
     """
     Generate access token for valid credentials
@@ -62,21 +64,28 @@ def login(
     )
 
     return create_response(
-        data={"access_token": access_token, "refresh_token": refresh_token,
-              "token_type": "bearer"},
+        data={
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer",
+        },
         message="User logged in successfully",
     )
 
 
-@router.get('/me', summary='Get details of currently logged in user',
-            response_model=schemas.UserReturn)
+@router.get(
+    "/me",
+    summary="Get details of currently logged in user",
+    response_model=schemas.UserReturn,
+)
 async def get_me(user: User = Depends(get_current_user)):
     return user
 
 
 @router.post("/token/refresh/", response_model=schemas.Token)
-def refresh_access_token(refresh_request: schemas.RefreshTokenRequest,
-                         db: Session = Depends(get_db)):
+def refresh_access_token(
+    refresh_request: schemas.RefreshTokenRequest, db: Session = Depends(get_db)
+):
     """
     Endpoint to refresh an access token using a refresh token.
     """
@@ -92,7 +101,9 @@ def refresh_access_token(refresh_request: schemas.RefreshTokenRequest,
     # Fetch the user based on the email obtained from the refresh token
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
 
     # Create a new access token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
