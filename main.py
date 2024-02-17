@@ -7,8 +7,10 @@ from apps.users import models as user_models
 from apps.courses import models as course_models
 from apps.enrollments import models as enrollment_models
 from apps.lessons import models as lesson_models
+from apps.categories import models as categories_models
 from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
+from apps.categories import routers as categories_routers
 from utils.response_utils import create_response
 
 # user_models.Base.metadata.create_all(bind=engine)
@@ -55,7 +57,9 @@ async def general_exception_handler(request: Request, exc: Exception):
 
 @app.on_event("startup")
 async def startup_event():
+    print("Initializing database...")
     init_db()
+    print("Database initialized.")
 
 
 @app.get("/")
@@ -65,3 +69,4 @@ def main():
 
 app.include_router(user_routers.router, tags=["users"])
 app.include_router(course_routers.router, tags=["courses"])
+app.include_router(categories_routers.router, tags=["categories"])

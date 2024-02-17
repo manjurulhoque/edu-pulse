@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
 from conf.database import Base
@@ -11,6 +11,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
     name = Column(String)
+    is_admin = Column(Boolean, default=False)
 
     courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")
