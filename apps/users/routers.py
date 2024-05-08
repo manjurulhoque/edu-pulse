@@ -15,8 +15,8 @@ from .models import User
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-REFRESH_TOKEN_EXPIRE_DAYS = 30
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+REFRESH_TOKEN_EXPIRE_DAYS = 365
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
 
 @router.post("/signup/", response_model=schemas.UserReturn)
@@ -55,18 +55,20 @@ def login(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = helpers.create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        data={"sub": user.email, "id": user.id, "email": user.email},
+        expires_delta=access_token_expires,
     )
     # Refresh Token
     refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)  # longer lifespan
     refresh_token = helpers.create_refresh_token(
-        data={"sub": user.email}, expires_delta=refresh_token_expires
+        data={"sub": user.email, "id": user.id, "email": user.email},
+        expires_delta=refresh_token_expires,
     )
 
     return create_response(
         data={
-            "access_token": access_token,
-            "refresh_token": refresh_token,
+            "access": access_token,
+            "refresh": refresh_token,
             "token_type": "bearer",
         },
         message="User logged in successfully",
