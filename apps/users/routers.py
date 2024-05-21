@@ -27,23 +27,27 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     """
     user = helpers.get_user_by_email(db, user_data.email)
     if user:
-        raise HTTPException(status_code=http.HTTPStatus.CONFLICT, detail="Email already exists.")
+        raise HTTPException(
+            status_code=http.HTTPStatus.CONFLICT,
+            detail="Email already exists.",
+        )
     new_user = helpers.create_user(db, user_data)
-    user_create_response = schemas.UserCreate.model_validate(new_user).model_dump(
-        exclude={"password"}
-    )
+    user_create_response = schemas.UserCreate.model_validate(
+        new_user
+    ).model_dump(exclude={"password"})
     user_create_response["id"] = new_user.id
     return create_response(
-        data=user_create_response, message="User created successfully",
-        status_code=http.HTTPStatus.CREATED
+        data=user_create_response,
+        message="User created successfully",
+        status_code=http.HTTPStatus.CREATED,
     )
 
 
 @router.post("/login/", response_model=schemas.Token)
 def login(
-        input_data: schemas.UserLogin,
-        db: Session = Depends(get_db),
-        # form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
+    input_data: schemas.UserLogin,
+    db: Session = Depends(get_db),
+    # form_data: schemas.OAuth2PasswordRequestFormEmail = Depends(),
 ):
     """
     Generate access token for valid credentials
@@ -61,7 +65,9 @@ def login(
         expires_delta=access_token_expires,
     )
     # Refresh Token
-    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)  # longer lifespan
+    refresh_token_expires = timedelta(
+        days=REFRESH_TOKEN_EXPIRE_DAYS
+    )  # longer lifespan
     refresh_token = helpers.create_refresh_token(
         data={"sub": user.email, "id": user.id, "email": user.email},
         expires_delta=refresh_token_expires,
@@ -88,7 +94,7 @@ async def get_me(user: User = Depends(get_current_user)):
 
 @router.post("/token/refresh/", response_model=schemas.Token)
 def refresh_access_token(
-        refresh_request: schemas.RefreshTokenRequest, db: Session = Depends(get_db)
+    refresh_request: schemas.RefreshTokenRequest, db: Session = Depends(get_db)
 ):
     """
     Endpoint to refresh an access token using a refresh token.

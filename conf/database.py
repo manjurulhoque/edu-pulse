@@ -6,7 +6,9 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./edu.db"
 
 # enable logging by setting echo=True when creating the engine
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}, echo=True
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False},
+    echo=True,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

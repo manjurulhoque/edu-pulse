@@ -43,7 +43,9 @@ def init_db():
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
-    return create_response(message=str(exc.detail), status_code=exc.status_code)
+    return create_response(
+        message=str(exc.detail), status_code=exc.status_code
+    )
 
 
 @app.exception_handler(Exception)

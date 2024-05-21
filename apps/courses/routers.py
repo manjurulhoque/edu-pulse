@@ -22,4 +22,6 @@ def create_course(
     """
 
     new_course = helpers.create_course(db, course_data, current_user)
-    return create_response(data=new_course, message="Course created successfully")
+    return create_response(
+        data=new_course, message="Course created successfully"
+    )

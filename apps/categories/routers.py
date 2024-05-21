@@ -25,19 +25,21 @@ def get_categories(db: Session = Depends(get_db)):
 
 @router.post("/categories/")
 def create_category(
-        category_data: CategorySchema,  # Include the category data in the request
-        db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user),
+    category_data: CategorySchema,  # Include the category data in the request
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     # Check if the current user is an admin
     if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admins can create categories"
+            detail="Only admins can create categories",
         )
 
     # Proceed with category creation
-    new_category = Category(name=category_data.name, description=category_data.description)
+    new_category = Category(
+        name=category_data.name, description=category_data.description
+    )
     db.add(new_category)
     db.commit()
     db.refresh(new_category)
