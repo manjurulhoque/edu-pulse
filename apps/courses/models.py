@@ -8,7 +8,10 @@ class Course(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    description = Column(Text)
+    short_description = Column(Text, nullable=True)
+    description = Column(Text, nullable=True)
+    student_will_learn = Column(Text, nullable=True)
+    requirements = Column(Text, nullable=True)
     user_id = mapped_column(ForeignKey("users.id"))
     # Define relationships
     user = relationship("User", back_populates="courses")
