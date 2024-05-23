@@ -9,6 +9,7 @@ class Course(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     short_description = Column(Text, nullable=True)
+    level = Column(String(20), nullable=True)
     description = Column(Text, nullable=True)
     student_will_learn = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
