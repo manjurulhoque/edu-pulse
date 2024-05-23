@@ -1,9 +1,10 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import mapped_column, relationship
-from conf.database import Base
+
+from apps.core.models import BaseModel
 
 
-class Course(Base):
+class Course(BaseModel):
     __tablename__ = "courses"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -13,8 +14,13 @@ class Course(Base):
     description = Column(Text, nullable=True)
     student_will_learn = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
-    user_id = mapped_column(ForeignKey("users.id"))
+    # user_id = mapped_column(ForeignKey("users.id"))
+    # category_id = mapped_column(ForeignKey("categories.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"))
+
     # Define relationships
     user = relationship("User", back_populates="courses")
+    category = relationship("Category", back_populates="courses")
     lessons = relationship("Lesson", back_populates="course")
     enrollments = relationship("Enrollment", back_populates="course")

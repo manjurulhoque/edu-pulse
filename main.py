@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
@@ -12,6 +13,8 @@ from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
 from utils.response_utils import create_response
+
+load_dotenv()
 
 # user_models.Base.metadata.create_all(bind=engine)
 

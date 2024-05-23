@@ -9,9 +9,7 @@ def create_course(
     form_data: schemas.CourseSchema,
     current_user: user_models.User,
 ):
-    db_new_course = course_models.Course(
-        title=form_data.title, description=form_data.description
-    )
+    db_new_course = course_models.Course(**form_data.model_dump())
     db_new_course.user_id = current_user.id
     db.add(db_new_course)
     db.commit()

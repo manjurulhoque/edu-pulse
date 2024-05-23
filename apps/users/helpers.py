@@ -73,7 +73,7 @@ def verify_refresh_token(token: str) -> Optional[str]:
 def decode_access_token(db, token):
     credentials_exception = HTTPException(
         status_code=HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Invalid credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
