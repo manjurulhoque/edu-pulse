@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, Boolean
 from sqlalchemy.orm import mapped_column, relationship
 
 from apps.core.models import BaseModel
@@ -14,6 +14,7 @@ class Course(BaseModel):
     description = Column(Text, nullable=True)
     student_will_learn = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
+    is_published = Column(Boolean, default=False)
     # user_id = mapped_column(ForeignKey("users.id"))
     # category_id = mapped_column(ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"))

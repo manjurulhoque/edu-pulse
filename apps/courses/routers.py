@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from apps.courses import schemas, helpers
+from apps.courses.models import Course
 from apps.users.helpers import get_current_user
 from apps.users.models import User
 
@@ -21,10 +22,18 @@ def create_course(
     """
     Create new course
     """
-    print(course_data)
     new_course = helpers.create_course(db, course_data, current_user)
     return create_response(
         data=new_course,
         message="Course created successfully",
         status_code=status.HTTP_201_CREATED,
     )
+
+
+@router.get("/my-created-courses")
+def my_created_courses(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    courses = db.query(Course).all()
+    return create_response(data=courses)
