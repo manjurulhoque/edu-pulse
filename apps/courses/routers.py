@@ -52,5 +52,36 @@ def my_created_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    courses = db.query(Course).all()
+    courses = db.query(Course).filter(Course.user_id == current_user.id).all()
     return create_response(data=courses)
+
+
+@router.post("/publish-course")
+async def publish_course(
+    course_id: int = Form(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    print(course_id)
+    course = db.query(Course).filter(
+        Course.id == course_id, Course.user_id == current_user.id
+    ).first()
+    if not course:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if course.is_published:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_304_NOT_MODIFIED,
+            message="Course was already published",
+        )
+    course.is_published = True
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        data=course, message="Course published successfully"
+    )
