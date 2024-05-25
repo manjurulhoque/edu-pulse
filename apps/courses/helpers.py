@@ -6,11 +6,11 @@ from apps.users import models as user_models
 
 def create_course(
     db: Session,
-    form_data: schemas.CourseSchema,
+    course_data: dict,
     current_user: user_models.User,
 ):
-    db_new_course = course_models.Course(**form_data.model_dump())
-    db_new_course.user_id = current_user.id
+    course_data["user_id"] = current_user.id  # Set the user ID
+    db_new_course = course_models.Course(**course_data)
     db.add(db_new_course)
     db.commit()
     db.refresh(db_new_course)

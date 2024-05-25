@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
+from starlette.staticfiles import StaticFiles
 
 from conf.database import engine, Base
 from apps.users import models as user_models
@@ -38,6 +39,7 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+app.mount("/media", StaticFiles(directory="media"), name="media")
 
 
 def init_db():

@@ -15,6 +15,7 @@ class Course(BaseModel):
     student_will_learn = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
     is_published = Column(Boolean, default=False)
+    preview_image = Column(String, nullable=False)
     # user_id = mapped_column(ForeignKey("users.id"))
     # category_id = mapped_column(ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
