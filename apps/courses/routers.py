@@ -1,8 +1,16 @@
 import json
+from typing import List
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+)
 from pydantic import ValidationError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload, Session
 from starlette import status
 
 from apps.courses import helpers
@@ -11,10 +19,37 @@ from apps.courses.schemas import CourseCreate
 from apps.users.helpers import get_current_user
 from apps.users.models import User
 from conf.database import get_db
-from utils.response_utils import create_response
+from utils.params import common_parameters
+from utils.response_utils import create_paginated_response, create_response
 from utils.upload import save_image
 
 router = APIRouter()
+
+
+@router.get("/all-courses")
+async def all_courses(
+    db: Session = Depends(get_db), params: dict = Depends(common_parameters)
+):
+    query = db.query(Course).filter(Course.is_published == True)
+    total = query.count()
+    skip = (params["page"] - 1) * params["page_size"]
+    courses = (
+        query.options(joinedload(Course.user), joinedload(Course.category))
+        .offset(skip)
+        .limit(params["page_size"])
+        .all()
+    )
+    for course in courses:
+        del course.user.password
+    return create_response(
+        data=create_paginated_response(
+            data=courses,
+            total=total,
+            page=params["page"],
+            page_size=params["page_size"],
+            path="/all-courses",
+        )
+    )
 
 
 @router.post("/create-course")
@@ -63,9 +98,11 @@ async def publish_course(
     current_user: User = Depends(get_current_user),
 ):
     print(course_id)
-    course = db.query(Course).filter(
-        Course.id == course_id, Course.user_id == current_user.id
-    ).first()
+    course = (
+        db.query(Course)
+        .filter(Course.id == course_id, Course.user_id == current_user.id)
+        .first()
+    )
     if not course:
         return create_response(
             data=None,

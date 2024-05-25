@@ -22,7 +22,7 @@ class Course(BaseModel):
     category_id = Column(Integer, ForeignKey("categories.id"))
 
     # Define relationships
-    user = relationship("User", back_populates="courses")
+    user = relationship("User", back_populates="courses")  # author
     category = relationship("Category", back_populates="courses")
     lessons = relationship("Lesson", back_populates="course")
     enrollments = relationship("Enrollment", back_populates="course")
