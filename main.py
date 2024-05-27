@@ -40,6 +40,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 app.mount("/media", StaticFiles(directory="media"), name="media")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 def init_db():

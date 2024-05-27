@@ -9,6 +9,9 @@ class CourseCreate(BaseModel):
     requirements: str | None
     level: str
     category_id: int
+    actual_price: float
+    discounted_price: float | None
+    is_free: bool
 
     class Config:
         # orm_mode = True

@@ -12,6 +12,7 @@ class User(Base):
     password = Column(String)
     name = Column(String)
     is_admin = Column(Boolean, default=False)
+    avatar = Column(String, default="static/images/default-avatar.png")
 
     courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")

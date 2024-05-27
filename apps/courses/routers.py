@@ -40,7 +40,12 @@ async def all_courses(
         .all()
     )
     for course in courses:
-        del course.user.password
+        try:
+            if hasattr(course.user, "password"):
+                del course.user.password
+        except:
+            pass
+
     return create_response(
         data=create_paginated_response(
             data=courses,
