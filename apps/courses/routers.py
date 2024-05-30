@@ -127,3 +127,20 @@ async def publish_course(
     return create_response(
         data=course, message="Course published successfully"
     )
+
+
+@router.get("/single-course/{slug}")
+async def single_course(slug: str, db: Session = Depends(get_db)):
+    course = (
+        db.query(Course)
+        .options(joinedload(Course.user), joinedload(Course.category))
+        .filter(Course.is_published == True, Course.slug == slug)
+        .first()
+    )
+    try:
+        if hasattr(course.user, "password"):
+            del course.user.password
+    except:
+        pass
+
+    return create_response(data=course)
