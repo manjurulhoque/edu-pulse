@@ -102,7 +102,6 @@ async def publish_course(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    print(course_id)
     course = (
         db.query(Course)
         .filter(Course.id == course_id, Course.user_id == current_user.id)
