@@ -10,5 +10,7 @@ class Lesson(Base):
     title = Column(String, index=True)
     content = Column(Text)
     course_id = Column(Integer, ForeignKey("courses.id"))
+    section_id = Column(Integer, ForeignKey("course_sections.id"))
     # Define relationships
     course = relationship("Course", back_populates="lessons")
+    section = relationship("Section", back_populates="lessons")

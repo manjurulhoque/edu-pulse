@@ -40,11 +40,20 @@ class Course(BaseModel):
     category = relationship("Category", back_populates="courses")
     lessons = relationship("Lesson", back_populates="course")
     enrollments = relationship("Enrollment", back_populates="course")
+    sections = relationship("CourseSection", back_populates="course")
 
 
 @event.listens_for(Course, "before_insert")
 def receive_before_insert(mapper, connection, target):
-    print(mapper)
-    print(connection)
-    print(target)
     target.slug = slugify(target.title, max_length=30)
+
+
+class CourseSection(BaseModel):
+    __tablename__ = "course_sections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), index=True)
+
+    course_id = Column(Integer, ForeignKey("courses.id"))
+    course = relationship("Course", back_populates="sections")
+    lessons = relationship("Lesson", back_populates="section")
