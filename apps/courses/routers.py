@@ -13,6 +13,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import joinedload, Session
 from starlette import status
 
+from apps.core.decorators import auth_required
 from apps.courses import helpers
 from apps.courses.models import Course
 from apps.courses.schemas import CourseCreate
@@ -90,7 +91,7 @@ async def create_course(
 @router.get("/my-created-courses")
 def my_created_courses(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(auth_required),
 ):
     courses = db.query(Course).filter(Course.user_id == current_user.id).all()
     return create_response(data=courses)
