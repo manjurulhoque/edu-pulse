@@ -67,6 +67,7 @@ const EditCourse: React.FC = () => {
     }
 
     const formik = useFormik<FormValues>({
+        enableReinitialize: true, //will ensure that the form values are updated when the course data is fetched
         initialValues: {
             title: course?.title || '',
             short_description: course?.short_description || '',
