@@ -1,6 +1,6 @@
 FROM python:3.11-alpine
 
-WORKDIR /backend
+WORKDIR /app
 
 COPY requirements.txt .
 

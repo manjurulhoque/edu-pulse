@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-WORKDIR /frontend
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
