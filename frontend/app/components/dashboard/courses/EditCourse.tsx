@@ -1,16 +1,17 @@
 "use client";
 
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import 'react-quill/dist/quill.snow.css';
 import {useCategoriesQuery} from "@/app/store/reducers/categories/api";
 import dynamic from "next/dynamic";
 import {useFormik} from "formik";
 import {z} from 'zod';
-import {useCreateCourseMutation, useSingleCourseQuery} from "@/app/store/reducers/courses/api";
+import {useSingleCourseQuery, useUpdateCourseMutation} from "@/app/store/reducers/courses/api";
 import {toast} from "react-toastify";
 import Dropzone from "react-dropzone";
 import {useParams} from "next/navigation";
+import Image from "next/image";
 
 interface FormValues {
     title: string;
@@ -38,13 +39,18 @@ const formSchema = z.object({
     is_free: z.boolean(),
     actual_price: z.number().multipleOf(0.01),
     discounted_price: z.number().multipleOf(0.01),
-    preview_image: z
-        .any()
-        .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-        .refine(
-            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-            "Only .jpg, .jpeg, .png and .webp formats are supported."
-        ),
+    preview_image: z.union([
+        z.string(),
+        z.any().refine((file) => file.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+            .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), "Only .jpg, .jpeg, .png and .webp formats are supported.")
+    ]),
+    // preview_image: z
+    //     .any()
+    //     .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    //     .refine(
+    //         (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    //         "Only .jpg, .jpeg, .png and .webp formats are supported."
+    //     ),
     student_will_learn: z.string().optional(),
     requirements: z.string().optional(),
 });
@@ -53,7 +59,7 @@ const formSchema = z.object({
 const EditCourse: React.FC = () => {
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {ssr: false}), []);
     const {data, error, isLoading: isCategoriesLoading} = useCategoriesQuery(null);
-    const [createNewCourse] = useCreateCourseMutation();
+    const [updateCourse] = useUpdateCourseMutation();
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const params = useParams<{ slug: string; }>();
 
@@ -107,16 +113,17 @@ const EditCourse: React.FC = () => {
             };
 
             formData.append("course_input", JSON.stringify(courseInput));
-            if (values.preview_image && values.preview_image instanceof File) {
-                formData.append("preview_image", values.preview_image);
-            } else {
+            if (!values.preview_image) {
                 toast.error("An image file is required.");
                 return;
             }
+            if (values.preview_image && values.preview_image instanceof File) {
+                formData.append("preview_image", values.preview_image);
+            }
 
-            const result: any = await createNewCourse(formData);
+            const result: any = await updateCourse({id: course?.id as number, formData});
             if (result.data) {
-                toast.success("Course created successfully");
+                toast.success("Course updated successfully");
                 window.location.href = "/my-created-courses";
             } else {
                 toast.warning(result?.data?.message || "Something went wrong. Please try again later");
@@ -136,6 +143,12 @@ const EditCourse: React.FC = () => {
         };
         reader.readAsDataURL(file);
     };
+
+    useEffect(() => {
+        if (course) {
+            setPreviewUrl(`${process.env.BACKEND_BASE_URL}/${course.preview_image}`);
+        }
+    }, [course]);
 
     return (
         <div className="dashboard__main">
@@ -216,8 +229,17 @@ const EditCourse: React.FC = () => {
                                         </Dropzone>
                                         {previewUrl && (
                                             <div style={{marginTop: '20px', textAlign: 'center'}}>
-                                                <img src={previewUrl} alt="Preview"
-                                                     style={{maxWidth: '100%', maxHeight: '300px'}}/>
+                                                {/*<img src={previewUrl} alt="Preview"*/}
+                                                {/*     style={{maxWidth: '100%', maxHeight: '300px'}}/>*/}
+                                                <Image
+                                                    width={560}
+                                                    height={300}
+                                                    style={{maxWidth: '100%', maxHeight: '300px'}}
+                                                    className="rounded-8 w-1/1"
+                                                    src={previewUrl}
+                                                    alt="Preview"
+                                                    priority={true}
+                                                />
                                             </div>
                                         )}
                                     </div>
@@ -363,7 +385,11 @@ const EditCourse: React.FC = () => {
 
                                     <div className="row y-gap-20 justify-between pt-15">
                                         <div className="col-auto ml-auto">
-                                            <button className="button -md -purple-1 text-white -right" type="submit">
+                                            <button
+                                                className="button -md -purple-1 text-white -right"
+                                                type="submit"
+                                                disabled={formik.isSubmitting}
+                                            >
                                                 Update
                                             </button>
                                         </div>

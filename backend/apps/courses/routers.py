@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Optional
 
 from fastapi import (
     APIRouter,
@@ -29,7 +29,7 @@ router = APIRouter()
 
 @router.get("/all-courses")
 async def all_courses(
-    db: Session = Depends(get_db), params: dict = Depends(common_parameters)
+        db: Session = Depends(get_db), params: dict = Depends(common_parameters)
 ):
     query = db.query(Course).filter(Course.is_published == True)
     total = query.count()
@@ -60,10 +60,10 @@ async def all_courses(
 
 @router.post("/create-course")
 async def create_course(
-    course_input: str = Form(...),
-    preview_image: UploadFile = File(...),
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+        course_input: str = Form(...),
+        preview_image: UploadFile = File(...),
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user),
 ):
     """
     Create new course
@@ -72,10 +72,10 @@ async def create_course(
         course_data_dict = json.loads(course_input)
         course_data = CourseCreate(**course_data_dict)
     except json.JSONDecodeError:
-        raise HTTPException(status_code=400, detail="Invalid JSON format")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JSON format")
     except ValidationError as e:
         # If validation fails, return a 422 Unprocessable Entity with details
-        raise HTTPException(status_code=422, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
 
     course_data_dict = course_data.model_dump()
     course_data_dict["preview_image"] = await save_image(preview_image)
@@ -88,10 +88,63 @@ async def create_course(
     )
 
 
+@router.put("/update-course/{course_id}")
+async def update_course(
+        course_id: int,
+        course_input: str = Form(...),
+        preview_image: Optional[UploadFile] = File(None),
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user),
+):
+    """
+    Update course
+    """
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if not course:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+
+    if course.user_id != current_user.id:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_403_FORBIDDEN,
+            message="You are not allowed to update this course",
+        )
+
+    try:
+        course_data_dict = json.loads(course_input)
+        course_data = CourseCreate(**course_data_dict)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JSON format")
+    except ValidationError as e:
+        # If validation fails, return a 422 Unprocessable Entity with details
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+    course_data_dict = course_data.model_dump()
+    if preview_image:
+        course_data_dict["preview_image"] = await save_image(preview_image)
+
+    for key, value in course_data_dict.items():
+        setattr(course, key, value)
+
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+
+    return create_response(
+        data=course,
+        message="Course updated successfully",
+        status_code=status.HTTP_200_OK,
+    )
+
+
 @router.get("/my-created-courses")
 def my_created_courses(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_required),
+        db: Session = Depends(get_db),
+        current_user: User = Depends(auth_required),
 ):
     courses = db.query(Course).filter(Course.user_id == current_user.id).all()
     return create_response(data=courses)
@@ -99,9 +152,9 @@ def my_created_courses(
 
 @router.post("/publish-course")
 async def publish_course(
-    course_id: int = Form(...),
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_required),
+        course_id: int = Form(...),
+        db: Session = Depends(get_db),
+        current_user: User = Depends(auth_required),
 ):
     course = (
         db.query(Course)
