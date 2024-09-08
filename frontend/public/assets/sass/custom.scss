@@ -1,0 +1,376 @@
+.tabActive {
+    color: var(--color-purple-1) !important;
+    font-weight: 500;
+    background-color: var(--color-purple-3);
+}
+
+.mobileMenu {
+    padding: 16px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 300px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+    row-gap: 15px;
+    margin: 40px 0px;
+    @media (min-width: 1200px) {
+        display: none;
+    }
+    .link {
+        padding: 6px 7px;
+        font-size: 17px;
+        transition: 0.3s;
+        margin: 4px 0px;
+        &:hover {
+            background-color: #fcfcfc;
+        }
+    }
+    i {
+        transition: 0.4;
+        &.active {
+            transform: rotate(90deg);
+        }
+    }
+
+    .submenuOne {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        // row-gap: 8px;
+        .title {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 7px;
+
+            cursor: pointer;
+
+            span {
+                font-size: 19px;
+                font-weight: 500;
+            }
+        }
+        .toggle {
+            display: flex;
+            flex-direction: column;
+            padding: 0px 7px;
+            row-gap: 2px;
+
+            height: 0px;
+            overflow: hidden;
+            opacity: 0;
+            transition: 0.3s;
+
+            &.active {
+                height: fit-content;
+                opacity: 1;
+            }
+
+            .submenuTwo {
+                display: flex;
+                flex-direction: column;
+                padding: 1px 7px;
+                // .title{
+                //     span{
+
+                //     }
+                //     i{
+
+                //     }
+                // }
+                .toggle {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 6px 7px;
+                    .link {
+                        padding: 6px 7px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.swiper-pagination-bullet {
+    background-color: var(--color-purple-1) !important;
+}
+
+.customSized {
+    @media (max-width: 575px) {
+        font-size: 35px;
+    }
+}
+
+.customizedHeroBackground {
+    .swiper-wrapper-two {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .swiper-pointer-events {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .customedBg {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 100%;
+        height: 100% !important;
+        padding-top: 0 !important;
+    }
+    .swiper-slide {
+        padding-top: 0 !important;
+        height: 100% !important;
+        padding-bottom: 0 !important;
+    }
+    .hightFull {
+        height: 100% !important;
+    }
+}
+
+.pagination-testimonial {
+    & > * {
+        background-color: #fff !important;
+        opacity: 1 !important;
+    }
+    --swiper-pagination-color: white !important;
+    .swiper-pagination-bullet-active {
+        background-color: var(--color-purple-1) !important ;
+    }
+}
+.pagination-white-dot {
+    & > * {
+        background-color: #fff !important;
+        opacity: 1 !important;
+    }
+    --swiper-pagination-color: white !important;
+    .swiper-pagination-bullet-active {
+        background-color: var(--color-purple-1) !important ;
+    }
+}
+.custom-transition {
+    transition: 0.5s;
+}
+.scaleOne {
+    // transform: scale(1) !important;
+}
+
+.whiteBg {
+    background-color: var(--white) !important;
+}
+.is-in-view {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+}
+
+.activeMenu {
+    color: var(--color-purple-1) !important;
+}
+.inActiveMenu {
+    &:hover {
+        color: var(--color-purple-1) !important;
+    }
+}
+.inActiveMenuTwo {
+}
+.inActiveMegaMenu {
+    color: var(--color-dark-1) !important;
+    &:hover {
+        color: var(--color-dark-1) !important;
+    }
+}
+.cartProductCount {
+    position: absolute;
+    transform: translateX(17px) translateY(-17px);
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    background-color: crimson;
+    color: white;
+}
+
+.modal {
+    /* The Modal (background) */
+    box-sizing: border-box;
+
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 60px;
+    overflow: auto;
+    //background-color: black;
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        width: 90%;
+        height: 100%;
+        max-width: 1200px;
+        box-sizing: border-box;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+        box-sizing: border-box;
+        &:hover {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+
+    .mySlides {
+        display: none;
+        height: 70%;
+        box-sizing: border-box;
+        margin: auto auto;
+    }
+
+    .cursor {
+        cursor: pointer;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -50px;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+        box-sizing: border-box;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+        color: #000;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    img {
+        margin-bottom: -4px;
+    }
+
+    .caption-container {
+        text-align: center;
+        background-color: black;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .demo {
+        opacity: 0.6;
+    }
+
+    .active,
+    .demo {
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    img.hover-shadow {
+        transition: 0.3s;
+    }
+
+    .hover-shadow {
+        &:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    }
+}
+.marginCustom {
+    @media (max-width: 990px) {
+        margin-top: 50px !important;
+    }
+    @media (max-width: 400px) {
+        margin-top: 80px !important;
+    }
+}
+
+.cursor {
+    cursor: pointer !important;
+}
+.fc-view-harness {
+    max-width: 100%;
+    overflow-x: scroll;
+    .fc-scrollgrid-liquid {
+        min-width: 800px;
+    }
+}
+
+.break-content {
+    width: 100% !important;
+
+    overflow: hidden !important;
+    white-space: wrap !important;
+}
+.react-calendar__navigation__next2-button {
+    display: none !important;
+}
+.react-calendar__navigation__prev2-button {
+    display: none !important;
+}
+.contactMap {
+    pointer-events: none !important;
+}
+.linkCustom {
+    text-decoration: none !important;
+    color: inherit !important;
+    &:hover {
+        color: var(--color-purple-1) !important;
+    }
+}
+.linkCustomTwo {
+    text-decoration: none;
+}

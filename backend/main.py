@@ -1,0 +1,80 @@
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException, Request, status
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
+from starlette.staticfiles import StaticFiles
+
+from conf.database import engine, Base
+from apps.users import models as user_models
+from apps.courses import models as course_models
+from apps.enrollments import models as enrollment_models
+from apps.lessons import models as lesson_models
+from apps.categories import models as categories_models
+from apps.users import routers as user_routers
+from apps.courses import routers as course_routers
+from apps.categories import routers as categories_routers
+from utils.response_utils import create_response
+
+load_dotenv()
+
+# user_models.Base.metadata.create_all(bind=engine)
+
+tags_metadata = [
+    {
+        "name": "users",
+        "description": "Operations with users",
+    },
+]
+
+app = FastAPI(
+    title="E-learning API",
+    description="Learning FastAPI",
+    openapi_tags=tags_metadata,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
+app.mount("/media", StaticFiles(directory="media"), name="media")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return create_response(
+        message=str(exc.detail), status_code=exc.status_code
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    # Log the error here
+    return create_response(
+        message="An unexpected error occurred",
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
+
+
+@app.on_event("startup")
+async def startup_event():
+    print("Initializing database...")
+    init_db()
+    print("Database initialized.")
+
+
+@app.get("/")
+def main():
+    return RedirectResponse(url="/docs/")
+
+
+app.include_router(user_routers.router, tags=["users"])
+app.include_router(course_routers.router, tags=["courses"])
+app.include_router(categories_routers.router, tags=["categories"])
