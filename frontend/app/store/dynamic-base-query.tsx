@@ -7,6 +7,8 @@ const DynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     // if (session?.access) {
     //     headers = {Authorization: `Bearer ${session.access}`};
     // }
+    console.log("Backend URL: ", process.env);
+    console.log("Backend URL: ", process.env.NEXT_PUBLIC_BACKEND_BASE_URL);
     return fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}`,
         prepareHeaders: (headers) => {
