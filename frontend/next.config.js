@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ["avatar.iran.liara.run", "127.0.0.1", "backend"],
+        domains: ["avatar.iran.liara.run", "127.0.0.1", "backend", "localhost"],
     },
     logging: {
         fetches: {
@@ -9,7 +9,7 @@ const nextConfig = {
         },
     },
     env: {
-        BACKEND_BASE_URL: "",
+        BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
     },
 };
 

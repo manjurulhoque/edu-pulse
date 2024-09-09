@@ -17,6 +17,7 @@ spec:
       containers:
       - name: frontend
         image: manjurulhoque/edu-pulse-frontend:latest
+        imagePullPolicy: Always
         env:
           - name: NEXT_PUBLIC_BACKEND_BASE_URL
             value: "http://backend-service:8080"
