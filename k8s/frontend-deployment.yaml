@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: manjurulhoque/edu-pulse-frontend:latest
+        env:
+          - name: BACKEND_BASE_URL
+            value: "http://backend-service:8080"
+          - name: NEXTAUTH_SECRET
+            value: "atr5-gt65-9jet"
+          - name: NEXTAUTH_URL
+            value: "http://localhost:3000/"
+          - name: BASE_URL
+            value: "http://localhost:3000"
+          - name: NODE_ENV
+            value: "development"
+        ports:
+        - containerPort: 3000
