@@ -10,6 +10,8 @@ services:
       - db
     env_file:
       - backend/.env
+    networks:
+      - edu-pulse-network
 
   db:
     image: "postgres:alpine"
@@ -18,6 +20,10 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "edu_pulse"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - edu-pulse-network
 
   frontend:
     build: ./frontend
@@ -27,8 +33,17 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      BACKEND_BASE_URL: "http://localhost:8080"
+      BACKEND_BASE_URL: "http://backend:8080"
       NEXTAUTH_SECRET: "atr5-gt65-9jet"
-      NEXTAUTH_URL: "http://localhost:3000/"
-      NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+      NEXTAUTH_URL: "http://frontend:3000/"
+      NEXT_PUBLIC_BASE_URL: "http://frontend:3000"
       NODE_ENV: "development"
+    networks:
+      - edu-pulse-network
+
+networks:
+  edu-pulse-network:
+      driver: bridge
+
+volumes:
+  db-data:
