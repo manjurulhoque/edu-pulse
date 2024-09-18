@@ -1,29 +1,62 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 interface CourseCurriculumProps {
     sections: Section[];
+    course: Course | null;
 }
 
-const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections}) => {
+const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) => {
     const [allSections, setAllSections] = useState<Section[]>(sections);
     const addSection = () => {
-        const newSection: Section = {title: `New section#${allSections.length + 1}`};
+        const newSection: Section = {title: `New section#${allSections.length + 1}`, lessons: [{title: "Untitled", content: ""}]};
         setAllSections([...allSections, newSection]);
     };
 
-    return (
-        <div className="py-30 px-30">
-            {allSections.map((section, index) => (
-                <SectionCurriculum key={section.title} section={section} i={index}/>
-            ))}
+    const updateSections = (sections: Section[]) => {
+        setAllSections(sections);
+    };
 
-            <div className="row y-gap-20 justify-end pt-30">
-                <div className="col-auto sm:w-1/1">
-                    <button type={"button"} className="button -md -purple-1 text-white sm:w-1/1" onClick={addSection}>
-                        Add new section
-                    </button>
+    return (
+        <div className="dashboard__main">
+            <div className="dashboard__content bg-light-4">
+                <div className="row pb-10 mb-4">
+                    <div className="col-auto">
+                        <h1 className="text-30 lh-12 fw-700">{course?.title}</h1>
+                        <div className="mt-10">Update your outstanding course!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row y-gap-60">
+                <div className="col-12">
+                    <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                        <div className="d-flex items-center py-20 px-30 border-bottom-light">
+                            <h2 className="text-17 lh-1 fw-500">Update course curriculum</h2>
+                        </div>
+
+                        <div className="py-30 px-30">
+                            <div className="py-30 px-30">
+                                {allSections.length === 0 ? <h5>No sections found for this course. Add new one!</h5> : ""}
+                                {allSections.map((section, index) => (
+                                    <SectionCurriculum key={index} section={section} i={index} updateSections={updateSections} sections={allSections}/>
+                                ))}
+
+                                <div className="row y-gap-20 justify-start pt-30">
+                                    <div className="col-auto sm:w-1/1">
+                                        <button
+                                            type={"button"}
+                                            className="button -md -purple-1 text-white sm:w-1/1"
+                                            onClick={addSection}
+                                        >
+                                            Add new section
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,12 +65,12 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections}) => {
 
 export default CourseCurriculum;
 
-const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, i}) => {
+const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections: (sections: Section[]) => void, sections: Section[] }> = ({section, i, updateSections, sections}) => {
     const [currentOpenItem, setCurrentOpenItem] = useState<string | null>(null);
     const [editLessonIndex, setEditLessonIndex] = useState<number | null>(null);
-    const [lessonTitle, setLessonTitle] = useState<string>("");
+    const [lessonTitle, setLessonTitle] = useState<string>("Add your section title here...");
 
-    section.lessons = [{title: "", content: ""}];
+    // section.lessons = [{title: "Untitled", content: ""}];
 
     const handleEditClick = (e: React.MouseEvent, index: number, title: string) => {
         e.preventDefault();
@@ -68,13 +101,17 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
         e.stopPropagation();
 
         const newLesson: Lesson = {title: "New Lesson", content: ""};
-        if (section.lessons) {
-            section.lessons = [...section.lessons, newLesson];
-        } else {
-            section.lessons = [newLesson];
-        }
+        const updatedSections = sections.map((sec, idx) => {
+            if (idx === i) {
+                return {
+                    ...sec,
+                    lessons: [...(sec.lessons ?? []), newLesson]
+                };
+            }
+            return sec;
+        });
 
-        console.log(section);
+        updateSections(updatedSections);
     };
 
     return (
@@ -124,10 +161,8 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
                                         />
                                         <a href="#" className="icon icon-bin"></a>
                                         <div className="accordion__icon mr-0">
-                                            <div
-                                                className="d-flex items-center justify-center icon icon-chevron-down"></div>
-                                            <div
-                                                className="d-flex items-center justify-center icon icon-chevron-up"></div>
+                                            <div className="d-flex items-center justify-center icon icon-chevron-down"></div>
+                                            <div className="d-flex items-center justify-center icon icon-chevron-up"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -135,24 +170,26 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
                                 <div
                                     className="accordion__content"
                                     style={
-                                        currentOpenItem == `${i},${index}` ? {maxHeight: "100px"} : {}
+                                        currentOpenItem == `${i},${index}` ? {maxHeight: `100px`} : {}
                                     }
                                 >
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="d-flex x-gap-10 y-gap-10 flex-wrap">
                                             <div>
-                                                <button
-                                                    className="button -sm py-15 -purple-3 text-purple-1 fw-500"
-                                                    onClick={(e) => addLesson(e)}
-                                                >
-                                                    Add Lesson +
-                                                </button>
+                                                <h1>Lesson content here..../</h1>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         ))}
+
+                        <button
+                            className="button -sm py-15 -purple-3 text-purple-1 fw-500 mt-2 justify-end"
+                            onClick={(e) => addLesson(e)}
+                        >
+                            Add Lesson +
+                        </button>
                     </div>
                 </div>
             </div>

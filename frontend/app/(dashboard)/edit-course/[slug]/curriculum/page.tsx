@@ -15,12 +15,7 @@ interface Props {
 }
 
 const CurriculumPage: React.FC<Props> = async ({params}: Props) => {
-    try {
-        const course = await getSingleCourse(params.slug);
-        console.log(course);
-    } catch (e) {
-        console.error(e);
-    }
+    let course = await getSingleCourse(params.slug);
 
     return (
         <div className="barba-container" data-barba="container">
@@ -28,14 +23,11 @@ const CurriculumPage: React.FC<Props> = async ({params}: Props) => {
                 {/*<Preloader />*/}
                 <HeaderDashboard/>
                 <div className="content-wrapper js-content-wrapper overflow-hidden">
-                    <div
-                        id="dashboardOpenClose"
-                        className="dashboard -home-9 js-dashboard-home-9"
-                    >
+                    <div id="dashboardOpenClose" className="dashboard -home-9 js-dashboard-home-9">
                         <div className="dashboard__sidebar scroll-bar-1">
                             <Sidebar/>
                         </div>
-                        <CourseCurriculum sections={[]}/>
+                        <CourseCurriculum sections={[]} course={course}/>
                     </div>
                 </div>
             </main>
