@@ -10,7 +10,10 @@ interface CourseCurriculumProps {
 const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) => {
     const [allSections, setAllSections] = useState<Section[]>(sections);
     const addSection = () => {
-        const newSection: Section = {title: `New section#${allSections.length + 1}`, lessons: [{title: "Untitled", content: ""}]};
+        const newSection: Section = {
+            title: `Untitled section`,
+            lessons: [{title: "Untitled lesson", content: ""}]
+        };
         setAllSections([...allSections, newSection]);
     };
 
@@ -38,9 +41,11 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
 
                         <div className="py-30 px-30">
                             <div className="py-30 px-30">
-                                {allSections.length === 0 ? <h5>No sections found for this course. Add new one!</h5> : ""}
+                                {allSections.length === 0 ?
+                                    <h5>No sections found for this course. Add new one!</h5> : ""}
                                 {allSections.map((section, index) => (
-                                    <SectionCurriculum key={index} section={section} i={index} updateSections={updateSections} sections={allSections}/>
+                                    <SectionCurriculum key={index} section={section} i={index}
+                                                       updateSections={updateSections} sections={allSections}/>
                                 ))}
 
                                 <div className="row y-gap-20 justify-start pt-30">
@@ -65,10 +70,16 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
 
 export default CourseCurriculum;
 
-const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections: (sections: Section[]) => void, sections: Section[] }> = ({section, i, updateSections, sections}) => {
+const SectionCurriculum: React.FC<{
+    section: Section,
+    i: number,
+    updateSections: (sections: Section[]) => void,
+    sections: Section[]
+}> = ({section, i, updateSections, sections}) => {
     const [currentOpenItem, setCurrentOpenItem] = useState<string | null>(null);
     const [editLessonIndex, setEditLessonIndex] = useState<number | null>(null);
     const [lessonTitle, setLessonTitle] = useState<string>("Add your section title here...");
+    const [editTitle, setEditTitle] = useState<boolean>(false);
 
     // section.lessons = [{title: "Untitled", content: ""}];
 
@@ -79,28 +90,48 @@ const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections:
         setLessonTitle(title);
     };
 
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleLessonTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLessonTitle(e.target.value);
     };
 
-    const handleTitleBlur = (index: number) => {
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedSections = sections.map((sec, idx) => {
+            if (idx === i) {
+                return {
+                    ...sec,
+                    title: e.target.value
+                };
+            }
+            return sec;
+        });
+
+        updateSections(updatedSections);
+    }
+
+    const handleLessonTitleBlur = (index: number) => {
         if (section.lessons) {
             section.lessons[index].title = lessonTitle;
         }
         setEditLessonIndex(null);
     };
 
-    const handleTitleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    const handleLessonTitleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
         if (e.key === "Enter") {
-            handleTitleBlur(index);
+            handleLessonTitleBlur(index);
         }
     };
+
+    const handleTitleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setEditTitle(false);
+        }
+    }
 
     const addLesson = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const newLesson: Lesson = {title: "New Lesson", content: ""};
+        const newLesson: Lesson = {title: "Untitled lesson", content: ""};
         const updatedSections = sections.map((sec, idx) => {
             if (idx === i) {
                 return {
@@ -114,11 +145,47 @@ const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections:
         updateSections(updatedSections);
     };
 
+    const removeLesson = (index: number) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const updatedSections = sections.map((sec, idx) => {
+            if (idx === i) {
+                return {
+                    ...sec,
+                    lessons: sec.lessons?.filter((_, i) => i !== index)
+                };
+            }
+            return sec;
+        });
+
+        updateSections(updatedSections);
+    }
+
     return (
         <>
             <div className={`row ${i != 0 ? "pt-30" : ""}  `}>
                 <div className="col-12">
-                    <h4 className="text-16 lh-1 fw-500">{section.title}</h4>
+                    <h4 className="text-16 lh-1 fw-500">
+                        {editTitle ? (
+                            <input
+                                type="text"
+                                className={"text-16 lh-14 fw-500 text-dark-1 form-control"}
+                                style={{maxWidth: "80%"}}
+                                value={section.title}
+                                onChange={handleTitleChange}
+                                onBlur={() => setEditTitle(false)}
+                                onKeyPress={handleTitleKeyPress}
+                                autoFocus
+                            />
+                        ) : (
+                            <span className="text-16 lh-14 fw-500 text-dark-1">{section.title}</span>
+                        )}
+                        <button
+                            className="icon icon-edit ml-5"
+                            onClick={(e) => setEditTitle(true)}
+                        />
+                    </h4>
                 </div>
 
                 <div className="col-12">
@@ -143,10 +210,12 @@ const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections:
                                         {editLessonIndex === index ? (
                                             <input
                                                 type="text"
+                                                className={"text-16 lh-14 fw-500 text-dark-1 form-control"}
+                                                style={{maxWidth: "100%"}}
                                                 value={lessonTitle}
-                                                onChange={handleTitleChange}
-                                                onBlur={() => handleTitleBlur(index)}
-                                                onKeyPress={(e) => handleTitleKeyPress(e, index)}
+                                                onChange={handleLessonTitleChange}
+                                                onBlur={() => handleLessonTitleBlur(index)}
+                                                onKeyPress={(e) => handleLessonTitleKeyPress(e, index)}
                                                 autoFocus
                                             />
                                         ) : (
@@ -159,10 +228,12 @@ const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections:
                                             className="icon icon-edit mr-5"
                                             onClick={(e) => handleEditClick(e, index, lesson.title)}
                                         />
-                                        <a href="#" className="icon icon-bin"></a>
+                                        <a href="#" className="icon icon-bin" onClick={removeLesson(index)}></a>
                                         <div className="accordion__icon mr-0">
-                                            <div className="d-flex items-center justify-center icon icon-chevron-down"></div>
-                                            <div className="d-flex items-center justify-center icon icon-chevron-up"></div>
+                                            <div
+                                                className="d-flex items-center justify-center icon icon-chevron-down"></div>
+                                            <div
+                                                className="d-flex items-center justify-center icon icon-chevron-up"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,14 +241,39 @@ const SectionCurriculum: React.FC<{ section: Section, i: number, updateSections:
                                 <div
                                     className="accordion__content"
                                     style={
-                                        currentOpenItem == `${i},${index}` ? {maxHeight: `100px`} : {}
+                                        currentOpenItem == `${i},${index}` ? {maxHeight: `150px`} : {}
                                     }
                                 >
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="d-flex x-gap-10 y-gap-10 flex-wrap">
-                                            <div>
-                                                <h1>Lesson content here..../</h1>
-                                            </div>
+                                            <input
+                                                type="text"
+                                                className={"form-control"}
+                                                placeholder={"Enter course URL here..."}
+                                                style={{maxWidth: "70%", border: "1px solid #ccc"}}
+                                                value={lesson.content}
+                                                onChange={(e) => {
+                                                    const updatedSections = sections.map((sec, idx) => {
+                                                        if (idx === i) {
+                                                            return {
+                                                                ...sec,
+                                                                lessons: sec.lessons?.map((les, lesIdx) => {
+                                                                    if (lesIdx === index) {
+                                                                        return {
+                                                                            ...les,
+                                                                            content: e.target.value
+                                                                        };
+                                                                    }
+                                                                    return les;
+                                                                })
+                                                            };
+                                                        }
+                                                        return sec;
+                                                    });
+
+                                                    updateSections(updatedSections);
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                 </div>
