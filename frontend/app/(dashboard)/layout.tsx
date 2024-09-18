@@ -3,13 +3,13 @@ import "../../public/assets/sass/styles.scss";
 import 'react-toastify/dist/ReactToastify.css';
 
 import { permanentRedirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import React from "react";
 import { NextAuthProvider } from "@/app/components/NextAuthProvider";
 import { AOSInit } from "@/app/components/aos-init";
 import ReduxProvider from "@/app/components/ReduxProvider";
 import { ToastContainer } from "react-toastify";
+import {authOptions} from "@/app/utils/authOptions";
 
 interface Props {
     children: React.ReactNode;

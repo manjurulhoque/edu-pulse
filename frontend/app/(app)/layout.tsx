@@ -8,13 +8,13 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import React from "react";
 import {NextAuthProvider} from "@/app/components/NextAuthProvider";
 import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import Footer from "@/app/components/layout/Footer";
 import Header from "@/app/components/layout/Header";
 import {AOSInit} from "@/app/components/aos-init";
 import {ToastContainer} from "react-toastify";
 import ReduxProvider from "@/app/components/ReduxProvider";
 import ReactQueryProvider from "@/app/components/ReactQueryProvider";
+import {authOptions} from "@/app/utils/authOptions";
 
 config.autoAddCss = false;
 

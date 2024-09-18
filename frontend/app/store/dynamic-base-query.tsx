@@ -3,12 +3,14 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const DynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     const session = await getSession();
-    // let headers = {};
-    // if (session?.access) {
-    //     headers = {Authorization: `Bearer ${session.access}`};
-    // }
+    let BACKEND_BASE_URL = "";
+    if (typeof window === "undefined") {
+        BACKEND_BASE_URL = process.env.BACKEND_BASE_URL;
+    } else {
+        BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+    }
     return fetchBaseQuery({
-        baseUrl: `${process.env.BACKEND_BASE_URL}`,
+        baseUrl: `${BACKEND_BASE_URL}`,
         prepareHeaders: (headers) => {
             if (session?.access) {
                 headers.set('Authorization', `Bearer ${session.access}`);

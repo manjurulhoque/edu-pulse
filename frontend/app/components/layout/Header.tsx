@@ -18,6 +18,10 @@ const Header = () => {
         e.preventDefault();
     };
 
+    const onSignOut = async () => {
+        await signOut({callbackUrl: "/"});
+    }
+
     return (
         <>
             <header className="header -type-3 js-header">
@@ -103,7 +107,7 @@ const Header = () => {
                                             Dashboard
                                         </Link>
                                         <button
-                                            onClick={() => signOut()}
+                                            onClick={() => onSignOut()}
                                             className="button px-30 h-50 -outline-dark-1 text-dark-1"
                                         >
                                             Logout

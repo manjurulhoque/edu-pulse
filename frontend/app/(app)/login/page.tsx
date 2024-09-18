@@ -1,7 +1,7 @@
 import Login from "@/app/components/auth/Login";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { permanentRedirect } from "next/navigation";
+import {authOptions} from "@/app/utils/authOptions";
 
 const LoginPage = async () => {
     // const router = useRouter();
