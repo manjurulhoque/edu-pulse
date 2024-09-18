@@ -17,11 +17,12 @@ interface Course {
     created_at: Date;
     updated_at: Date;
     user: User;
+    sections: Section[];
 }
 
 interface Section {
     id?: number | null | undefined;
     title: string;
     course_id?: number | null | undefined;
-    lessons?: Lesson[]
+    lessons?: Lesson[];
 }

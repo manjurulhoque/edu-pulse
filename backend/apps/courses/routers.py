@@ -15,7 +15,7 @@ from starlette import status
 
 from apps.core.decorators import auth_required
 from apps.courses import helpers
-from apps.courses.models import Course
+from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseCreate
 from apps.users.helpers import get_current_user
 from apps.users.models import User
@@ -184,9 +184,14 @@ async def publish_course(
 
 @router.get("/course/{slug}")
 async def single_course(slug: str, db: Session = Depends(get_db)):
+    # need to update this query to get lessons separately
     course = (
         db.query(Course)
-        .options(joinedload(Course.user), joinedload(Course.category))
+        .options(
+            joinedload(Course.user),
+            joinedload(Course.category),
+            joinedload(Course.sections).joinedload(CourseSection.lessons)
+        )
         .filter(Course.is_published == True, Course.slug == slug)
         .first()
     )

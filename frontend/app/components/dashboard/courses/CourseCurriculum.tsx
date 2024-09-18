@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 
 interface CourseCurriculumProps {
     sections: Section[];
@@ -11,6 +11,7 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
     const [allSections, setAllSections] = useState<Section[]>(sections);
     const addSection = () => {
         const newSection: Section = {
+            id: null,
             title: `Untitled section`,
             lessons: [{title: "Untitled lesson", content: ""}]
         };
@@ -20,6 +21,10 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
     const updateSections = (sections: Section[]) => {
         setAllSections(sections);
     };
+
+    const saveChanges = () => {
+        console.log(allSections);
+    }
 
     return (
         <div className="dashboard__main">
@@ -44,19 +49,33 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
                                 {allSections.length === 0 ?
                                     <h5>No sections found for this course. Add new one!</h5> : ""}
                                 {allSections.map((section, index) => (
-                                    <SectionCurriculum key={index} section={section} i={index}
-                                                       updateSections={updateSections} sections={allSections}/>
+                                    <SectionCurriculum
+                                        key={index}
+                                        section={section}
+                                        i={index}
+                                        updateSections={updateSections}
+                                        sections={allSections}
+                                    />
                                 ))}
 
                                 <div className="row y-gap-20 justify-start pt-30">
                                     <div className="col-auto sm:w-1/1">
-                                        <button
-                                            type={"button"}
-                                            className="button -md -purple-1 text-white sm:w-1/1"
-                                            onClick={addSection}
-                                        >
-                                            Add new section
-                                        </button>
+                                        <div style={{display: "flex", gap: "10px"}}>
+                                            <button
+                                                type={"button"}
+                                                className="button -md -green-1 text-white sm:w-1/1"
+                                                onClick={saveChanges}
+                                            >
+                                                Save changes
+                                            </button>
+                                            <button
+                                                type={"button"}
+                                                className="button -md -purple-1 text-white sm:w-1/1"
+                                                onClick={addSection}
+                                            >
+                                                Add new section
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +150,7 @@ const SectionCurriculum: React.FC<{
         e.preventDefault();
         e.stopPropagation();
 
-        const newLesson: Lesson = {title: "Untitled lesson", content: ""};
+        const newLesson: Lesson = {title: "Untitled lesson", content: "", id: null};
         const updatedSections = sections.map((sec, idx) => {
             if (idx === i) {
                 return {
