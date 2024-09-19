@@ -15,6 +15,7 @@ from starlette import status
 
 from apps.core.decorators import auth_required
 from apps.courses import helpers
+from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseCreate
 from apps.users.helpers import get_current_user
@@ -225,3 +226,44 @@ async def course_sections(slug: str, db: Session = Depends(get_db), current_user
             message="You are not allowed to access this course sections",
         )
     return create_response(data=course.sections)
+
+
+@router.put("/course/{slug}/update-curriculum")
+@course_owner_required
+async def update_curriculum(
+        course: Course, sections: List[dict], db: Session = Depends(get_db)
+):
+    section_ids_to_keep = [section.get("id") for section in sections if section.get("id")]
+
+    # Delete sections that are not in the provided list
+    db.query(CourseSection).filter(
+        CourseSection.course_id == course.id,
+        CourseSection.id.notin_(section_ids_to_keep)
+    ).delete(synchronize_session=False)
+
+    for section in sections:
+        section_id = section.get("id")
+        if section_id:
+            course_section = (
+                db.query(CourseSection)
+                .filter(CourseSection.id == section_id, CourseSection.course_id == course.id)
+                .first()
+            )
+            if not course_section:
+                continue
+            course_section.title = section.get("title")
+            course_section.description = section.get("description")
+            db.add(course_section)
+            db.commit()
+            db.refresh(course_section)
+        else:
+            new_section = CourseSection(
+                title=section.get("title"),
+                description=section.get("description"),
+                course_id=course.id,
+            )
+            db.add(new_section)
+            db.commit()
+            db.refresh(new_section)
+            course.sections.append(new_section)
+    return course

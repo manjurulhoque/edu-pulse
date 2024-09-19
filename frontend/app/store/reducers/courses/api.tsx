@@ -1,4 +1,4 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
+import {createApi} from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 
 
@@ -6,7 +6,7 @@ export const CourseApi = createApi({
     reducerPath: "CourseApi",
     refetchOnFocus: true,
     baseQuery: DynamicBaseQuery,
-    tagTypes: ['Course'],
+    tagTypes: ['Courses', 'Course'],
     endpoints: (builder) => ({
         allCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
             query: ({page, page_size}) => {
@@ -15,12 +15,13 @@ export const CourseApi = createApi({
                     params: {page, page_size}
                 }
             },
+            providesTags: ['Courses'],
             transformResponse: (rawResult: { data: PaginatedResponse<Course>, message: string }, meta) => {
                 const {data} = rawResult;
                 return data;
             },
         }),
-        singleCourse: builder.query<Course, {slug: string}>({
+        singleCourse: builder.query<Course, { slug: string }>({
             query: ({slug}) => {
                 return {
                     url: `course/${slug}`,
@@ -73,6 +74,16 @@ export const CourseApi = createApi({
             },
             invalidatesTags: ['Course']
         }),
+        updateCurriculum: builder.mutation({
+            query: ({slug, formData}) => {
+                return {
+                    url: `/course/${slug}/update-curriculum/`,
+                    method: 'PUT',
+                    body: formData,
+                }
+            },
+            invalidatesTags: ['Course'] // is used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
+        }),
     })
 });
 
@@ -82,5 +93,6 @@ export const {
     useCreateCourseMutation,
     useUpdateCourseMutation,
     useMyCreatedCoursesQuery,
-    usePublishCourseMutation
+    usePublishCourseMutation,
+    useUpdateCurriculumMutation,
 } = CourseApi;
