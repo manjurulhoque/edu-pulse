@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class CourseCreate(BaseModel):
+class CourseSchema(BaseModel):
     title: str = Field(..., min_length=1)
     description: str | None
     short_description: str | None

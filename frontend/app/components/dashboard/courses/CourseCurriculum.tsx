@@ -1,6 +1,8 @@
 "use client";
 
 import React, {useState} from "react";
+import {useUpdateCurriculumMutation} from "@/app/store/reducers/courses/api";
+import {toast} from "react-toastify";
 
 interface CourseCurriculumProps {
     sections: Section[];
@@ -9,6 +11,7 @@ interface CourseCurriculumProps {
 
 const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) => {
     const [allSections, setAllSections] = useState<Section[]>(sections);
+    const [updateCurriculum] = useUpdateCurriculumMutation();
     const addSection = () => {
         const newSection: Section = {
             id: null,
@@ -22,8 +25,15 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
         setAllSections(sections);
     };
 
-    const saveChanges = () => {
+    const saveChanges = async () => {
         console.log(allSections);
+        const result: any = await updateCurriculum({id: course?.id, formData: {"sections": allSections}});
+        if (result.data) {
+            toast.success("Course curriculum updated successfully");
+            // window.location.href = "/my-created-courses";
+        } else {
+            toast.warning(result?.data?.message || "Something went wrong. Please try again later");
+        }
     }
 
     return (

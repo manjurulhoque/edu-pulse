@@ -75,14 +75,14 @@ export const CourseApi = createApi({
             invalidatesTags: ['Course']
         }),
         updateCurriculum: builder.mutation({
-            query: ({slug, formData}) => {
+            query: ({id, formData}) => {
                 return {
-                    url: `/course/${slug}/update-curriculum/`,
+                    url: `/course/${id}/update-curriculum/`,
                     method: 'PUT',
                     body: formData,
                 }
             },
-            invalidatesTags: ['Course'] // is used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
+            invalidatesTags: ['Course'] // used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
         }),
     })
 });
