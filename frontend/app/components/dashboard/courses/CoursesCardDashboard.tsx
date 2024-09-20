@@ -122,7 +122,11 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                         </div>
                     </div>
 
-                    <h3 className="text-16 fw-500 lh-15 mt-10">{course.title}</h3>
+                    <h3 className="text-16 fw-500 lh-15 mt-10">
+                        <Link href={`/courses/${course.slug}`} target={"_blank"}>
+                            {course.title}
+                        </Link>
+                    </h3>
 
                     <div className="progress-bar mt-10">
                         <div className="progress-bar__bg bg-light-3"></div>

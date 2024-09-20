@@ -8,11 +8,9 @@ import Pagination from "../common/Pagination";
 import { levels, sortingOptions } from "@/app/data/courses";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
-import { GridLoader } from "react-spinners";
 import { Grid } from "react-loader-spinner";
 
 export default function CourseList() {
-    console.log(process.env);
     const [filterOpen, setFilterOpen] = useState(false);
     const [filterCategories, setFilterCategories] = useState<string[]>([]);
     const [filterRatingRange, setFilterRatingRange] = useState([] as any);
@@ -147,7 +145,7 @@ export default function CourseList() {
     const handleFilterRatingRange = (item: any) => {
         setFilterRatingRange(item);
     };
-    const handleFilterInstractors = (item: any) => {
+    const handleFilterInstructors = (item: any) => {
         if (filterInstructors.includes(item)) {
             const filtered = filterInstructors.filter(
                 (elm: any) => elm != item

@@ -93,7 +93,7 @@ const EditCourse: React.FC = () => {
                 formSchema.parse(values);
                 return {};
             } catch (error) {
-                return (error as z.ZodError).formErrors.fieldErrors;
+                return (error as z.ZodError).formErrors?.fieldErrors || [];
             }
         },
         onSubmit: async (values) => {

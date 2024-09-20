@@ -26,7 +26,6 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
     };
 
     const saveChanges = async () => {
-        console.log(allSections);
         const result: any = await updateCurriculum({id: course?.id, formData: {"sections": allSections}});
         if (result.data) {
             toast.success("Course curriculum updated successfully");

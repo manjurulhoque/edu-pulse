@@ -51,7 +51,7 @@ const MyCreatedCourses: React.FC = () => {
                     <div className="col-auto">
                         <h1 className="text-30 lh-12 fw-700">My Courses</h1>
                         <div className="mt-10">
-                            My created own courses
+                            My created courses
                         </div>
                     </div>
                 </div>
