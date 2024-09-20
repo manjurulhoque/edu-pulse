@@ -10,7 +10,7 @@ class Lesson(Base):
     title = Column(String, index=True)
     content = Column(Text)  # Youtube URL for now
     course_id = Column(Integer, ForeignKey("courses.id"))
-    section_id = Column(Integer, ForeignKey("course_sections.id"))
+    section_id = Column(Integer, ForeignKey("course_sections.id", ondelete="CASCADE"))
     # Define relationships
     course = relationship("Course", back_populates="lessons")
     section = relationship("CourseSection", back_populates="lessons")

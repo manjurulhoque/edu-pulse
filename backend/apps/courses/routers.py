@@ -260,6 +260,7 @@ async def update_curriculum(
         CourseSection.course_id == course_id,
         CourseSection.id.notin_(section_ids_to_keep),
     ).delete(synchronize_session=False)
+    db.commit()
 
     course = db.query(Course).filter(Course.id == course_id).first()
 
@@ -300,6 +301,7 @@ async def update_curriculum(
             Lesson.section_id == section_id,
             Lesson.id.notin_(lesson_ids_to_keep),
         ).delete(synchronize_session=False)
+        db.commit()
 
         for lesson in section.get("lessons", []):
             lesson_id = lesson.get("id")

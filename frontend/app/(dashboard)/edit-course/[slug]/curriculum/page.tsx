@@ -27,7 +27,7 @@ const CurriculumPage: React.FC<Props> = async ({params}: Props) => {
                         <div className="dashboard__sidebar scroll-bar-1">
                             <Sidebar/>
                         </div>
-                        <CourseCurriculum sections={[]} course={course}/>
+                        <CourseCurriculum sections={course?.sections || []} course={course}/>
                     </div>
                 </div>
             </main>

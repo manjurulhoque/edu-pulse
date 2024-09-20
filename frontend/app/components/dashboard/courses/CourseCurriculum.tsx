@@ -56,8 +56,10 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
 
                         <div className="py-30 px-30">
                             <div className="py-30 px-30">
-                                {allSections.length === 0 ?
-                                    <h5>No sections found for this course. Add new one!</h5> : ""}
+                                {
+                                    allSections.length === 0 ?
+                                        <h5>No sections found for this course. Add new one!</h5> : ""
+                                }
                                 {allSections.map((section, index) => (
                                     <SectionCurriculum
                                         key={index}
@@ -213,6 +215,13 @@ const SectionCurriculum: React.FC<{
                         <button
                             className="icon icon-edit ml-5"
                             onClick={(e) => setEditTitle(true)}
+                        />
+                        <button
+                            className="icon icon-bin ml-5"
+                            onClick={(e) => {
+                                const updatedSections = sections.filter((_, idx) => idx !== i);
+                                updateSections(updatedSections);
+                            }}
                         />
                     </h4>
                 </div>
