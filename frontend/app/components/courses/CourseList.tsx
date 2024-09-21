@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Star from "../common/Star";
 import Image from "next/image";
 import Link from "next/link";
 import Pagination from "../common/Pagination";
@@ -9,6 +8,7 @@ import { levels, sortingOptions } from "@/app/data/courses";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Grid } from "react-loader-spinner";
+import Star from "@/app/components/common/Star";
 
 export default function CourseList() {
     const [filterOpen, setFilterOpen] = useState(false);
@@ -603,8 +603,6 @@ export default function CourseList() {
                                                     <div className="d-flex x-gap-5 items-center">
                                                         <Star
                                                             star={4.9}
-                                                            textColor={null}
-                                                            textSize={null}
                                                         />
                                                     </div>
                                                     <div className="text-13 lh-1 ml-10">

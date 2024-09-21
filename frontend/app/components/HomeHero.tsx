@@ -44,7 +44,7 @@ const HomeHero = () => {
                             </h1>
                             <div className="masthead__button mt-20">
                                 <Link
-                                    href="/"
+                                    href="/courses"
                                     className="button -md -white text-dark-1"
                                 >
                                     Find Courses

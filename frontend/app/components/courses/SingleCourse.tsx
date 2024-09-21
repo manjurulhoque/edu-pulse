@@ -1,7 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
-import Star from "@/app/components/common/Star";
+import React, {useEffect} from "react";
 import {useSingleCourseQuery} from "@/app/store/reducers/courses/api";
 import {Grid} from "react-loader-spinner";
 import NotFound from "@/app/components/NotFound";
@@ -9,6 +8,7 @@ import {useParams} from "next/navigation";
 import PinContent from "@/app/components/courses/PinContent";
 import CourseOverview from "@/app/components/courses/CourseOverview";
 import CourseContent from "@/app/components/courses/CourseContent";
+import Star from "@/app/components/common/Star";
 
 const menuItems = [
     {id: 1, href: "#overview", text: "Overview", isActive: true},
@@ -101,8 +101,7 @@ const SingleCourse = () => {
                                                             4.9
                                                         </div>
                                                         <div className="d-flex x-gap-10 items-center">
-                                                            <Star star={4.7} textColor={"text-green-1"}
-                                                                  textSize={null}/>
+                                                            <Star star={4.7} textColor={"text-green-1"}/>
                                                         </div>
                                                         <div className="text-14 lh-1 ml-10">
                                                             (567)
