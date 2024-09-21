@@ -27,7 +27,7 @@ export default function CourseOverview({course}: { course: Course }) {
                     onClick={() => setShowMore((pre) => !pre)}
                     className="show-more__button text-purple-1 fw-500 underline mt-30"
                 >
-                    Show more
+                    {showMore ? "Show Less" : "Show More"}
                 </button>
             </div>
 
