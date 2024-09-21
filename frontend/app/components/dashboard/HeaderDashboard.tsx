@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
+import {signOut} from "next-auth/react";
 
 interface DocumentElement {
     requestFullscreen?: () => Promise<void>;
@@ -223,9 +224,28 @@ const HeaderDashboard: React.FC = () => {
                                     >
                                         <div
                                             className="toggle-bottom -profile bg-white shadow-4 border-light rounded-8 mt-10">
-                                            <div className="px-30 py-30">
+                                            <div className="px-10 py-10">
                                                 <div className="sidebar -dashboard">
-
+                                                    <div className={`sidebar__item`}>
+                                                        <Link
+                                                            href={"/create-course"}
+                                                            className="d-flex items-center text-17 lh-1 fw-500 "
+                                                        >
+                                                            <i className="text-20 icon-list mr-2"></i>
+                                                            Create course
+                                                        </Link>
+                                                    </div>
+                                                    <hr/>
+                                                    <div className={`sidebar__item`}>
+                                                        <a
+                                                            href="#"
+                                                            onClick={() => signOut({callbackUrl: "/"})}
+                                                            className="d-flex items-center text-17 lh-1 fw-500 "
+                                                        >
+                                                            <i className="text-20 icon-power mr-2"></i>
+                                                            Logout
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
