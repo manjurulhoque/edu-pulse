@@ -6,14 +6,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const CourseContent: React.FC<{ course: Course }> = ({course}) => {
     const [activeItemId, setActiveItemId] = useState<number | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
     const [isAllExpanded, setIsAllExpanded] = useState(false);
 
     const toggleAllSections = () => {
         if (isAllExpanded) {
             setActiveItemId(null);
         } else {
-            setActiveItemId(-1); // Use a special value to indicate all sections are expanded
+            setActiveItemId(-1);
         }
         setIsAllExpanded(!isAllExpanded);
     };
@@ -24,7 +23,7 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
 
             <div className="d-flex justify-between items-center mt-30">
                 <div className="">Sections</div>
-                <a href="javascript:void(0)" className="underline text-purple-1" onClick={toggleAllSections}>
+                <a href="#" className="underline text-purple-1" onClick={toggleAllSections}>
                     {isAllExpanded ? "Collapse All Sections" : "Expand All Sections"}
                 </a>
             </div>
@@ -74,14 +73,6 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
                                                             <div className="icon-play text-9"></div>
                                                         </div>
                                                         <div>{lesson.title}</div>
-                                                    </div>
-                                                    <div className="d-flex x-gap-20 items-center">
-                                                        <span
-                                                            onClick={() => setIsOpen(true)}
-                                                            className="text-14 lh-1 text-purple-1 underline cursor "
-                                                        >
-                                                          Preview
-                                                        </span>
                                                     </div>
                                                 </div>
                                             ))}

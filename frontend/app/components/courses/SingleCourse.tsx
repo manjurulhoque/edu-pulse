@@ -25,11 +25,11 @@ const SingleCourse = () => {
     }, []);
 
     const getImageSrc = () => {
-        return `${process.env.BACKEND_BASE_URL}/${course?.preview_image}`;
+        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${course?.preview_image}`;
     }
 
     const getAuthorImageSrc = () => {
-        return `${process.env.BACKEND_BASE_URL}/${course?.user.avatar}`;
+        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${course?.user.avatar}`;
     }
 
     return (
@@ -119,7 +119,7 @@ const SingleCourse = () => {
                                                     <div className="d-flex items-center text-white">
                                                         <div className="icon icon-wall-clock text-13"></div>
                                                         <div className="text-14 ml-8">
-                                                            Last updated {course?.updated_at.toString()}
+                                                            Last updated {new Date(course?.updated_at).toLocaleDateString()}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -133,7 +133,7 @@ const SingleCourse = () => {
                                                         data-bg={getAuthorImageSrc()}
                                                     ></div>
                                                     <div className="text-14 lh-1 ml-10 text-white">
-                                                        {course?.user.name}
+                                                        Created by {course?.user.name}
                                                     </div>
                                                 </div>
                                             </div>
