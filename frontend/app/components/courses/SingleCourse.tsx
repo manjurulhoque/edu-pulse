@@ -13,7 +13,7 @@ import CourseContent from "@/app/components/courses/CourseContent";
 const menuItems = [
     {id: 1, href: "#overview", text: "Overview", isActive: true},
     {id: 2, href: "#course-content", text: "Course Content", isActive: false},
-    {id: 3, href: "#instructors", text: "Instructors", isActive: false},
+    {id: 3, href: "#instructor", text: "Instructor", isActive: false},
     {id: 4, href: "#reviews", text: "Reviews", isActive: false},
 ];
 
