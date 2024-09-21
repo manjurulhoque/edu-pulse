@@ -29,7 +29,7 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
         const result: any = await updateCurriculum({id: course?.id, formData: {"sections": allSections}});
         if (result.data) {
             toast.success("Course curriculum updated successfully");
-            // window.location.href = "/my-created-courses";
+            window.location.reload();
         } else {
             toast.warning(result?.data?.message || "Something went wrong. Please try again later");
         }
