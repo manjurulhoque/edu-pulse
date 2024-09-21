@@ -5,8 +5,18 @@ import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const CourseContent: React.FC<{ course: Course }> = ({course}) => {
-    const [activeItemId, setActiveItemId] = useState(0);
+    const [activeItemId, setActiveItemId] = useState<number | null>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isAllExpanded, setIsAllExpanded] = useState(false);
+
+    const toggleAllSections = () => {
+        if (isAllExpanded) {
+            setActiveItemId(null);
+        } else {
+            setActiveItemId(-1); // Use a special value to indicate all sections are expanded
+        }
+        setIsAllExpanded(!isAllExpanded);
+    };
 
     return (
         <div id="course-content" className="pt-60 lg:pt-40">
@@ -14,8 +24,8 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
 
             <div className="d-flex justify-between items-center mt-30">
                 <div className="">Sections</div>
-                <a href="#" className="underline text-purple-1">
-                    Expand All Sections
+                <a href="javascript:void(0)" className="underline text-purple-1" onClick={toggleAllSections}>
+                    {isAllExpanded ? "Collapse All Sections" : "Expand All Sections"}
                 </a>
             </div>
 
@@ -24,14 +34,13 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
                     course?.sections.map((section, i) => (
                         <div key={i} className="accordion -block-1 text-left js-accordion mb-5">
                             <div
-                                key={i}
                                 className={`accordion__item ${
-                                    activeItemId == section.id ? "is-active" : ""
+                                    activeItemId === section.id || activeItemId === -1 ? "is-active" : ""
                                 }`}
                             >
                                 <div
                                     onClick={() =>
-                                        setActiveItemId((pre) => (pre == section.id ? 0 : Number(section.id)))
+                                        setActiveItemId((pre) => (pre === section.id ? null : Number(section.id)))
                                     }
                                     className="accordion__button py-20 px-30 bg-light-4"
                                 >
@@ -53,7 +62,8 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
                                     </div>
                                 </div>
 
-                                <div className="accordion__content" style={activeItemId == section.id ? { maxHeight: "700px" } : {}}>
+                                <div className="accordion__content"
+                                     style={activeItemId == section.id || activeItemId === -1 ? {maxHeight: "700px"} : {}}>
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="y-gap-20">
                                             {section.lessons?.map((lesson, index) => (
