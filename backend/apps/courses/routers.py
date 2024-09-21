@@ -329,5 +329,5 @@ async def update_curriculum(
                 db.commit()
                 db.refresh(new_lesson)
                 db_section.lessons.append(new_lesson)
-
+    db.expire_all()
     return course

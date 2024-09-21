@@ -70,6 +70,20 @@ async def startup_event():
     print("Database initialized.")
 
 
+@app.on_event("shutdown")
+def shutdown_event():
+    print("Shutting down database connection...")
+    engine.dispose()
+    print("Database connection closed.")
+
+    # Clear SQLAlchemy cache
+    from conf.database import SessionLocal
+    session = SessionLocal()
+    session.expire_all()
+    session.close()
+    print("SQLAlchemy cache cleared.")
+
+
 @app.get("/")
 def main():
     return RedirectResponse(url="/docs/")
