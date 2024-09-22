@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Pagination from "../common/Pagination";
 import { levels, sortingOptions } from "@/app/data/courses";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Grid } from "react-loader-spinner";
 import Star from "@/app/components/common/Star";
+import Pagination from "@/app/components/common/Pagination";
 
 export default function CourseList() {
+    const [pageSize, setPageSize] = useState(10);
     const [filterOpen, setFilterOpen] = useState(false);
     const [filterCategories, setFilterCategories] = useState<string[]>([]);
     const [filterRatingRange, setFilterRatingRange] = useState([] as any);
@@ -29,8 +30,7 @@ export default function CourseList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [courses, setCourses] = useState<Course[]>([]);
 
-    const { data: courseResult, isLoading: isCoursesLoading } =
-        useAllCoursesQuery({ page: pageNumber, page_size: 10 });
+    const { data: courseResult, isLoading: isCoursesLoading } = useAllCoursesQuery({ page: pageNumber, page_size: pageSize });
     const { data: categories } = useCategoriesQuery(null);
 
     useEffect(() => {
@@ -711,8 +711,7 @@ export default function CourseList() {
                                     <Pagination
                                         pageNumber={pageNumber}
                                         setPageNumber={setPageNumber}
-                                        data={sortedFilteredData || []}
-                                        pageCapacity={12}
+                                        data={courseResult as any}
                                     />
                                 </div>
                             </div>

@@ -126,37 +126,6 @@ const HeaderDashboard: React.FC = () => {
 
                         <div className="col-auto">
                             <div className="d-flex items-center">
-                                <div className="text-white d-flex items-center lg:d-none mr-15">
-                                    <div className="dropdown bg-transparent px-0 py-0">
-                                        <div className="d-flex items-center text-14 text-dark-1">
-                                            All Pages
-                                            <i className="text-9 icon-chevron-down ml-10"></i>
-                                        </div>
-                                        <div className="dropdown__item -dark-bg-dark-2 -dark-border-white-10">
-                                            <div className="text-14 y-gap-15">
-                                                <div>
-                                                    <Link
-                                                        href="/dashboard"
-                                                        className="d-block text-dark-1"
-                                                    >
-                                                        Dashboard
-                                                    </Link>
-                                                </div>
-                                                <div>
-                                                    <Link
-                                                        href="/my-courses"
-                                                        className="d-block text-dark-1"
-                                                    >
-                                                        My Courses
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/*<MyCourses/>*/}
-                                </div>
-
                                 <div className="d-flex items-center sm:d-none">
                                     <div className="relative">
                                         <button
