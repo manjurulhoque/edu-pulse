@@ -1,9 +1,12 @@
 import { getSession } from "next-auth/react";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {getVariables} from "@/app/actions/getVariables";
 
 const DynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     const session = await getSession();
-    let BACKEND_BASE_URL = "";
+    let variables = await getVariables();
+    console.log(variables);
+    let BACKEND_BASE_URL: string;
     if (typeof window === "undefined") {
         BACKEND_BASE_URL = process.env.BACKEND_BASE_URL;
     } else {
