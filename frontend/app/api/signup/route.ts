@@ -13,6 +13,7 @@ interface RequestBody {
 
 export async function POST(req: Request) {
     const {name, email, password}: RequestBody = await req.json();
+    console.log(process.env);
 
     const response = await fetch(`${process.env.BACKEND_BASE_URL}/signup`, {
         method: "POST",
