@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // images: {
-    //     domains: ["avatar.iran.liara.run", "127.0.0.1", "backend", "localhost", "plus.unsplash.com", "images.unsplash.com"],
-    // },
     images: {
-        remotePatterns: ["https://images.unsplash.com/.*", "https://plus.unsplash.com/.*", "https://avatar.iran.liara.run/.*", "http://localhost:8080/.*"],
+        domains: ["avatar.iran.liara.run", "127.0.0.1", "backend", "localhost", "plus.unsplash.com", "images.unsplash.com"],
     },
     logging: {
         fetches: {
