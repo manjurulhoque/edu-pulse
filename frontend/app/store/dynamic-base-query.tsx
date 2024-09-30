@@ -14,6 +14,7 @@ const DynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     } else {
         BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
     }
+    BACKEND_BASE_URL = variables.BACKEND_BASE_URL;
     return fetchBaseQuery({
         baseUrl: `${BACKEND_BASE_URL}`,
         prepareHeaders: (headers) => {
