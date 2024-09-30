@@ -1,6 +1,6 @@
-export async function getVariables(slug: string) {
+export async function getVariables() {
     return {
         BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
-        NEXT_PUBLIC_BACKEND_BASE_URL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+        BASE_URL: process.env.BASE_URL,
     };
 }

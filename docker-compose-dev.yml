@@ -28,6 +28,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile.dev
 #      args:
 #        BACKEND_BASE_URL: http://backend:8080
     ports:
@@ -36,8 +37,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      BACKEND_BASE_URL: "http://backend:8080"
-      NEXT_PUBLIC_BACKEND_BASE_URL: "http://localhost:8080"
+      BACKEND_BASE_URL: "http://localhost:8080"
       NEXTAUTH_SECRET: "atr5-gt65-9jet"
       NEXTAUTH_URL: "http://localhost:3000/"
       NEXT_PUBLIC_BASE_URL: "http://localhost:3000"

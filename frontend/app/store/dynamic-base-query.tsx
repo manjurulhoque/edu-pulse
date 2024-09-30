@@ -6,6 +6,8 @@ const DynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     const session = await getSession();
     let variables = await getVariables();
     console.log(variables);
+    console.log(process.env.BACKEND_BASE_URL);
+    console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL);
     let BACKEND_BASE_URL: string;
     if (typeof window === "undefined") {
         BACKEND_BASE_URL = process.env.BACKEND_BASE_URL;

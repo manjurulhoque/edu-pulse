@@ -19,13 +19,13 @@ spec:
         image: manjurulhoque/edu-pulse-frontend:latest
         imagePullPolicy: Always
         env:
-          - name: NEXT_PUBLIC_BACKEND_BASE_URL
+          - name: BACKEND_BASE_URL
             value: "http://backend-service:8080"
           - name: NEXTAUTH_SECRET
             value: "atr5-gt65-9jet"
           - name: NEXTAUTH_URL
             value: "http://localhost:3000/"
-          - name: NEXT_PUBLIC_BASE_URL
+          - name: BASE_URL
             value: "http://localhost:3000"
           - name: NODE_ENV
             value: "development"

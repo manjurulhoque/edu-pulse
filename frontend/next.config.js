@@ -9,9 +9,8 @@ const nextConfig = {
         },
     },
     env: {
-        BACKEND_BASE_URL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+        BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
         // NEXT_PUBLIC_BACKEND_BASE_URL: "http://localhost:8080",
-        NEXT_PUBLIC_BACKEND_BASE_URL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
         BASE_URL: "http://localhost:3000",
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
         NEXTAUTH_URL: process.env.NEXTAUTH_URL
