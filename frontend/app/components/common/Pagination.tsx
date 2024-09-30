@@ -7,7 +7,7 @@ interface PaginationProps<T> {
 }
 
 const Pagination = <T,>({ pageNumber, setPageNumber, data }: PaginationProps<T>) => {
-    const { total_pages, next_page, previous_page } = data;
+    const { total_pages, next_page, previous_page } = data || {total_pages: 1, next_page: false, previous_page: false};
 
     const handlePrevious = () => {
         if (previous_page) {
