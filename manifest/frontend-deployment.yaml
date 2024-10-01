@@ -20,7 +20,8 @@ spec:
         imagePullPolicy: Always
         env:
           - name: BACKEND_BASE_URL
-            value: "http://backend-service:8080"
+            value: "http://192.168.49.2:30002"
+#            value: http://$(BACKEND_SERVICE_SERVICE_HOST):$(BACKEND_SERVICE_SERVICE_PORT)
           - name: NEXTAUTH_SECRET
             value: "atr5-gt65-9jet"
           - name: NEXTAUTH_URL
