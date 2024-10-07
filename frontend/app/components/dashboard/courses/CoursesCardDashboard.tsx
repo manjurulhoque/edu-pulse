@@ -21,7 +21,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
     }, []);
 
     const getImageSrc = () => {
-        return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
+        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
     }
 
     const onPublishCourse = async () => {

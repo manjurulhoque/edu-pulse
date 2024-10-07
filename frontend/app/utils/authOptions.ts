@@ -6,7 +6,7 @@ import {jwtDecode} from "jwt-decode";
 async function customAuthenticationFunction(credentials: any) {
     try {
         // Call your FastAPI endpoint for user authentication
-        const response = await fetch(`${process.env.BACKEND_BASE_URL}/login`, {
+        const response = await fetch(`${process.env.BACKEND_DOCKER_BASE_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

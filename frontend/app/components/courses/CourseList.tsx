@@ -168,11 +168,11 @@ export default function CourseList() {
     };
 
     const getImageSrc = (course: Course) => {
-        return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
+        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
     };
 
     const getAuthorImageSrc = (course: Course) => {
-        return `${process.env.BACKEND_BASE_URL}/${course.user.avatar}`;
+        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.user.avatar}`;
     };
 
     return (

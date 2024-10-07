@@ -146,7 +146,7 @@ const EditCourse: React.FC = () => {
 
     useEffect(() => {
         if (course) {
-            setPreviewUrl(`${process.env.BACKEND_BASE_URL}/${course.preview_image}`);
+            setPreviewUrl(`${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`);
         }
     }, [course]);
 

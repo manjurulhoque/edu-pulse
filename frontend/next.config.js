@@ -9,6 +9,7 @@ const nextConfig = {
         },
     },
     env: {
+        BACKEND_DOCKER_BASE_URL: process.env.BACKEND_DOCKER_BASE_URL,
         BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
         // NEXT_PUBLIC_BACKEND_BASE_URL: "http://localhost:8080",
         BASE_URL: "http://localhost:3000",

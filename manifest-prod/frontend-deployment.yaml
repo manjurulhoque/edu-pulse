@@ -15,20 +15,22 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: 381492024252.dkr.ecr.us-east-1.amazonaws.com/edu-pulse-frontend:latest
-        imagePullPolicy: Always
-        env:
-          - name: BACKEND_BASE_URL
-            value: "http://35.87.101.151:30002"
-#            value: http://$(BACKEND_SERVICE_SERVICE_HOST):$(BACKEND_SERVICE_SERVICE_PORT)
-          - name: NEXTAUTH_SECRET
-            value: "atr5-gt65-9jet"
-          - name: NEXTAUTH_URL
-            value: "http://localhost:3000/"
-          - name: BASE_URL
-            value: "http://localhost:3000"
-          - name: NODE_ENV
-            value: "development"
-        ports:
-        - containerPort: 3000
+        - name: frontend
+          image: 381492024252.dkr.ecr.us-east-1.amazonaws.com/edu-pulse-frontend:latest # update this with your image
+          imagePullPolicy: Always
+          env:
+            - name: BACKEND_DOCKER_BASE_URL
+              value: "http://backend:8080"
+            - name: BACKEND_BASE_URL
+              value: "http://35.87.101.151:30002"
+            #            value: http://$(BACKEND_SERVICE_SERVICE_HOST):$(BACKEND_SERVICE_SERVICE_PORT)
+            - name: NEXTAUTH_SECRET
+              value: "atr5-gt65-9jet"
+            - name: NEXTAUTH_URL
+              value: "http://localhost:3000/"
+            - name: BASE_URL
+              value: "http://localhost:3000"
+            - name: NODE_ENV
+              value: "development"
+          ports:
+            - containerPort: 3000

@@ -37,6 +37,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
+      BACKEND_DOCKER_BASE_URL: "http://backend:8080"
       BACKEND_BASE_URL: "http://localhost:8080"
       NEXTAUTH_SECRET: "atr5-gt65-9jet"
       NEXTAUTH_URL: "http://localhost:3000/"
