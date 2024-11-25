@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import {useState, useEffect} from "react";
@@ -21,7 +22,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
     }, []);
 
     const getImageSrc = () => {
-        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
+        return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
     }
 
     const onPublishCourse = async () => {
@@ -50,14 +51,15 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
             </Modal>
             <div className="w-1/5 xl:w-1/3 lg:w-1/2 sm:w-1/1">
                 <div className="relative">
-                    <Image
+                    {/* <Image
                         width={560}
                         height={325}
                         className="rounded-8 w-1/1"
                         src={getImageSrc()}
                         alt="image"
                         priority={true}
-                    />
+                    /> */}
+                    <img src={getImageSrc()} alt="image" className="rounded-8 w-1/1" />
 
                     <button
                         onClick={() => setActiveShare((pre) => !pre)}

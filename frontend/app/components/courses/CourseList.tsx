@@ -30,7 +30,8 @@ export default function CourseList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [courses, setCourses] = useState<Course[]>([]);
 
-    const { data: courseResult, isLoading: isCoursesLoading } = useAllCoursesQuery({ page: pageNumber, page_size: pageSize });
+    const { data: courseResult, isLoading: isCoursesLoading } =
+        useAllCoursesQuery({ page: pageNumber, page_size: pageSize });
     const { data: categories } = useCategoriesQuery(null);
 
     useEffect(() => {
@@ -585,8 +586,7 @@ export default function CourseList() {
                                                             <div>
                                                                 <div className="px-15 rounded-200 bg-green-1">
                                                                     <span className="text-11 lh-1 uppercase fw-500 text-dark-1">
-                                                                        Best
-                                                                        sellers
+                                                                        Best sellers
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -601,9 +601,7 @@ export default function CourseList() {
                                                         4.9
                                                     </div>
                                                     <div className="d-flex x-gap-5 items-center">
-                                                        <Star
-                                                            star={4.9}
-                                                        />
+                                                        <Star star={4.9} />
                                                     </div>
                                                     <div className="text-13 lh-1 ml-10">
                                                         (345)

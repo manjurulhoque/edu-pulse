@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useSingleCourseQuery, useUpdateCurriculumMutation} from "@/app/store/reducers/courses/api";
 import {toast} from "react-toastify";
 import Link from "next/link";
@@ -8,8 +8,16 @@ import { useParams } from "next/navigation";
 
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
-    const {data: course} = useSingleCourseQuery({slug: params.slug as string});
-    const [allSections, setAllSections] = useState<Section[]>(course?.sections ?? []);
+    const {data: course, isLoading} = useSingleCourseQuery({slug: params.slug as string});
+    const [allSections, setAllSections] = useState<Section[]>([]); // Initialize as empty array
+
+    // Update allSections when course is loaded
+    useEffect(() => {
+        if (course) {
+            setAllSections(course.sections ?? []);
+        }
+    }, [course]);
+
     const [updateCurriculum] = useUpdateCurriculumMutation();
     const addSection = () => {
         const newSection: Section = {
@@ -32,6 +40,10 @@ const CourseCurriculum: React.FC = () => {
         } else {
             toast.warning(result?.data?.message || "Something went wrong. Please try again later");
         }
+    }
+
+    if (isLoading) {
+        return <div className="loader">Loading...</div>; // Loader while course is being loaded
     }
 
     return (
