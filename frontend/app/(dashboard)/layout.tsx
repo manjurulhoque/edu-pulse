@@ -10,6 +10,7 @@ import { AOSInit } from "@/app/components/aos-init";
 import ReduxProvider from "@/app/components/ReduxProvider";
 import { ToastContainer } from "react-toastify";
 import {authOptions} from "@/app/utils/authOptions";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 interface Props {
     children: React.ReactNode;
@@ -25,7 +26,7 @@ const DashboardLayout: React.FC<Props> = async ({children}) => {
             <AOSInit/>
             <body>
             <ReduxProvider>
-                {children}
+                <NuqsAdapter>{children}</NuqsAdapter>
             </ReduxProvider>
             <ToastContainer/>
             </body>

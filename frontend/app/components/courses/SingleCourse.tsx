@@ -9,6 +9,7 @@ import PinContent from "@/app/components/courses/PinContent";
 import CourseOverview from "@/app/components/courses/CourseOverview";
 import CourseContent from "@/app/components/courses/CourseContent";
 import Star from "@/app/components/common/Star";
+import CourseInstructor from "./CourseInstructor";
 
 const menuItems = [
     {id: 1, href: "#overview", text: "Overview", isActive: true},
@@ -165,7 +166,7 @@ const SingleCourse = () => {
 
                                             <CourseOverview course={course}/>
                                             <CourseContent course={course}/>
-                                            {/*<Instructor/>*/}
+                                            <CourseInstructor course={course}/>
                                             {/*<Reviews/>*/}
                                         </div>
                                     </div>

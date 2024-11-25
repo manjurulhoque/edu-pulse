@@ -1,19 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useQueryState, parseAsBoolean } from 'nuqs';
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import CoursesCardDashboard from "@/app/components/dashboard/courses/CoursesCardDashboard";
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 
-
 const MyCreatedCourses: React.FC = () => {
+    const [isPublished, setIsPublished] = useQueryState('is_published', parseAsBoolean.withDefault(true));
     const [currentCategory, setCurrentCategory] = useState<number>(0);
     const [pageItems, setPageItems] = useState<Course[]>([]);
     const [activeTab, setActiveTab] = useState(1);
     const [pageData, setPageData] = useState<Course[]>([]);
-    const {data: categories, isLoading: isCategoriesLoading} = useCategoriesQuery(null);
-    const {data: courses, isLoading: isCoursesLoading} = useMyCreatedCoursesQuery(null);
+    const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
+    const { data: courses, isLoading: isCoursesLoading } = useMyCreatedCoursesQuery(null);
 
     useEffect(() => {
         if (courses) {
@@ -60,15 +61,17 @@ const MyCreatedCourses: React.FC = () => {
                     <div className="col-12">
                         <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
                             <div className="tabs -active-purple-2 js-tabs">
-                                <div
-                                    className="tabs__controls d-flex items-center pt-20 px-30 border-bottom-light js-tabs-controls">
+                                <div className="tabs__controls d-flex items-center pt-20 px-30 border-bottom-light js-tabs-controls">
                                     <button
                                         className={`text-light-1 lh-12 tabs__button js-tabs-button ${
                                             activeTab == 1 ? "is-active" : ""
                                         } `}
                                         data-tab-target=".-tab-item-1"
                                         type="button"
-                                        onClick={() => setActiveTab(1)}
+                                        onClick={() => {
+                                            setActiveTab(1);
+                                            setIsPublished(true);
+                                        }}
                                     >
                                         Published
                                     </button>
@@ -78,7 +81,10 @@ const MyCreatedCourses: React.FC = () => {
                                         } `}
                                         data-tab-target=".-tab-item-2"
                                         type="button"
-                                        onClick={() => setActiveTab(2)}
+                                        onClick={() => {
+                                            setActiveTab(2);
+                                            setIsPublished(false);
+                                        }}
                                     >
                                         Unpublished
                                     </button>
@@ -142,7 +148,7 @@ const MyCreatedCourses: React.FC = () => {
                                                                         } `}
                                                                     >
                                                                         <span
-                                                                            style={{cursor: "pointer"}}
+                                                                            style={{ cursor: "pointer" }}
                                                                             className="d-block js-dropdown-link"
                                                                         >
                                                                             All Categories
@@ -161,7 +167,7 @@ const MyCreatedCourses: React.FC = () => {
                                                                             } `}
                                                                         >
                                                                             <span
-                                                                                style={{cursor: "pointer"}}
+                                                                                style={{ cursor: "pointer" }}
                                                                                 className="d-block js-dropdown-link"
                                                                             >
                                                                                 {item.name}
@@ -177,10 +183,16 @@ const MyCreatedCourses: React.FC = () => {
                                         </div>
 
                                         <div className="row y-gap-30 pt-30">
-                                            {pageItems?.length === 0 && <h3>No courses found!</h3>}
-                                            {pageItems?.length > 0 && pageItems?.map((course: Course, i: any) => (
-                                                <CoursesCardDashboard course={course} key={i}/>
-                                            ))}
+                                            {isCoursesLoading ? (
+                                                <h3>Loading courses...</h3>
+                                            ) : (
+                                                <>
+                                                    {pageItems?.length === 0 && <h3>No courses found!</h3>}
+                                                    {pageItems?.length > 0 && pageItems?.map((course: Course, i: any) => (
+                                                        <CoursesCardDashboard course={course} key={i} />
+                                                    ))}
+                                                </>
+                                            )}
                                         </div>
 
                                         <div className="row justify-center pt-30">
@@ -196,7 +208,7 @@ const MyCreatedCourses: React.FC = () => {
                 </div>
             </div>
 
-            <FooterDashboard/>
+            <FooterDashboard />
         </div>
     )
 }
