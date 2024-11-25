@@ -1,16 +1,15 @@
 "use client";
 
 import React, {useState} from "react";
-import {useUpdateCurriculumMutation} from "@/app/store/reducers/courses/api";
+import {useSingleCourseQuery, useUpdateCurriculumMutation} from "@/app/store/reducers/courses/api";
 import {toast} from "react-toastify";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
-interface CourseCurriculumProps {
-    sections: Section[];
-    course: Course | null;
-}
-
-const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) => {
-    const [allSections, setAllSections] = useState<Section[]>(sections);
+const CourseCurriculum: React.FC = () => {
+    const params = useParams();
+    const {data: course} = useSingleCourseQuery({slug: params.slug as string});
+    const [allSections, setAllSections] = useState<Section[]>(course?.sections ?? []);
     const [updateCurriculum] = useUpdateCurriculumMutation();
     const addSection = () => {
         const newSection: Section = {
@@ -43,6 +42,13 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections, course}) =
                         <h1 className="text-30 lh-12 fw-700">{course?.title}</h1>
                         <div className="mt-10">Update your outstanding course!</div>
                     </div>
+                    {course?.is_published && (
+                        <div className="col-auto text-right">
+                            <Link href={`/courses/${course.slug}`} className="button -md -purple-1 text-white sm:w-1/1" target="_blank">
+                                Go to Course
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 

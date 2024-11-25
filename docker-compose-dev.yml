@@ -26,6 +26,7 @@ services:
       - edu-pulse-network
 
   frontend:
+    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev

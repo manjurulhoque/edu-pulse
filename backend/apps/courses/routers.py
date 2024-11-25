@@ -205,11 +205,8 @@ async def single_course(slug: str, db: Session = Depends(get_db)):
         .filter(Course.is_published == True, Course.slug == slug)
         .first()
     )
-    try:
-        if hasattr(course.user, "password"):
-            del course.user.password
-    except:
-        pass
+    if hasattr(course.user, "password"):
+        del course.user.password
 
     return create_response(data=course)
 
