@@ -26,11 +26,11 @@ const SingleCourse = () => {
     }, []);
 
     const getImageSrc = () => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${course?.preview_image}`;
+        return `${process.env.BACKEND_BASE_URL}/${course?.preview_image}`;
     }
 
     const getAuthorImageSrc = () => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${course?.user.avatar}`;
+        return `${process.env.BACKEND_BASE_URL}/${course?.user.avatar}`;
     }
 
     return (

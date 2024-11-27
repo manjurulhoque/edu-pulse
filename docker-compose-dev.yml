@@ -15,6 +15,7 @@ services:
       - edu-pulse-network
 
   db:
+    container_name: db
     image: "postgres:alpine"
     restart: always
     environment:

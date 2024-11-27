@@ -13,6 +13,9 @@ class User(Base):
     name = Column(String)
     is_admin = Column(Boolean, default=False)
     avatar = Column(String, default="static/images/default-avatar.png")
+    bio = Column(String, default="", nullable=True)
+    website = Column(String, default="", nullable=True)
+    is_instructor = Column(Boolean, default=False)
 
     courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")

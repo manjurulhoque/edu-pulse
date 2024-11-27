@@ -33,7 +33,8 @@ router = APIRouter()
 
 @router.get("/all-courses")
 async def all_courses(
-    db: Session = Depends(get_db), params: dict = Depends(common_parameters)
+    db: Session = Depends(get_db),
+    params: dict = Depends(common_parameters)
 ):
     query = db.query(Course).filter(Course.is_published == True)
     total = query.count()
@@ -244,7 +245,9 @@ async def course_sections(
     response_model=CourseSchema,
 )
 async def update_curriculum(
-    course_id: int, request: Request, db: Session = Depends(get_db)
+    course_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
 ):
     data = await request.json()
     sections = data.get("sections", [])
@@ -328,3 +331,23 @@ async def update_curriculum(
                 db_section.lessons.append(new_lesson)
     db.expire_all()
     return course
+
+
+@router.get("/course/{course_id}/instructor")
+async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+    
+    total_students = len(course.enrollments)
+    total_published_courses = (
+        db.query(Course)
+        .filter(Course.is_published.is_(True), Course.user_id == course.user_id)
+        .count()
+    )
+    
+    return {
+        "instructor": course.user,
+        "total_students": total_students,
+        "total_published_courses": total_published_courses
+    }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,7 +9,28 @@ interface CourseInstructorProps {
     course: Course;
 }
 
+const fetchCourseInstructor = async (courseId: number) => {
+    const response = await fetch(
+        `${process.env.BACKEND_BASE_URL}/course/${courseId}/instructor`
+    );
+    return response.json();
+};
+
 const CourseInstructor: React.FC<CourseInstructorProps> = ({ course }) => {
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["course-instructor", course.id],
+        queryFn: () => fetchCourseInstructor(course.id),
+    });
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    const instructor = data?.instructor || {};
+
+    const getAvatarUrl = (avatar: string) => {
+        return `${process.env.BACKEND_DOCKER_BASE_URL}/${avatar}`;
+    };
+
     return (
         <div id="instructor" className="pt-60 lg:pt-40">
             <h2 className="text-20 fw-500">Instructor</h2>
@@ -20,18 +42,18 @@ const CourseInstructor: React.FC<CourseInstructorProps> = ({ course }) => {
                             width={100}
                             height={100}
                             className="object-cover"
-                            src="/assets/img/misc/verified/1.png"
-                            alt="image"
+                            src={getAvatarUrl(instructor.avatar)}
+                            alt="Instructor Avatar"
                         />
                     </div>
 
                     <div className="">
                         <h5 className="text-17 lh-14 fw-500">
-                            <Link href={`/profile/${course?.user.name}`}>
-                                {course?.user.name}
+                            <Link href={`/profile/${instructor.name}`}>
+                                {instructor.name}
                             </Link>
                         </h5>
-                        <p className="mt-5">President of Sales</p>
+                        <p className="mt-5">{instructor.bio || "No bio available"}</p>
 
                         <div className="d-flex x-gap-20 y-gap-10 flex-wrap items-center pt-10">
                             <div className="d-flex items-center">
@@ -49,38 +71,25 @@ const CourseInstructor: React.FC<CourseInstructorProps> = ({ course }) => {
                             <div className="d-flex items-center text-light-1">
                                 <div className="icon-comment text-13 mr-8"></div>
                                 <div className="text-13 lh-1">
-                                    23,987 Reviews
+                                    0 Reviews
                                 </div>
                             </div>
 
                             <div className="d-flex items-center text-light-1">
                                 <div className="icon-person-3 text-13 mr-8"></div>
-                                <div className="text-13 lh-1">692 Students</div>
+                                <div className="text-13 lh-1">{data?.total_students} Students</div>
                             </div>
 
                             <div className="d-flex items-center text-light-1">
                                 <div className="icon-wall-clock text-13 mr-8"></div>
-                                <div className="text-13 lh-1">15 Course</div>
+                                <div className="text-13 lh-1">{data?.total_published_courses} Courses</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-30">
-                    <p>
-                        Back in 2010, I started brainspin with a desire to
-                        design compelling and engaging apps. For over 7 years, I
-                        have designed many high profile web and iPhone
-                        applications. The applications range from 3D medical
-                        aided web applications to project management
-                        applications for niche industries.
-                        <br />
-                        <br />I am also the founder of a large local design
-                        organization, Salt Lake Designers, where I and other
-                        local influencers help cultivate the talents of up and
-                        coming UX designers through workshops and panel
-                        discussions.
-                    </p>
+                    <p>{instructor.bio || "No bio available"}</p>
                 </div>
             </div>
         </div>
