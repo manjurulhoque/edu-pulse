@@ -4,6 +4,17 @@ Run from root folder:
 docker-compose -f docker-compose-dev.yml up --build
 ```
 
+```bash
+# Access the container's shell
+docker-compose -f docker-compose-dev.yml exec backend sh
+
+# Once inside the container shell, run:
+python -m apps.core.seed
+
+# To exit the shell when done
+exit
+```
+
 Build and push fronend:
 
 ```bash
