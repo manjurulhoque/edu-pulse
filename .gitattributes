@@ -1,3 +1,10 @@
-*.py linguist-language=Python
-*.tsx linguist-language=TypeScript
-*.ts linguist-language=TypeScript
+*.py linguist-detectable=true
+*.js linguist-detectable=false
+*.css linguist-detectable=false
+*.html linguist-detectable=false
+*.xml linguist-detectable=false
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
+*.md linguist-detectable=false
+
+*.* linguist-language=Python
