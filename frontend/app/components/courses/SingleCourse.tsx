@@ -102,7 +102,7 @@ const SingleCourse = () => {
                                                             4.9
                                                         </div>
                                                         <div className="d-flex x-gap-10 items-center">
-                                                            <Star star={4.7} textColor={"text-green-1"}/>
+                                                            <Star star={4} textColor={"text-green-1"}/>
                                                         </div>
                                                         <div className="text-14 lh-1 ml-10">
                                                             (567)

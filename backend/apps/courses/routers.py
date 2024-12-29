@@ -23,6 +23,7 @@ from apps.courses.schemas import CourseSchema
 from apps.lessons.models import Lesson
 from apps.users.helpers import get_current_user
 from apps.users.models import User
+from apps.categories.models import Category
 from conf.database import get_db
 from utils.params import common_parameters
 from utils.response_utils import create_paginated_response, create_response

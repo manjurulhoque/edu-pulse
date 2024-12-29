@@ -8,10 +8,17 @@ import Link from "next/link";
 export default function HomeCourseCard({course, index}: { course: Course, index: number }) {
     const [rating, setRating] = useState<string[]>([]);
     useEffect(() => {
-        for (let i = Math.round(4.6); i >= 1; i--) {
-            setRating((pre) => [...pre, "star"]);
+        // Reset rating array before adding new stars
+        setRating([]);
+        // Use course.rating or default to 0 if not available
+        const ratingValue = 4;
+        // Round to nearest whole number for full stars
+        const fullStars = Math.round(ratingValue);
+        
+        for (let i = 0; i < fullStars; i++) {
+            setRating((prev) => [...prev, "star"]);
         }
-    }, []);
+    }, [course]);
 
     const getImageSrc = () => {
         return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
@@ -66,11 +73,11 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                                     <div key={i} className="icon-star text-9 text-yellow-1"></div>
                                 ))}
                             </div>
-                            <div className="text-13 lh-1 ml-10">((5))</div>
+                            <div className="text-13 lh-1 ml-10">(5)</div>
                         </div>
 
                         <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
-                            <Link className="linkCustom" href={`/courses/${course.id}`}>
+                            <Link className="linkCustom" href={`/courses/${course.slug}`}>
                                 {course.title}
                             </Link>
                         </div>
