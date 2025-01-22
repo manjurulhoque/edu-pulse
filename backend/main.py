@@ -10,10 +10,12 @@ from apps.courses import models as course_models
 from apps.enrollments import models as enrollment_models
 from apps.lessons import models as lesson_models
 from apps.categories import models as categories_models
+from apps.cart import models as cart_models
 from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
 from utils.response_utils import create_response
+from apps.cart import routers as cart_routers
 
 load_dotenv()
 
@@ -92,3 +94,4 @@ def main():
 app.include_router(user_routers.router, tags=["users"])
 app.include_router(course_routers.router, tags=["courses"])
 app.include_router(categories_routers.router, tags=["categories"])
+app.include_router(cart_routers.router, prefix="/api", tags=["Cart"])
