@@ -7,7 +7,6 @@ import { getFooterLinks } from "@/app/data/footerLinks";
 
 export default async function Footer() {
     const links = await getFooterLinks();
-    console.log(links);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

@@ -122,10 +122,13 @@ def get_user_by_id(db: Session, user_id: int):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = get_password_hash(user.password)
+    hashed_password = get_password_hash(user.password)
 
     db_user = models.User(
-        name=user.name, email=user.email, password=fake_hashed_password
+        name=user.name,
+        username=user.username,
+        email=user.email,
+        password=hashed_password,
     )
     db.add(db_user)
     db.commit()

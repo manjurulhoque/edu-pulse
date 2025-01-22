@@ -87,7 +87,6 @@ const CreateCourse: React.FC = () => {
             }
         },
         onSubmit: async (values) => {
-            console.log(values)
             const formData = new FormData();
             // Convert Formik values to FormData
             const courseInput = {

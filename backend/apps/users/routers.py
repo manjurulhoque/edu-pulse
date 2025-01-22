@@ -10,7 +10,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 from conf.database import get_db
 from utils.response_utils import create_response
 from . import helpers, schemas
-from .helpers import get_current_user
+from .helpers import get_current_user, get_password_hash, verify_password
 from .models import User
 
 router = APIRouter()
@@ -52,6 +52,8 @@ def login(
     """
     Generate access token for valid credentials
     """
+    hashed_password = get_password_hash(input_data.password)
+    print("hashed_password", verify_password(input_data.password, hashed_password))
     user = helpers.authenticate_user(db, input_data.email, input_data.password)
     if not user:
         raise HTTPException(

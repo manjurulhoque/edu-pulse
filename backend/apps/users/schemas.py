@@ -14,6 +14,7 @@ class UserReturn(UserBase):
 
 class UserCreate(UserBase):
     name: str
+    username: str
     password: str = Field(..., hidden=True)
 
     class Config:
