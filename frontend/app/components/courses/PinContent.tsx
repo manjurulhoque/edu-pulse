@@ -1,11 +1,17 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useAddToCartMutation } from "@/app/store/reducers/cart/api";
+import { toast } from "react-toastify";
 
-export default function PinContent({course}: { course: Course }) {
+export default function PinContent({ course }: { course: Course }) {
     const [isOpen, setIsOpen] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const { data: session } = useSession();
+    const [addToCart, { isLoading }] = useAddToCartMutation();
+
     // useEffect hook to update the screen width when the window is resized
     useEffect(() => {
         const handleResize = () => {
@@ -22,7 +28,21 @@ export default function PinContent({course}: { course: Course }) {
 
     const getImageSrc = () => {
         return `${process.env.BACKEND_DOCKER_BASE_URL}/${course?.preview_image}`;
-    }
+    };
+
+    const handleAddToCart = async () => {
+        if (!session?.user) {
+            toast.error("Please login to add courses to cart");
+            return;
+        }
+
+        try {
+            await addToCart(course.id).unwrap();
+            toast.success("Course added to cart successfully");
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to add course to cart");
+        }
+    };
 
     return (
         <>
@@ -30,13 +50,13 @@ export default function PinContent({course}: { course: Course }) {
                 id="js-pin-content"
                 style={
                     screenWidth < 991
-                        ? {height: "fit-content", left: "0%"}
-                        : {height: "100%", paddingTop: "80px", right: "7%"}
+                        ? { height: "fit-content", left: "0%" }
+                        : { height: "100%", paddingTop: "80px", right: "7%" }
                 }
                 className="courses-single-info js-pin-content"
             >
                 <div
-                    style={{position: "sticky", top: "100px"}}
+                    style={{ position: "sticky", top: "100px" }}
                     className="bg-white shadow-2 rounded-8 border-light py-10 px-10"
                 >
                     <div className="relative">
@@ -71,16 +91,20 @@ export default function PinContent({course}: { course: Course }) {
                                 </>
                             ) : (
                                 <>
-                                    <div className="text-24 lh-1 text-dark-1 fw-500">Free</div>
+                                    <div className="text-24 lh-1 text-dark-1 fw-500">
+                                        Free
+                                    </div>
                                     <div></div>
                                 </>
                             )}
                         </div>
 
                         <button
+                            onClick={handleAddToCart}
+                            disabled={isLoading}
                             className="button -md -purple-1 text-white w-1/1"
                         >
-                            Add To Cart
+                            {isLoading ? "Adding..." : "Add To Cart"}
                         </button>
                         <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">
                             Buy Now
@@ -120,9 +144,13 @@ export default function PinContent({course}: { course: Course }) {
                                     <div className="icon-bar-chart-2"></div>
                                     <div className="ml-10">Skill level</div>
                                 </div>
-                                <div style={{
-                                    textTransform: "capitalize",
-                                }}>{course.level}</div>
+                                <div
+                                    style={{
+                                        textTransform: "capitalize",
+                                    }}
+                                >
+                                    {course.level}
+                                </div>
                             </div>
 
                             <div className="d-flex justify-between py-8 border-top-light">
@@ -136,7 +164,9 @@ export default function PinContent({course}: { course: Course }) {
                             <div className="d-flex justify-between py-8 border-top-light">
                                 <div className="d-flex items-center text-dark-1">
                                     <div className="icon-infinity"></div>
-                                    <div className="ml-10">Full lifetime access</div>
+                                    <div className="ml-10">
+                                        Full lifetime access
+                                    </div>
                                 </div>
                                 <div>Yes</div>
                             </div>

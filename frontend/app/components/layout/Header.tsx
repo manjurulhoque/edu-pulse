@@ -8,10 +8,14 @@ import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useGetCartQuery } from "@/app/store/reducers/cart/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
-    const {data: session, status} = useSession();
+    const { data: session, status } = useSession();
     const pathname = usePathname();
+    const { data: cart } = useGetCartQuery(null, {});
 
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);
     const handleSubmit = (e: any) => {
@@ -19,8 +23,8 @@ const Header = () => {
     };
 
     const onSignOut = async () => {
-        await signOut({callbackUrl: "/"});
-    }
+        await signOut({ callbackUrl: "/" });
+    };
 
     return (
         <>
@@ -40,7 +44,9 @@ const Header = () => {
                                     </Link>
                                 </div>
                                 <HeaderExplore
-                                    allClasses={"header__explore text-purple-1 ml-30 xl:d-none"}
+                                    allClasses={
+                                        "header__explore text-purple-1 ml-30 xl:d-none"
+                                    }
                                 />
 
                                 <div className="header-search-field ml-30">
@@ -63,21 +69,46 @@ const Header = () => {
                         <div className="col-auto">
                             <div className="header-right d-flex items-center">
                                 <div className="header-right__icons text-white d-flex items-center">
-                                    <Menu allClasses={"menu__nav text-dark-1 -is-active"}/>
+                                    <Menu
+                                        allClasses={
+                                            "menu__nav text-dark-1 -is-active"
+                                        }
+                                    />
                                     <MobileMenu
-                                        setActiveMobileMenu={setActiveMobileMenu}
+                                        setActiveMobileMenu={
+                                            setActiveMobileMenu
+                                        }
                                         activeMobileMenu={activeMobileMenu}
                                     />
 
                                     <div className="d-none xl:d-block ml-20">
                                         <button
-                                            onClick={() => setActiveMobileMenu(true)}
+                                            onClick={() =>
+                                                setActiveMobileMenu(true)
+                                            }
                                             className="text-dark-1 items-center"
                                             data-el-toggle=".js-mobile-menu-toggle"
                                         >
                                             <i className="text-11 icon icon-mobile-menu"></i>
                                         </button>
                                     </div>
+
+
+                                    <Link href="/cart" className="relative">
+                                        <div className="icon">
+                                            <FontAwesomeIcon
+                                                icon={faCartShopping}
+                                                className="text-20"
+                                            />
+                                        </div>
+                                        {session?.user && (
+                                            cart?.items && (
+                                                <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                                    {cart.items.length}
+                                                </span>
+                                            )
+                                        )}
+                                    </Link>
                                 </div>
 
                                 {!session?.user && (
@@ -101,7 +132,9 @@ const Header = () => {
                                         <Link
                                             href="/dashboard"
                                             className={`text-dark-1 mr-20 ${
-                                                pathname == "/dashboard" ? "activeMenu" : "inActiveMenu"
+                                                pathname == "/dashboard"
+                                                    ? "activeMenu"
+                                                    : "inActiveMenu"
                                             } `}
                                         >
                                             Dashboard

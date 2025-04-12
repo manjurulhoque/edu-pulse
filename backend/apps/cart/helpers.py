@@ -1,11 +1,16 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from . import models, schemas
 from fastapi import HTTPException
 from apps.courses.models import Course
 
 
 def get_cart(db: Session, user_id: int):
-    cart = db.query(models.Cart).filter(models.Cart.user_id == user_id).first()
+    cart = (
+        db.query(models.Cart)
+        .filter(models.Cart.user_id == user_id)
+        .options(joinedload(models.Cart.items))
+        .first()
+    )
     if not cart:
         cart = models.Cart(user_id=user_id)
         db.add(cart)
