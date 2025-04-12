@@ -93,20 +93,18 @@ const Header = () => {
                                         </button>
                                     </div>
 
-
-                                    <Link href="/cart" className="relative">
-                                        <div className="icon">
-                                            <FontAwesomeIcon
-                                                icon={faCartShopping}
-                                                className="text-20"
-                                            />
-                                        </div>
+                                    <Link
+                                        href="/cart"
+                                        className="relative mr-20"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faCartShopping}
+                                            className="text-2xl text-dark"
+                                        />
                                         {session?.user && (
-                                            cart?.items && (
-                                                <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                                                    {cart.items.length}
-                                                </span>
-                                            )
+                                            <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                                {cart?.items.length || 0}
+                                            </span>
                                         )}
                                     </Link>
                                 </div>
