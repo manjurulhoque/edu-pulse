@@ -1,15 +1,15 @@
 Run from root folder:
 
 ```bash
-docker-compose -f docker-compose-dev.yml up --build
+docker-compose -f docker-compose.dev.yml up --build
 ```
 
 ```bash
 # Access the container's shell
-docker-compose -f docker-compose-dev.yml exec backend sh
+docker-compose -f docker-compose.dev.yml exec backend sh
 
 # Once inside the container shell, run:
-python -m apps.core.seed
+python -m apps.seed
 
 # To exit the shell when done
 exit

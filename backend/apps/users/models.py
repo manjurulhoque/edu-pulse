@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, DateTime, func
 from sqlalchemy.orm import relationship
 
 from conf.database import Base
+from apps.cart.models import Cart
 
 
 class User(Base):
@@ -20,7 +21,7 @@ class User(Base):
 
     courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")
-    cart = relationship("Cart", back_populates="user", uselist=False)
+    cart = relationship(Cart, back_populates="user", uselist=False, lazy="joined")
 
     def __repr__(self):
         return f"<User(email='{self.email}')>"

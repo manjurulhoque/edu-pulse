@@ -13,6 +13,7 @@ def create_sample_data(db: Session):
     users = [
         User(
             email="rumi@gmail.com",
+            username="rumi",
             password="123456",
             name="John Doe",
             is_admin=True,
@@ -20,6 +21,7 @@ def create_sample_data(db: Session):
         ),
         User(
             email="jane@gmail.com",
+            username="jane",
             password="123456",
             name="Jane Smith",
             is_admin=False,
@@ -27,6 +29,7 @@ def create_sample_data(db: Session):
         ),
         User(
             email="john@gmail.com",
+            username="john",
             password="123456",
             name="Manjurul Hoque Rumi",
             is_admin=True,

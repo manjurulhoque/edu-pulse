@@ -10,6 +10,7 @@ class UserBase(BaseModel):
 class UserReturn(UserBase):
     name: str
     id: int
+    username: str
 
 
 class UserCreate(UserBase):

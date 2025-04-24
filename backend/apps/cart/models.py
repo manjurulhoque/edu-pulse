@@ -14,7 +14,7 @@ class Cart(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    user = relationship("User", back_populates="cart")
+    user = relationship("User", back_populates="cart", lazy="joined")
     items = relationship(
         "CartItem", back_populates="cart", cascade="all, delete-orphan"
     )
