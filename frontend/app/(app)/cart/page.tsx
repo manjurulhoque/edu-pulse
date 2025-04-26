@@ -8,6 +8,7 @@ import {
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useAuthRedirect } from "@/app/hooks/useAuthRedirect";
+import { Grid } from "react-loader-spinner";
 
 export default function CartPage() {
     const { session } = useAuthRedirect();
@@ -50,7 +51,25 @@ export default function CartPage() {
             <h1 className="text-24 fw-600 mb-30">Shopping Cart</h1>
 
             {isLoading ? (
-                <div>Loading...</div>
+                <div
+                    style={{
+                        display: isLoading ? "flex" : "none",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}
+                >
+                    <Grid
+                        visible={isLoading}
+                        height="300"
+                        width="300"
+                        color="#4fa94d"
+                        ariaLabel="grid-loading"
+                        radius="12.5"
+                        wrapperStyle={{}}
+                        wrapperClass="grid-wrapper"
+                    />
+                </div>
             ) : cart?.items.length === 0 ? (
                 <div className="text-center py-20">
                     <p>Your cart is empty</p>
@@ -69,7 +88,7 @@ export default function CartPage() {
                                             width={200}
                                             height={120}
                                             src={`${process.env.BACKEND_BASE_URL}/${item.course?.preview_image}`}
-                                            alt={item.course?.title}
+                                            alt={item.course?.title || ""}
                                             className="rounded-8 w-1/1"
                                         />
                                     </div>

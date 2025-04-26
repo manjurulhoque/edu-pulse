@@ -10,7 +10,7 @@ export const CartApi = createApi({
     endpoints: (builder) => ({
         getCart: builder.query<Cart, null>({
             query: () => ({
-                url: `cart/`,
+                url: `cart`,
             }),
             providesTags: ["Cart"],
             transformResponse: (response: { data: Cart }) => response.data,
