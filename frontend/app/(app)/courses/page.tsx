@@ -13,7 +13,7 @@ const CoursesPage = () => {
         <div className="main-content">
             <Header/>
 
-            <div className="content-wrapper  js-content-wrapper overflow-hidden">
+            <div className="content-wrapper js-content-wrapper overflow-hidden">
                 <PageLinks dark={null}/>
                 <CourseList/>
             </div>
