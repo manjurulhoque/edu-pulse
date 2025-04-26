@@ -8,7 +8,9 @@ def get_cart(db: Session, user_id: int):
     cart = (
         db.query(models.Cart)
         .filter(models.Cart.user_id == user_id)
-        .options(joinedload(models.Cart.items))
+        .options(
+            joinedload(models.Cart.items).joinedload(models.CartItem.course)
+        )
         .first()
     )
     if not cart:

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from apps.courses.schemas import CourseSchema
 
 
 class CartItemBase(BaseModel):
@@ -15,6 +16,7 @@ class CartItemSchema(CartItemBase):
     id: int
     cart_id: int
     created_at: datetime
+    course: Optional[CourseSchema] = None
 
     class Config:
         from_attributes = True

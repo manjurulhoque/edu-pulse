@@ -9,6 +9,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useAuthRedirect } from "@/app/hooks/useAuthRedirect";
 import { Grid } from "react-loader-spinner";
+import Link from "next/link";
 
 export default function CartPage() {
     const { session } = useAuthRedirect();
@@ -49,8 +50,7 @@ export default function CartPage() {
     return (
         <div className="main-content">
             <div className="content-wrapper js-content-wrapper overflow-hidden">
-                <section className="page-header -type-1">
-                </section>
+                <section className="page-header -type-1"></section>
 
                 <section className="layout-pt-md layout-pb-lg">
                     <div className="container py-10 mt-20">
@@ -78,7 +78,15 @@ export default function CartPage() {
                             </div>
                         ) : cart?.items.length === 0 ? (
                             <div className="text-center py-20">
-                                <p>Your cart is empty</p>
+                                <p className="text-18 mb-20">
+                                    Your cart is empty
+                                </p>
+                                <Link
+                                    href="/courses"
+                                    className="button -md -dark-1 text-white"
+                                >
+                                    Browse Courses
+                                </Link>
                             </div>
                         ) : (
                             <div className="row y-gap-30">
@@ -90,32 +98,66 @@ export default function CartPage() {
                                         >
                                             <div className="row y-gap-20 justify-between">
                                                 <div className="col-md-3">
-                                                    <Image
-                                                        width={200}
-                                                        height={120}
-                                                        src={`${process.env.BACKEND_BASE_URL}/${item.course?.preview_image}`}
-                                                        alt={
-                                                            item.course
-                                                                ?.title || ""
-                                                        }
-                                                        className="rounded-8 w-1/1"
-                                                    />
+                                                    {item.course
+                                                        ?.preview_image ? (
+                                                        <Image
+                                                            width={200}
+                                                            height={120}
+                                                            src={`${process.env.BACKEND_BASE_URL}/${item.course.preview_image}`}
+                                                            alt={
+                                                                item.course
+                                                                    ?.title ||
+                                                                "Course"
+                                                            }
+                                                            className="rounded-8 w-1/1"
+                                                        />
+                                                    ) : (
+                                                        <div
+                                                            className="rounded-8 w-1/1 bg-light-3"
+                                                            style={{
+                                                                height: "120px",
+                                                                display: "flex",
+                                                                alignItems:
+                                                                    "center",
+                                                                justifyContent:
+                                                                    "center",
+                                                            }}
+                                                        >
+                                                            <span className="text-14 text-dark-1">
+                                                                No image
+                                                            </span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-6">
                                                     <h3 className="text-18 fw-500">
-                                                        {item.course?.title}
+                                                        {item.course?.title ||
+                                                            "Course Title Not Available"}
                                                     </h3>
+                                                    {!item.course && (
+                                                        <p className="text-14 text-red-1 mt-10">
+                                                            Course details not
+                                                            available. This
+                                                            course may have been
+                                                            removed.
+                                                        </p>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-3 text-right">
                                                     <div className="text-18 fw-600 text-dark-1 mb-10">
                                                         {item.course?.is_free
                                                             ? "Free"
-                                                            : `$${item.course?.discounted_price}`}
+                                                            : item.course
+                                                                  ?.discounted_price
+                                                            ? `$${item.course.discounted_price}`
+                                                            : "Price not available"}
                                                     </div>
                                                     <button
                                                         onClick={() =>
                                                             handleRemoveItem(
-                                                                item.course?.id
+                                                                item.course
+                                                                    ?.id ||
+                                                                    item.course_id
                                                             )
                                                         }
                                                         className="text-red-1 underline"
