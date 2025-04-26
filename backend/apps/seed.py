@@ -48,16 +48,16 @@ def create_sample_data(db: Session):
 
     # Create Categories
     categories = [
-        Category(name="Web Development", description="Learn web development technologies"),
-        Category(name="Data Science", description="Master data science and analytics"),
-        Category(name="Mobile Development", description="Build mobile applications"),
-        Category(name="Graphic Design", description="Create stunning visuals"),
-        Category(name="Digital Marketing", description="Learn marketing strategies"),
-        Category(name="Cybersecurity", description="Protect systems and networks"),
-        Category(name="Machine Learning", description="Explore AI and ML techniques"),
-        Category(name="Game Development", description="Create your own games"),
-        Category(name="Cloud Computing", description="Understand cloud technologies"),
-        Category(name="Blockchain", description="Learn about decentralized systems"),
+        Category(name="Web Development", slug="web-development", description="Learn web development technologies"),
+        Category(name="Data Science", slug="data-science", description="Master data science and analytics"),
+        Category(name="Mobile Development", slug="mobile-development", description="Build mobile applications"),
+        Category(name="Graphic Design", slug="graphic-design", description="Create stunning visuals"),
+        Category(name="Digital Marketing", slug="digital-marketing", description="Learn marketing strategies"),
+        Category(name="Cybersecurity", slug="cybersecurity", description="Protect systems and networks"),
+        Category(name="Machine Learning", slug="machine-learning", description="Explore AI and ML techniques"),
+        Category(name="Game Development", slug="game-development", description="Create your own games"),
+        Category(name="Cloud Computing", slug="cloud-computing", description="Understand cloud technologies"),
+        Category(name="Blockchain", slug="blockchain", description="Learn about decentralized systems"),
     ]
     for category in categories:
         db.add(category)
