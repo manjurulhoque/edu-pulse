@@ -1,0 +1,29 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Elements -->
+  <circle cx="300" cy="200" r="180" fill="#F5F7FF" />
+  <circle cx="300" cy="200" r="150" fill="#E8EDFF" />
+  
+  <!-- Person/Teacher Figure -->
+  <circle cx="300" cy="150" r="50" fill="#4FA94D" />
+  <path d="M300 220 C 250 220, 220 280, 220 320 L 380 320 C 380 280, 350 220, 300 220 Z" fill="#4FA94D" />
+  
+  <!-- Book/Teaching Elements -->
+  <rect x="180" y="180" width="60" height="80" rx="5" fill="#3498DB" />
+  <rect x="190" y="190" width="40" height="5" rx="2" fill="white" />
+  <rect x="190" y="205" width="40" height="5" rx="2" fill="white" />
+  <rect x="190" y="220" width="40" height="5" rx="2" fill="white" />
+  <rect x="190" y="235" width="40" height="5" rx="2" fill="white" />
+  
+  <!-- Graduation Cap -->
+  <path d="M360 120 L 300 150 L 240 120 L 300 90 Z" fill="#3498DB" />
+  <path d="M300 150 L 300 180" stroke="#3498DB" stroke-width="5" />
+  
+  <!-- Decorative Elements -->
+  <circle cx="150" cy="100" r="15" fill="#FFD700" />
+  <circle cx="450" cy="100" r="15" fill="#FFD700" />
+  <circle cx="150" cy="300" r="15" fill="#FFD700" />
+  <circle cx="450" cy="300" r="15" fill="#FFD700" />
+  
+  <!-- Text Elements -->
+  <text x="300" y="350" font-family="Arial" font-size="24" text-anchor="middle" fill="#333">Share Your Knowledge</text>
+</svg> 
