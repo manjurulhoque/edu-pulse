@@ -84,6 +84,11 @@ export default function CartPage() {
                                 <Link
                                     href="/courses"
                                     className="button -md -dark-1 text-white"
+                                    style={{
+                                        width: "auto",
+                                        minWidth: "150px",
+                                        display: "ruby-text",
+                                    }}
                                 >
                                     Browse Courses
                                 </Link>
@@ -117,8 +122,10 @@ export default function CartPage() {
                                                             style={{
                                                                 height: "120px",
                                                                 display: "flex",
-                                                                alignItems: "center",
-                                                                justifyContent: "center",
+                                                                alignItems:
+                                                                    "center",
+                                                                justifyContent:
+                                                                    "center",
                                                             }}
                                                         >
                                                             <span className="text-14 text-dark-1">
@@ -168,7 +175,7 @@ export default function CartPage() {
                                     ))}
                                 </div>
                                 <div className="col-lg-4">
-                                    <div className="border rounded-8 p-20">
+                                    <div className="border rounded-8 p-3">
                                         <h3 className="text-20 fw-600 mb-20">
                                             Cart Summary
                                         </h3>
