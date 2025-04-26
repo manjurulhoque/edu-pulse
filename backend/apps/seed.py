@@ -6,6 +6,7 @@ from apps.courses.models import Course, CourseSection
 from apps.lessons.models import Lesson
 from apps.enrollments.models import Enrollment
 from conf.database import SessionLocal
+from apps.users.helpers import get_password_hash
 
 
 def create_sample_data(db: Session):
@@ -14,7 +15,7 @@ def create_sample_data(db: Session):
         User(
             email="rumi@gmail.com",
             username="rumi",
-            password="123456",
+            password=get_password_hash("123456"),
             name="John Doe",
             is_admin=True,
             avatar="media/images/avatar.webp",
@@ -22,7 +23,7 @@ def create_sample_data(db: Session):
         User(
             email="jane@gmail.com",
             username="jane",
-            password="123456",
+            password=get_password_hash("123456"),
             name="Jane Smith",
             is_admin=False,
             avatar="media/images/avatar.webp",
@@ -30,7 +31,7 @@ def create_sample_data(db: Session):
         User(
             email="john@gmail.com",
             username="john",
-            password="123456",
+            password=get_password_hash("123456"),
             name="Manjurul Hoque Rumi",
             is_admin=True,
             avatar="media/images/avatar.webp",

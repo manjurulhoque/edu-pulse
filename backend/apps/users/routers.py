@@ -52,8 +52,6 @@ def login(
     """
     Generate access token for valid credentials
     """
-    hashed_password = get_password_hash(input_data.password)
-    print("hashed_password", verify_password(input_data.password, hashed_password))
     user = helpers.authenticate_user(db, input_data.email, input_data.password)
     if not user:
         raise HTTPException(

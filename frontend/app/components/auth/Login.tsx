@@ -2,12 +2,14 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { permanentRedirect } from "next/navigation";
 import { toast } from "react-toastify";
 
 const Login = () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [isMounted, setIsMounted] = useState(false);
 
     // const router = useRouter();
@@ -23,7 +25,6 @@ const Login = () => {
     if (!isMounted) {
         return null;
     }
-
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -41,8 +42,13 @@ const Login = () => {
             setIsClicked(false);
         } else {
             toast.success("Logged in successfully");
+            const nextUrl = searchParams.get("next");
             setTimeout(() => {
-                window.location.reload();
+                if (nextUrl) {
+                    router.push(nextUrl);
+                } else {
+                    window.location.reload();
+                }
             }, 500);
         }
     };
@@ -50,12 +56,13 @@ const Login = () => {
     return (
         <div className="main-content">
             <div className="content-wrapper js-content-wrapper overflow-hidden">
-                <section className="form-page js-mouse-move-container" style={
-                    {
+                <section
+                    className="form-page js-mouse-move-container"
+                    style={{
                         backgroundImage: `url("https://images.unsplash.com/photo-1462536943532-57a629f6cc60")`,
-                        backgroundPosition: "center"
-                    }
-                }>
+                        backgroundPosition: "center",
+                    }}
+                >
                     <div className="form-page__content lg:py-50">
                         <div className="container">
                             <div className="row justify-center items-center">
@@ -72,7 +79,11 @@ const Login = () => {
                                             </Link>
                                         </p>
 
-                                        {errorMessage && <p className="alert alert-warning">{errorMessage}</p>}
+                                        {errorMessage && (
+                                            <p className="alert alert-warning">
+                                                {errorMessage}
+                                            </p>
+                                        )}
                                         <form
                                             className="contact-form respondForm__form row y-gap-20 pt-30"
                                             onSubmit={handleSubmit}
@@ -128,14 +139,12 @@ const Login = () => {
 
                                         <div className="d-flex x-gap-20 items-center justify-between pt-20">
                                             <div>
-                                                <button
-                                                    className="button -sm px-24 py-20 -outline-blue-3 text-blue-3 text-14">
+                                                <button className="button -sm px-24 py-20 -outline-blue-3 text-blue-3 text-14">
                                                     Log In via Facebook
                                                 </button>
                                             </div>
                                             <div>
-                                                <button
-                                                    className="button -sm px-24 py-20 -outline-red-3 text-red-3 text-14">
+                                                <button className="button -sm px-24 py-20 -outline-red-3 text-red-3 text-14">
                                                     Log In via Github
                                                 </button>
                                             </div>

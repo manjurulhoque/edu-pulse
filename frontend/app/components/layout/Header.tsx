@@ -103,7 +103,7 @@ const Header = () => {
                                         />
                                         {session?.user && (
                                             <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                                                {cart?.items.length || 0}
+                                                {cart?.items?.length || 0}
                                             </span>
                                         )}
                                     </Link>

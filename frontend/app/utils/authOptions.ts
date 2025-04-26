@@ -1,18 +1,21 @@
-import {AuthOptions, User} from "next-auth";
+import { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import {DecodedJWT} from "next-auth/jwt";
-import {jwtDecode} from "jwt-decode";
+import { DecodedJWT } from "next-auth/jwt";
+import { jwtDecode } from "jwt-decode";
 
 async function customAuthenticationFunction(credentials: any) {
     try {
         // Call your FastAPI endpoint for user authentication
-        const response = await fetch(`${process.env.BACKEND_DOCKER_BASE_URL}/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-        });
+        const response = await fetch(
+            `${process.env.BACKEND_DOCKER_BASE_URL}/login`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(credentials),
+            }
+        );
 
         if (response.ok) {
             return await response.json();
@@ -32,19 +35,17 @@ export const authOptions: AuthOptions = {
             // The name to display on the sign-in form (e.g., 'Sign in with...')
             name: "Credentials",
             credentials: {
-                email: {label: "Email", type: "email"},
-                password: {label: "Password", type: "password"},
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req) {
                 // Fetch user from your API
                 const result = await customAuthenticationFunction(credentials);
 
                 if (result) {
-                    const {
-                        id,
-                        email,
-                        exp,
-                    }: DecodedJWT = jwtDecode(result.data.access);
+                    const { id, email, exp }: DecodedJWT = jwtDecode(
+                        result.data.access
+                    );
 
                     const user = {
                         ...result.data,
@@ -65,7 +66,7 @@ export const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        async jwt({token, user}) {
+        async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
                 token.refresh = user.refresh;
@@ -75,7 +76,7 @@ export const authOptions: AuthOptions = {
             }
             return token;
         },
-        async session({session, token}) {
+        async session({ session, token }) {
             session.access = token.access;
             session.exp = token.exp;
             session.refresh = token.refresh;
@@ -83,7 +84,16 @@ export const authOptions: AuthOptions = {
             // session.user.id = token.id;
             return session;
         },
-        async redirect({url, baseUrl}) {
+        async redirect({ url, baseUrl }) {
+            // If the url is relative, prefix it with the baseUrl
+            if (url.startsWith("/")) {
+                return `${baseUrl}${url}`;
+            }
+            // If the url is already absolute, return it
+            if (url.startsWith("http")) {
+                return url;
+            }
+            // Default to baseUrl
             return baseUrl;
         },
     },

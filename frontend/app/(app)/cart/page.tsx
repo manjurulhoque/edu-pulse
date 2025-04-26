@@ -1,6 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+
 import {
     useGetCartQuery,
     useRemoveFromCartMutation,
@@ -8,16 +7,15 @@ import {
 } from "@/app/store/reducers/cart/api";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { useAuthRedirect } from "@/app/hooks/useAuthRedirect";
 
 export default function CartPage() {
-    const router = useRouter();
-    const { data: session } = useSession();
+    const { session } = useAuthRedirect();
     const { data: cart, isLoading } = useGetCartQuery(null);
     const [removeFromCart] = useRemoveFromCartMutation();
     const [clearCart] = useClearCartMutation();
 
     if (!session?.user) {
-        router.push("/login");
         return null;
     }
 
@@ -88,7 +86,9 @@ export default function CartPage() {
                                         </div>
                                         <button
                                             onClick={() =>
-                                                handleRemoveItem(item.course?.id)
+                                                handleRemoveItem(
+                                                    item.course?.id
+                                                )
                                             }
                                             className="text-red-1 underline"
                                         >

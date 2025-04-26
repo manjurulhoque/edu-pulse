@@ -1,10 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from apps.core.decorators import auth_required
 from apps.users.models import User
 from conf.database import get_db
-from . import schemas, helpers
 from utils.response_utils import create_response
+
+from . import schemas, helpers
+
 
 router = APIRouter()
 
@@ -15,7 +18,10 @@ async def get_cart(
 ):
     """Get user's cart"""
     cart = helpers.get_cart(db, current_user.id)
-    return create_response(data=cart)
+    return create_response(
+        data=schemas.CartSchema.model_validate(cart).model_dump(),
+        message="Cart retrieved successfully",
+    )
 
 
 @router.post("/cart/add/{course_id}")
@@ -26,7 +32,10 @@ async def add_to_cart(
 ):
     """Add course to cart"""
     cart_item = helpers.add_to_cart(db, current_user.id, course_id)
-    return create_response(data=cart_item, message="Course added to cart successfully")
+    return create_response(
+        data=schemas.CartItemSchema.model_validate(cart_item).model_dump(),
+        message="Course added to cart successfully",
+    )
 
 
 @router.delete("/cart/remove/{course_id}")

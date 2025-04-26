@@ -11,7 +11,7 @@ class CartItemCreate(CartItemBase):
     pass
 
 
-class CartItem(CartItemBase):
+class CartItemSchema(CartItemBase):
     id: int
     cart_id: int
     created_at: datetime
@@ -28,11 +28,11 @@ class CartCreate(CartBase):
     pass
 
 
-class Cart(CartBase):
+class CartSchema(CartBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime]
-    items: List[CartItem] = []
+    items: List[CartItemSchema] = []
 
     class Config:
         from_attributes = True
