@@ -96,91 +96,122 @@ const resources = [
 
 export default function HelpCenterPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-            <div className="container mx-auto px-4 py-16">
-                <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                            How can we help you?
-                        </h1>
-                        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-                            Find answers to common questions and get support for
-                            your learning journey
-                        </p>
-                    </div>
+        <div className="min-vh-100 bg-light">
+            <div className="container py-5">
+                <div className="row justify-content-center">
+                    <div className="col-lg-10">
+                        <div className="text-center mb-5">
+                            <h1 className="display-4 fw-bold mb-4 text-primary">
+                                How can we help you?
+                            </h1>
+                            <p className="lead text-muted">
+                                Find answers to common questions and get support
+                                for your learning journey
+                            </p>
+                        </div>
 
-                    {/* Support Channels */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                        {supportChannels.map((channel) => (
-                            <a
-                                key={channel.title}
-                                href={channel.link}
-                                className="group relative p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 overflow-hidden"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="relative flex flex-col items-center text-center">
-                                    <div className="p-4 bg-blue-50 rounded-xl mb-4 group-hover:bg-blue-100 transition-colors">
-                                        <channel.icon className="w-8 h-8 text-blue-600" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                                        {channel.title}
-                                    </h3>
-                                    <p className="text-gray-600 mb-4">
-                                        {channel.description}
-                                    </p>
-                                    <span className="text-blue-600 font-medium group-hover:text-blue-700">
-                                        {channel.action}
-                                    </span>
+                        {/* Support Channels */}
+                        <div className="row g-4 mb-5">
+                            {supportChannels.map((channel) => (
+                                <div key={channel.title} className="col-md-4">
+                                    <a
+                                        href={channel.link}
+                                        className="card h-100 text-decoration-none shadow-sm hover-shadow transition"
+                                    >
+                                        <div className="card-body text-center">
+                                            <div className="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                                <channel.icon
+                                                    className="text-primary"
+                                                    size={24}
+                                                />
+                                            </div>
+                                            <h3 className="h5 mb-3 text-dark">
+                                                {channel.title}
+                                            </h3>
+                                            <p className="text-muted mb-3">
+                                                {channel.description}
+                                            </p>
+                                            <span className="text-primary fw-medium">
+                                                {channel.action}
+                                            </span>
+                                        </div>
+                                    </a>
                                 </div>
-                            </a>
-                        ))}
-                    </div>
-
-                    {/* Resources */}
-                    <div className="mb-20">
-                        <h2 className="text-3xl font-bold mb-10 text-gray-900 text-center">
-                            Helpful Resources
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {resources.map((resource) => (
-                                <a
-                                    key={resource.title}
-                                    href={resource.link}
-                                    className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
-                                >
-                                    <div className="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg w-fit mb-4 group-hover:from-blue-100 group-hover:to-indigo-100 transition-colors">
-                                        <resource.icon className="w-6 h-6 text-blue-600" />
-                                    </div>
-                                    <h3 className="text-lg font-semibold mb-2 text-gray-900">
-                                        {resource.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-600">
-                                        {resource.description}
-                                    </p>
-                                </a>
                             ))}
                         </div>
-                    </div>
 
-                    {/* FAQs */}
-                    <div>
-                        <h2 className="text-3xl font-bold mb-10 text-gray-900 text-center">
-                            Frequently Asked Questions
-                        </h2>
-                        <div className="space-y-6">
-                            {faqs.map((faq, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white rounded-xl border border-gray-100 p-8 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
-                                >
-                                    <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                                        {faq.question}
-                                    </h3>
-                                    <p className="text-gray-600 leading-relaxed">
-                                        {faq.answer}
-                                    </p>
-                                </div>
-                            ))}
+                        {/* Resources */}
+                        <div className="mb-5">
+                            <h2 className="h3 text-center mb-4">
+                                Helpful Resources
+                            </h2>
+                            <div className="row g-4">
+                                {resources.map((resource) => (
+                                    <div
+                                        key={resource.title}
+                                        className="col-md-6 col-lg-3"
+                                    >
+                                        <a
+                                            href={resource.link}
+                                            className="card h-100 text-decoration-none shadow-sm hover-shadow transition"
+                                        >
+                                            <div className="card-body">
+                                                <div className="bg-primary bg-opacity-10 p-2 rounded-3 w-fit mb-3">
+                                                    <resource.icon
+                                                        className="text-primary"
+                                                        size={20}
+                                                    />
+                                                </div>
+                                                <h3 className="h6 mb-2 text-dark">
+                                                    {resource.title}
+                                                </h3>
+                                                <p className="small text-muted mb-0">
+                                                    {resource.description}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* FAQs */}
+                        <div>
+                            <h2 className="h3 text-center mb-4">
+                                Frequently Asked Questions
+                            </h2>
+                            <div className="accordion" id="faqAccordion">
+                                {faqs.map((faq, index) => (
+                                    <div
+                                        key={index}
+                                        className="accordion-item border mb-3"
+                                    >
+                                        <h3 className="accordion-header">
+                                            <button
+                                                className="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target={`#faq${index}`}
+                                                aria-expanded="false"
+                                                aria-controls={`faq${index}`}
+                                            >
+                                                {faq.question}
+                                            </button>
+                                        </h3>
+                                        <div
+                                            id={`faq${index}`}
+                                            className="accordion-collapse collapse"
+                                            data-bs-parent="#faqAccordion"
+                                        >
+                                            <div className="accordion-body">
+                                                <p className="mb-0">
+                                                    {faq.answer}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
