@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 const HomeHero = () => {
     const [isMounted, setIsMounted] = useState(false);
     const session = useSession();
-    console.log(session);
     let user = session.data?.user;
 
     useEffect(() => {

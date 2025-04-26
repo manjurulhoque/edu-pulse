@@ -15,9 +15,6 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Response<T> {
-    status_code: number;
-    content: {
-        data: T;
-        message: string;
-    }
+    data: T;
+    message: string;
 }

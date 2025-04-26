@@ -360,5 +360,10 @@ async def get_courses_by_category(category_slug: str, db: Session = Depends(get_
     category = db.query(Category).filter(Category.slug == category_slug).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
-    courses = db.query(Course).filter(Course.category_id == category.id).all()
+    courses = (
+        db.query(Course)
+        .filter(Course.category_id == category.id)
+        .options(joinedload(Course.user), joinedload(Course.category))
+        .all()
+    )
     return create_response(data=courses)
