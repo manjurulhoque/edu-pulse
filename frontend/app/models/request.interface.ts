@@ -1,11 +1,10 @@
-interface PaginationArgs {
+export interface PaginationArgs {
     page: number;
     page_size: number;
     search?: string | null;
 }
 
-
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
     total: number;
     page_size: number;
     page: number;
@@ -13,4 +12,12 @@ interface PaginatedResponse<T> {
     next_page: string;
     previous_page: string;
     results: T[];
+}
+
+export interface Response<T> {
+    status_code: number;
+    content: {
+        data: T;
+        message: string;
+    }
 }

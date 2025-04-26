@@ -31,9 +31,9 @@ export const getFooterLinks = async () => {
         if (result.isSuccess && result.data) {
             const categorySection = {
                 title: "CATEGORIES",
-                links: result.data.map((cat: { id: number; name: string }) => ({
-                    href: `/courses/category/${cat.id}`,
-                    label: cat.name,
+                links: result.data.map((category: { id: number; name: string; slug: string }) => ({
+                    href: `/courses/category/${category.slug}`,
+                    label: category.name,
                 })),
             };
 

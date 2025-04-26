@@ -1,5 +1,6 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
+import { PaginationArgs, Response, PaginatedResponse } from "@/app/models/request.interface";
 
 
 export const CourseApi = createApi({
@@ -84,6 +85,13 @@ export const CourseApi = createApi({
             },
             invalidatesTags: ['Course'] // used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
         }),
+        getCoursesByCategory: builder.query<Response<Course[]>, { category_slug: string }>({
+            query: ({ category_slug }) => {
+                return {
+                    url: `courses/${category_slug}`,
+                }
+            },
+        }),
     })
 });
 
@@ -95,4 +103,5 @@ export const {
     useMyCreatedCoursesQuery,
     usePublishCourseMutation,
     useUpdateCurriculumMutation,
+    useGetCoursesByCategoryQuery,
 } = CourseApi;

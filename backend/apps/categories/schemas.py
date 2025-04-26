@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class CategorySchema(BaseModel):
     id: int
     name: str
+    slug: str
     description: str
 
     class Config:
