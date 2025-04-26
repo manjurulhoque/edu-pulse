@@ -96,7 +96,7 @@ export default function CartPage() {
                                             key={item.id}
                                             className="border rounded-8 p-20 mb-20"
                                         >
-                                            <div className="row y-gap-20 justify-between">
+                                            <div className="row y-gap-20 justify-between p-3">
                                                 <div className="col-md-3">
                                                     {item.course
                                                         ?.preview_image ? (
@@ -117,10 +117,8 @@ export default function CartPage() {
                                                             style={{
                                                                 height: "120px",
                                                                 display: "flex",
-                                                                alignItems:
-                                                                    "center",
-                                                                justifyContent:
-                                                                    "center",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
                                                             }}
                                                         >
                                                             <span className="text-14 text-dark-1">
