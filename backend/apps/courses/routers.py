@@ -355,7 +355,7 @@ async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
     }
 
 
-@router.get("/courses/{category_slug}")
+@router.get("/courses-by-category/{category_slug}")
 async def get_courses_by_category(category_slug: str, db: Session = Depends(get_db)):
     category = db.query(Category).filter(Category.slug == category_slug).first()
     if not category:

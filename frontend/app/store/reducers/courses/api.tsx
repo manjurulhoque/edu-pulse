@@ -88,7 +88,7 @@ export const CourseApi = createApi({
         getCoursesByCategory: builder.query<Response<Course[]>, { category_slug: string }>({
             query: ({ category_slug }) => {
                 return {
-                    url: `courses/${category_slug}`,
+                    url: `courses-by-category/${category_slug}`,
                 }
             },
         }),
