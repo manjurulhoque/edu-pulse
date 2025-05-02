@@ -185,9 +185,12 @@ export default function CartPage() {
                                                 ${totalAmount}
                                             </span>
                                         </div>
-                                        <button className="button -md -dark-1 text-white w-1/1 mb-10">
+                                        <Link
+                                            href="/checkout"
+                                            className="button -md -dark-1 text-white w-1/1 mb-10"
+                                        >
                                             Checkout
-                                        </button>
+                                        </Link>
                                         <button
                                             onClick={handleClearCart}
                                             className="button -md -outline-red-1 text-red-1 w-1/1"
