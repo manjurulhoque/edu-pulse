@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { permanentRedirect } from "next/navigation";
 import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
+import styles from "./Login.module.css";
 
 const Login = () => {
     const router = useRouter();
@@ -17,6 +19,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [isClicked, setIsClicked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -30,6 +33,7 @@ const Login = () => {
         e.preventDefault();
         setErrorMessage("");
         setIsClicked(true);
+        setIsLoading(true);
         const result = await signIn("credentials", {
             email: email,
             password: password,
@@ -40,6 +44,7 @@ const Login = () => {
             // If there is an error, update the state to display the error message
             setErrorMessage("Invalid credentials");
             setIsClicked(false);
+            setIsLoading(false);
         } else {
             toast.success("Logged in successfully");
             const nextUrl = searchParams.get("next");
@@ -122,13 +127,26 @@ const Login = () => {
                                             </div>
                                             <div className="col-12">
                                                 <button
-                                                    disabled={isClicked}
+                                                    disabled={
+                                                        isClicked || isLoading
+                                                    }
                                                     type="submit"
                                                     name="submit"
                                                     id="submit"
-                                                    className="button -md -yellow-1 text-dark-1 fw-500 w-1/1"
+                                                    className={`button -md -yellow-1 text-dark-1 fw-500 w-1/1 ${styles.loginButton}`}
                                                 >
-                                                    Login
+                                                    {isLoading ? (
+                                                        <span className="flex items-center justify-center">
+                                                            <Loader2
+                                                                className={
+                                                                    styles.spinner
+                                                                }
+                                                            />
+                                                            Logging in...
+                                                        </span>
+                                                    ) : (
+                                                        "Login"
+                                                    )}
                                                 </button>
                                             </div>
                                         </form>

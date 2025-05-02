@@ -1,0 +1,24 @@
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-right: 0.75rem;
+    height: 1.25rem;
+    width: 1.25rem;
+    color: white;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loginButton {
+    /* No base color override, just for targeting */
+}
+.loginButton:hover,
+.loginButton:hover .spinner {
+    color: black !important;
+} 
