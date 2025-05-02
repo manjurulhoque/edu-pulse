@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useEffect} from "react";
-import {useSingleCourseQuery} from "@/app/store/reducers/courses/api";
+import {useCourseDetailsQuery} from "@/app/store/reducers/courses/api";
 import {Grid} from "react-loader-spinner";
 import NotFound from "@/app/components/NotFound";
 import {useParams} from "next/navigation";
@@ -18,9 +18,9 @@ const menuItems = [
     {id: 4, href: "#reviews", text: "Reviews", isActive: false},
 ];
 
-const SingleCourse = () => {
+const CourseDetails = () => {
     const params = useParams();
-    const {data: course, isLoading: isCourseLoading} = useSingleCourseQuery({slug: params.slug as string});
+    const {data: course, isLoading: isCourseLoading} = useCourseDetailsQuery({slug: params.slug as string});
 
     useEffect(() => {
     }, []);
@@ -180,4 +180,4 @@ const SingleCourse = () => {
     )
 };
 
-export default SingleCourse;
+export default CourseDetails;

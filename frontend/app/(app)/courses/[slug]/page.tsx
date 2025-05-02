@@ -1,14 +1,14 @@
 import Header from "@/app/components/layout/Header";
 import { Metadata } from "next";
 import PageLinks from "@/app/components/common/PageLinks";
-import SingleCourse from "@/app/components/courses/SingleCourse";
+import CourseDetails from "@/app/components/courses/CourseDetails";
 
 export const metadata: Metadata = {
     title: "Course page",
     description: "Course list page",
 };
 
-const SingleCoursePage = ({ params }: { params: { slug: string } }) => {
+const CourseDetailsPage = ({ params }: { params: { slug: string } }) => {
 
     return (
         <div className="main-content">
@@ -16,10 +16,10 @@ const SingleCoursePage = ({ params }: { params: { slug: string } }) => {
 
             <div className="content-wrapper js-content-wrapper">
                 <PageLinks dark={null}/>
-                <SingleCourse/>
+                <CourseDetails/>
             </div>
         </div>
     )
 }
 
-export default SingleCoursePage;
+export default CourseDetailsPage;

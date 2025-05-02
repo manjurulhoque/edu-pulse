@@ -1,14 +1,19 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
-import {useSingleCourseQuery, useUpdateCurriculumMutation} from "@/app/store/reducers/courses/api";
-import {toast} from "react-toastify";
+import React, { useState, useEffect } from "react";
+import {
+    useCourseDetailsQuery,
+    useUpdateCurriculumMutation,
+} from "@/app/store/reducers/courses/api";
+import { toast } from "react-toastify";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
-    const {data: course, isLoading} = useSingleCourseQuery({slug: params.slug as string});
+    const { data: course, isLoading } = useCourseDetailsQuery({
+        slug: params.slug as string,
+    });
     const [allSections, setAllSections] = useState<Section[]>([]); // Initialize as empty array
 
     // Update allSections when course is loaded
@@ -23,7 +28,7 @@ const CourseCurriculum: React.FC = () => {
         const newSection: Section = {
             id: null,
             title: `Untitled section`,
-            lessons: [{title: "Untitled lesson", content: ""}]
+            lessons: [{ title: "Untitled lesson", content: "" }],
         };
         setAllSections([...allSections, newSection]);
     };
@@ -33,14 +38,20 @@ const CourseCurriculum: React.FC = () => {
     };
 
     const saveChanges = async () => {
-        const result: any = await updateCurriculum({id: course?.id, formData: {"sections": allSections}});
+        const result: any = await updateCurriculum({
+            id: course?.id,
+            formData: { sections: allSections },
+        });
         if (result.data) {
             toast.success("Course curriculum updated successfully");
             window.location.reload();
         } else {
-            toast.warning(result?.data?.message || "Something went wrong. Please try again later");
+            toast.warning(
+                result?.data?.message ||
+                    "Something went wrong. Please try again later"
+            );
         }
-    }
+    };
 
     if (isLoading) {
         return <div className="loader">Loading...</div>; // Loader while course is being loaded
@@ -51,12 +62,20 @@ const CourseCurriculum: React.FC = () => {
             <div className="dashboard__content bg-light-4">
                 <div className="row pb-10 mb-4">
                     <div className="col-auto">
-                        <h1 className="text-30 lh-12 fw-700">{course?.title}</h1>
-                        <div className="mt-10">Update your outstanding course!</div>
+                        <h1 className="text-30 lh-12 fw-700">
+                            {course?.title}
+                        </h1>
+                        <div className="mt-10">
+                            Update your outstanding course!
+                        </div>
                     </div>
                     {course?.is_published && (
                         <div className="col-auto text-right">
-                            <Link href={`/courses/${course.slug}`} className="button -md -purple-1 text-white sm:w-1/1" target="_blank">
+                            <Link
+                                href={`/courses/${course.slug}`}
+                                className="button -md -purple-1 text-white sm:w-1/1"
+                                target="_blank"
+                            >
                                 Go to Course
                             </Link>
                         </div>
@@ -68,15 +87,21 @@ const CourseCurriculum: React.FC = () => {
                 <div className="col-12">
                     <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
                         <div className="d-flex items-center py-20 px-30 border-bottom-light">
-                            <h2 className="text-17 lh-1 fw-500">Update course curriculum</h2>
+                            <h2 className="text-17 lh-1 fw-500">
+                                Update course curriculum
+                            </h2>
                         </div>
 
                         <div className="py-30 px-30">
                             <div className="py-30 px-30">
-                                {
-                                    allSections.length === 0 ?
-                                        <h5>No sections found for this course. Add new one!</h5> : ""
-                                }
+                                {allSections.length === 0 ? (
+                                    <h5>
+                                        No sections found for this course. Add
+                                        new one!
+                                    </h5>
+                                ) : (
+                                    ""
+                                )}
                                 {allSections.map((section, index) => (
                                     <SectionCurriculum
                                         key={index}
@@ -89,7 +114,12 @@ const CourseCurriculum: React.FC = () => {
 
                                 <div className="row y-gap-20 justify-start pt-30">
                                     <div className="col-auto sm:w-1/1">
-                                        <div style={{display: "flex", gap: "10px"}}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                gap: "10px",
+                                            }}
+                                        >
                                             <button
                                                 type={"button"}
                                                 className="button -md -green-1 text-white sm:w-1/1"
@@ -114,31 +144,39 @@ const CourseCurriculum: React.FC = () => {
             </div>
         </div>
     );
-}
+};
 
 export default CourseCurriculum;
 
 const SectionCurriculum: React.FC<{
-    section: Section,
-    i: number,
-    updateSections: (sections: Section[]) => void,
-    sections: Section[]
-}> = ({section, i, updateSections, sections}) => {
+    section: Section;
+    i: number;
+    updateSections: (sections: Section[]) => void;
+    sections: Section[];
+}> = ({ section, i, updateSections, sections }) => {
     const [currentOpenItem, setCurrentOpenItem] = useState<string | null>(null);
     const [editLessonIndex, setEditLessonIndex] = useState<number | null>(null);
-    const [lessonTitle, setLessonTitle] = useState<string>("Add your section title here...");
+    const [lessonTitle, setLessonTitle] = useState<string>(
+        "Add your section title here..."
+    );
     const [editTitle, setEditTitle] = useState<boolean>(false);
 
     // section.lessons = [{title: "Untitled", content: ""}];
 
-    const handleEditClick = (e: React.MouseEvent, index: number, title: string) => {
+    const handleEditClick = (
+        e: React.MouseEvent,
+        index: number,
+        title: string
+    ) => {
         e.preventDefault();
         e.stopPropagation();
         setEditLessonIndex(index);
         setLessonTitle(title);
     };
 
-    const handleLessonTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleLessonTitleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setLessonTitle(e.target.value);
     };
 
@@ -147,14 +185,14 @@ const SectionCurriculum: React.FC<{
             if (idx === i) {
                 return {
                     ...sec,
-                    title: e.target.value
+                    title: e.target.value,
                 };
             }
             return sec;
         });
 
         updateSections(updatedSections);
-    }
+    };
 
     const handleLessonTitleBlur = (index: number) => {
         if (section.lessons) {
@@ -163,7 +201,10 @@ const SectionCurriculum: React.FC<{
         setEditLessonIndex(null);
     };
 
-    const handleLessonTitleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    const handleLessonTitleKeyPress = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        index: number
+    ) => {
         if (e.key === "Enter") {
             handleLessonTitleBlur(index);
         }
@@ -173,18 +214,22 @@ const SectionCurriculum: React.FC<{
         if (e.key === "Enter") {
             setEditTitle(false);
         }
-    }
+    };
 
     const addLesson = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const newLesson: Lesson = {title: "Untitled lesson", content: "", id: null};
+        const newLesson: Lesson = {
+            title: "Untitled lesson",
+            content: "",
+            id: null,
+        };
         const updatedSections = sections.map((sec, idx) => {
             if (idx === i) {
                 return {
                     ...sec,
-                    lessons: [...(sec.lessons ?? []), newLesson]
+                    lessons: [...(sec.lessons ?? []), newLesson],
                 };
             }
             return sec;
@@ -201,14 +246,14 @@ const SectionCurriculum: React.FC<{
             if (idx === i) {
                 return {
                     ...sec,
-                    lessons: sec.lessons?.filter((_, i) => i !== index)
+                    lessons: sec.lessons?.filter((_, i) => i !== index),
                 };
             }
             return sec;
         });
 
         updateSections(updatedSections);
-    }
+    };
 
     return (
         <>
@@ -218,8 +263,10 @@ const SectionCurriculum: React.FC<{
                         {editTitle ? (
                             <input
                                 type="text"
-                                className={"text-16 lh-14 fw-500 text-dark-1 form-control"}
-                                style={{maxWidth: "80%"}}
+                                className={
+                                    "text-16 lh-14 fw-500 text-dark-1 form-control"
+                                }
+                                style={{ maxWidth: "80%" }}
                                 value={section.title}
                                 onChange={handleTitleChange}
                                 onBlur={() => setEditTitle(false)}
@@ -227,7 +274,9 @@ const SectionCurriculum: React.FC<{
                                 autoFocus
                             />
                         ) : (
-                            <span className="text-16 lh-14 fw-500 text-dark-1">{section.title}</span>
+                            <span className="text-16 lh-14 fw-500 text-dark-1">
+                                {section.title}
+                            </span>
                         )}
                         <button
                             className="icon icon-edit ml-5"
@@ -236,7 +285,9 @@ const SectionCurriculum: React.FC<{
                         <button
                             className="icon icon-bin ml-5"
                             onClick={(e) => {
-                                const updatedSections = sections.filter((_, idx) => idx !== i);
+                                const updatedSections = sections.filter(
+                                    (_, idx) => idx !== i
+                                );
                                 updateSections(updatedSections);
                             }}
                         />
@@ -249,7 +300,9 @@ const SectionCurriculum: React.FC<{
                             <div
                                 key={index}
                                 className={`accordion__item -dark-bg-dark-1 mt-10 ${
-                                    currentOpenItem == `${i},${index}` ? "is-active" : ""
+                                    currentOpenItem == `${i},${index}`
+                                        ? "is-active"
+                                        : ""
                                 } `}
                             >
                                 <div
@@ -257,7 +310,11 @@ const SectionCurriculum: React.FC<{
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         e.preventDefault();
-                                        setCurrentOpenItem((pre): any => pre == `${i},${index}` ? "" : `${i},${index}`);
+                                        setCurrentOpenItem((pre): any =>
+                                            pre == `${i},${index}`
+                                                ? ""
+                                                : `${i},${index}`
+                                        );
                                     }}
                                 >
                                     <div className="d-flex items-center">
@@ -265,30 +322,51 @@ const SectionCurriculum: React.FC<{
                                         {editLessonIndex === index ? (
                                             <input
                                                 type="text"
-                                                className={"text-16 lh-14 fw-500 text-dark-1 form-control"}
-                                                style={{maxWidth: "100%"}}
+                                                className={
+                                                    "text-16 lh-14 fw-500 text-dark-1 form-control"
+                                                }
+                                                style={{ maxWidth: "100%" }}
                                                 value={lessonTitle}
-                                                onChange={handleLessonTitleChange}
-                                                onBlur={() => handleLessonTitleBlur(index)}
-                                                onKeyPress={(e) => handleLessonTitleKeyPress(e, index)}
+                                                onChange={
+                                                    handleLessonTitleChange
+                                                }
+                                                onBlur={() =>
+                                                    handleLessonTitleBlur(index)
+                                                }
+                                                onKeyPress={(e) =>
+                                                    handleLessonTitleKeyPress(
+                                                        e,
+                                                        index
+                                                    )
+                                                }
                                                 autoFocus
                                             />
                                         ) : (
-                                            <span className="text-16 lh-14 fw-500 text-dark-1">{lesson.title}</span>
+                                            <span className="text-16 lh-14 fw-500 text-dark-1">
+                                                {lesson.title}
+                                            </span>
                                         )}
                                     </div>
 
                                     <div className="d-flex x-gap-10 items-center">
                                         <button
                                             className="icon icon-edit mr-5"
-                                            onClick={(e) => handleEditClick(e, index, lesson.title)}
+                                            onClick={(e) =>
+                                                handleEditClick(
+                                                    e,
+                                                    index,
+                                                    lesson.title
+                                                )
+                                            }
                                         />
-                                        <a href="#" className="icon icon-bin" onClick={removeLesson(index)}></a>
+                                        <a
+                                            href="#"
+                                            className="icon icon-bin"
+                                            onClick={removeLesson(index)}
+                                        ></a>
                                         <div className="accordion__icon mr-0">
-                                            <div
-                                                className="d-flex items-center justify-center icon icon-chevron-down"></div>
-                                            <div
-                                                className="d-flex items-center justify-center icon icon-chevron-up"></div>
+                                            <div className="d-flex items-center justify-center icon icon-chevron-down"></div>
+                                            <div className="d-flex items-center justify-center icon icon-chevron-up"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +374,9 @@ const SectionCurriculum: React.FC<{
                                 <div
                                     className="accordion__content"
                                     style={
-                                        currentOpenItem == `${i},${index}` ? {maxHeight: `150px`} : {}
+                                        currentOpenItem == `${i},${index}`
+                                            ? { maxHeight: `150px` }
+                                            : {}
                                     }
                                 >
                                     <div className="accordion__content__inner px-30 py-30">
@@ -304,29 +384,51 @@ const SectionCurriculum: React.FC<{
                                             <input
                                                 type="text"
                                                 className={"form-control"}
-                                                placeholder={"Enter course URL here..."}
-                                                style={{maxWidth: "70%", border: "1px solid #ccc"}}
+                                                placeholder={
+                                                    "Enter course URL here..."
+                                                }
+                                                style={{
+                                                    maxWidth: "70%",
+                                                    border: "1px solid #ccc",
+                                                }}
                                                 value={lesson.content}
                                                 onChange={(e) => {
-                                                    const updatedSections = sections.map((sec, idx) => {
-                                                        if (idx === i) {
-                                                            return {
-                                                                ...sec,
-                                                                lessons: sec.lessons?.map((les, lesIdx) => {
-                                                                    if (lesIdx === index) {
-                                                                        return {
-                                                                            ...les,
-                                                                            content: e.target.value
-                                                                        };
-                                                                    }
-                                                                    return les;
-                                                                })
-                                                            };
-                                                        }
-                                                        return sec;
-                                                    });
+                                                    const updatedSections =
+                                                        sections.map(
+                                                            (sec, idx) => {
+                                                                if (idx === i) {
+                                                                    return {
+                                                                        ...sec,
+                                                                        lessons:
+                                                                            sec.lessons?.map(
+                                                                                (
+                                                                                    les,
+                                                                                    lesIdx
+                                                                                ) => {
+                                                                                    if (
+                                                                                        lesIdx ===
+                                                                                        index
+                                                                                    ) {
+                                                                                        return {
+                                                                                            ...les,
+                                                                                            content:
+                                                                                                e
+                                                                                                    .target
+                                                                                                    .value,
+                                                                                        };
+                                                                                    }
+                                                                                    return les;
+                                                                                }
+                                                                            ),
+                                                                    };
+                                                                }
+                                                                return sec;
+                                                            }
+                                                        );
 
-                                                    updateSections(updatedSections);
+                                                    updateSections(
+                                                        updatedSections
+                                                    );
                                                 }}
                                             />
                                         </div>
@@ -345,5 +447,5 @@ const SectionCurriculum: React.FC<{
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
