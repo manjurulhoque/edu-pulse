@@ -23,22 +23,28 @@ from apps.courses.schemas import CourseSchema
 from apps.lessons.models import Lesson
 from apps.users.helpers import get_current_user
 from apps.users.models import User
+from apps.enrollments.models import Enrollment
 from apps.categories.models import Category
 from conf.database import get_db
 from utils.params import common_parameters
-from utils.response_utils import create_paginated_response, create_response
+from utils.response_utils import (
+    create_paginated_response,
+    create_response,
+)
 from utils.upload import save_image
 
 router = APIRouter()
 
 
-@router.get("/all-courses")
+@router.get("/all-courses", summary="Get all courses")
 async def all_courses(
     db: Session = Depends(get_db), params: dict = Depends(common_parameters)
 ):
     query = db.query(Course).filter(Course.is_published == True)
     total = query.count()
-    skip = (params["page"] - 1) * params["page_size"]
+    page = params.get("page", 1)
+    page_size = params.get("page_size", 10)
+    skip = (page - 1) * page_size
     courses = (
         query.options(joinedload(Course.user), joinedload(Course.category))
         .offset(skip)
@@ -63,7 +69,7 @@ async def all_courses(
     )
 
 
-@router.post("/create-course")
+@router.post("/create-course", summary="Create new course")
 async def create_course(
     course_input: str = Form(...),
     preview_image: UploadFile = File(...),
@@ -154,7 +160,7 @@ async def update_course(
     )
 
 
-@router.get("/my-created-courses")
+@router.get("/my-created-courses", summary="Get all courses created by the current user")
 def my_created_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
@@ -163,7 +169,7 @@ def my_created_courses(
     return create_response(data=courses)
 
 
-@router.post("/publish-course")
+@router.post("/publish-course", summary="Publish course")
 async def publish_course(
     course_id: int = Form(...),
     db: Session = Depends(get_db),
@@ -193,7 +199,7 @@ async def publish_course(
     return create_response(data=course, message="Course published successfully")
 
 
-@router.get("/course/{slug}")
+@router.get("/course/{slug}", summary="Get single course")
 async def single_course(slug: str, db: Session = Depends(get_db)):
     # need to update this query to get lessons separately
     course = (
@@ -217,6 +223,7 @@ async def course_sections(
     slug: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
+    summary="Get course sections",
 ):
     course = (
         db.query(Course)
@@ -243,6 +250,7 @@ async def course_sections(
     "/course/{course_id}/update-curriculum",
     dependencies=[Depends(course_owner_required)],
     response_model=CourseSchema,
+    summary="Update course curriculum",
 )
 async def update_curriculum(
     course_id: int, request: Request, db: Session = Depends(get_db)
@@ -335,7 +343,7 @@ async def update_curriculum(
     return course
 
 
-@router.get("/course/{course_id}/instructor")
+@router.get("/course/{course_id}/instructor", summary="Get course instructor")
 async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
@@ -355,7 +363,7 @@ async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
     }
 
 
-@router.get("/courses-by-category/{category_slug}")
+@router.get("/courses-by-category/{category_slug}", summary="Get courses by category")
 async def get_courses_by_category(category_slug: str, db: Session = Depends(get_db)):
     category = db.query(Category).filter(Category.slug == category_slug).first()
     if not category:
@@ -367,3 +375,41 @@ async def get_courses_by_category(category_slug: str, db: Session = Depends(get_
         .all()
     )
     return create_response(data=courses)
+
+
+@router.get("/enrolled-courses", summary="Get enrolled courses for the current user")
+async def enrolled_courses(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(auth_required),
+    params: dict = Depends(common_parameters),
+):
+    """
+    Get enrolled courses for the current user
+    """
+    if not current_user:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            message="You must be logged in to access this resource",
+        )
+    # get enrolled courses for the current user
+    page = params.get("page", 1)
+    page_size = params.get("page_size", 10)
+    skip = (page - 1) * page_size
+    total = db.query(Course).filter(Course.enrollments.any(Enrollment.user_id == current_user.id)).count()
+    courses = (
+        db.query(Course)
+        .filter(Course.enrollments.any(Enrollment.user_id == current_user.id))
+        .offset(skip)
+        .limit(params["page_size"])
+        .all()
+    )
+    return create_response(
+        data=create_paginated_response(
+            data=courses,
+            total=total,
+            page=params["page"],
+            page_size=params["page_size"],
+            path="/enrolled-courses",
+        )
+    )
