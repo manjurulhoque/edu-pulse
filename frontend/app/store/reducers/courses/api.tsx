@@ -107,15 +107,16 @@ export const CourseApi = createApi({
                 };
             },
         }),
-        getEnrolledCourses: builder.query<Course[], null>({
-            query: () => {
+        getEnrolledCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
+            query: ({ page, page_size }) => {
                 return {
-                    url: "enrolled-courses/",
+                    url: "enrolled-courses",
+                    params: { page, page_size },
                 };
             },
             providesTags: ["Course"],
             transformResponse: (
-                rawResult: { data: Course[]; message: string },
+                rawResult: { data: PaginatedResponse<Course>; message: string },
                 meta
             ) => {
                 const { data } = rawResult;

@@ -394,7 +394,7 @@ async def enrolled_courses(
         )
     # get enrolled courses for the current user
     page = params.get("page", 1)
-    page_size = params.get("page_size", 10)
+    page_size = params.get("page_size", 8)
     skip = (page - 1) * page_size
     total = db.query(Course).filter(Course.enrollments.any(Enrollment.user_id == current_user.id)).count()
     courses = (

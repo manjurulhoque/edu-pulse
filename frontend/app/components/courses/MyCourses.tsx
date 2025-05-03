@@ -1,85 +1,102 @@
 "use client";
 
 import { useGetEnrolledCoursesQuery } from "@/app/store/reducers/courses/api";
-import { Card, Container, Row, Col, Spinner } from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
+import { Grid } from "react-loader-spinner";
+import { getCourseImagePath } from "@/app/utils/image-path";
 
 const MyCourses = () => {
-    const {
-        data: courses,
-        isLoading,
-        error,
-    } = useGetEnrolledCoursesQuery(null);
+    const { data, isLoading, error } = useGetEnrolledCoursesQuery({
+        page: 1,
+        page_size: 8,
+    });
 
-    if (isLoading) {
-        return (
-            <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ minHeight: "400px" }}
-            >
-                <Spinner animation="border" variant="primary" />
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="text-center text-danger">
-                Error loading courses. Please try again later.
-            </div>
-        );
-    }
-
-    if (!courses || courses.length === 0) {
-        return (
-            <div className="text-center">
-                <h4>You haven't enrolled in any courses yet.</h4>
-                <Link href="/courses" className="btn btn-primary mt-3">
-                    Browse Courses
-                </Link>
-            </div>
-        );
-    }
+    let courses = data?.results;
 
     return (
-        <Container>
-            <Row className="g-4">
-                {courses.map((course) => (
-                    <Col key={course.id} xs={12} md={6} lg={4}>
-                        <Link
-                            href={`/course/${course.slug}`}
-                            className="text-decoration-none"
+        <div className="dashboard__main">
+            <div className="dashboard__content bg-light-4">
+                <div className="row pb-50 mb-10">
+                    <div className="col-auto">
+                        <h1 className="text-30 lh-12 fw-700">My Courses</h1>
+                        <div className="mt-10">Here you can see all the courses you have enrolled in.</div>
+                    </div>
+                </div>
+
+                <div className="row y-gap-30">
+                    <Container>
+                        <div
+                            style={{
+                                display: isLoading ? "flex" : "none",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100vh",
+                            }}
                         >
-                            <Card className="h-100">
-                                <div
-                                    style={{
-                                        position: "relative",
-                                        height: "200px",
-                                    }}
-                                >
-                                    <Image
-                                        src={
-                                            course.preview_image ||
-                                            "/placeholder-course.jpg"
-                                        }
-                                        alt={course.title}
-                                        fill
-                                        style={{ objectFit: "cover" }}
-                                    />
-                                </div>
-                                <Card.Body>
-                                    <Card.Title>{course.title}</Card.Title>
-                                    <Card.Text className="text-muted">
-                                        {course.description?.slice(0, 100)}...
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Link>
-                    </Col>
-                ))}
-            </Row>
-        </Container>
+                            <Grid
+                                visible={isLoading}
+                                height="200"
+                                width="200"
+                                color="#4fa94d"
+                                ariaLabel="grid-loading"
+                                radius="12.5"
+                                wrapperStyle={{}}
+                                wrapperClass="grid-wrapper"
+                            />
+                        </div>
+
+                        {error && (
+                            <div className="text-center">
+                                <h4>Error loading courses</h4>
+                            </div>
+                        )}
+
+                        {!isLoading && courses && courses.length === 0 && (
+                            <div className="text-center">
+                                <h4>You haven't enrolled in any courses yet.</h4>
+                            </div>
+                        )}
+
+                        {!isLoading && (
+                            <Row className="g-4">
+                                {courses?.map((course) => (
+                                    <Col key={course.id} xs={12} md={6} lg={3}>
+                                        <Link href={`/course/${course.slug}`} className="text-decoration-none">
+                                            <Card className="h-100">
+                                                <div
+                                                    style={{
+                                                        position: "relative",
+                                                        height: "200px",
+                                                    }}
+                                                >
+                                                    <Image
+                                                        src={getCourseImagePath(course)}
+                                                        alt={course.title}
+                                                        fill
+                                                        style={{
+                                                            objectFit: "cover",
+                                                        }}
+                                                    />
+                                                </div>
+                                                <Card.Body>
+                                                    <Card.Title>{course.title}</Card.Title>
+                                                    <Card.Text className="text-muted">
+                                                        {course.description?.slice(0, 100)}
+                                                        ...
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </Link>
+                                    </Col>
+                                ))}
+                            </Row>
+                        )}
+                    </Container>
+                </div>
+            </div>
+        </div>
     );
 };
 
