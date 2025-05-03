@@ -33,7 +33,6 @@ export const states = [
     },
 ];
 
-
 export default function DashboardHome() {
     return (
         <div className="dashboard__main">
@@ -41,22 +40,17 @@ export default function DashboardHome() {
                 <div className="row pb-50 mb-10">
                     <div className="col-auto">
                         <h1 className="text-30 lh-12 fw-700">Dashboard</h1>
-                        <div className="mt-10">
-                            Lorem ipsum dolor sit amet, consectetur.
-                        </div>
+                        <div className="mt-10">Lorem ipsum dolor sit amet, consectetur.</div>
                     </div>
                 </div>
 
                 <div className="row y-gap-30">
                     {states.map((elm, i) => (
                         <div key={i} className="col-xl-3 col-md-6">
-                            <div
-                                className="d-flex justify-between items-center py-35 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
+                            <div className="d-flex justify-between items-center py-35 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
                                 <div>
                                     <div className="lh-1 fw-500">{elm.title}</div>
-                                    <div className="text-24 lh-1 fw-700 text-dark-1 mt-20">
-                                        ${elm.value}
-                                    </div>
+                                    <div className="text-24 lh-1 fw-700 text-dark-1 mt-20">${elm.value}</div>
                                     <div className="lh-1 mt-25">
                                         <span className="text-purple-1">${elm.new}</span> New Sales
                                     </div>
@@ -124,9 +118,7 @@ export default function DashboardHome() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="py-40 px-30">
-                                {/*<Charts/>*/}
-                            </div>
+                            <div className="py-40 px-30">{/*<Charts/>*/}</div>
                         </div>
                     </div>
 
@@ -185,9 +177,7 @@ export default function DashboardHome() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="py-40 px-30">
-                                {/*<PieChartComponent/>*/}
-                            </div>
+                            <div className="py-40 px-30">{/*<PieChartComponent/>*/}</div>
                         </div>
                     </div>
                 </div>

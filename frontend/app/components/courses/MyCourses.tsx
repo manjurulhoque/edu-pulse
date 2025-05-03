@@ -7,14 +7,14 @@ import Image from "next/image";
 import { Grid } from "react-loader-spinner";
 import { getCourseImagePath } from "@/app/utils/image-path";
 import Pagination from "@/app/components/common/Pagination";
-import { useQueryState, parseAsInteger } from "nuqs";
+import { useState } from "react";
 
 const MyCourses = () => {
-    const [pageNumber, setPageNumber] = useQueryState("page", parseAsInteger.withDefault(1));
+    const [pageNumber, setPageNumber] = useState(1);
     const pageSize = 8;
 
     const { data, isLoading, error } = useGetEnrolledCoursesQuery({
-        page: pageNumber,
+        page: pageNumber ?? 1,
         page_size: pageSize,
     });
 
@@ -69,7 +69,7 @@ const MyCourses = () => {
                                 <Row className="g-4">
                                     {courses?.map((course) => (
                                         <Col key={course.id} xs={12} md={6} lg={3}>
-                                            <Link href={`/course/${course.slug}`} className="text-decoration-none">
+                                            <Link href={`/courses/${course.slug}`} className="text-decoration-none">
                                                 <Card className="h-100">
                                                     <div
                                                         style={{
@@ -102,7 +102,7 @@ const MyCourses = () => {
                                 <div className="row justify-center pt-90 lg:pt-50">
                                     <div className="col-auto">
                                         <Pagination
-                                            pageNumber={pageNumber}
+                                            pageNumber={pageNumber ?? 1}
                                             setPageNumber={setPageNumber}
                                             data={data as any}
                                         />

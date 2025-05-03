@@ -1,10 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
-import {
-    PaginationArgs,
-    Response,
-    PaginatedResponse,
-} from "@/app/models/request.interface";
+import { PaginationArgs, Response, PaginatedResponse } from "@/app/models/request.interface";
 
 export const CourseApi = createApi({
     reducerPath: "CourseApi",
@@ -20,10 +16,7 @@ export const CourseApi = createApi({
                 };
             },
             providesTags: ["Courses"],
-            transformResponse: (
-                rawResult: { data: PaginatedResponse<Course>; message: string },
-                meta
-            ) => {
+            transformResponse: (rawResult: { data: PaginatedResponse<Course>; message: string }, meta) => {
                 const { data } = rawResult;
                 return data;
             },
@@ -34,10 +27,7 @@ export const CourseApi = createApi({
                     url: `course/${slug}`,
                 };
             },
-            transformResponse: (
-                rawResult: { data: Course; message: string },
-                meta
-            ) => {
+            transformResponse: (rawResult: { data: Course; message: string }, meta) => {
                 const { data } = rawResult;
                 return data;
             },
@@ -49,10 +39,7 @@ export const CourseApi = createApi({
                 };
             },
             providesTags: ["Course"],
-            transformResponse: (
-                rawResult: { data: Course[]; message: string },
-                meta
-            ) => {
+            transformResponse: (rawResult: { data: Course[]; message: string }, meta) => {
                 const { data } = rawResult;
                 return data;
             },
@@ -97,10 +84,7 @@ export const CourseApi = createApi({
             },
             invalidatesTags: ["Course"], // used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
         }),
-        getCoursesByCategory: builder.query<
-            Response<Course[]>,
-            { category_slug: string }
-        >({
+        getCoursesByCategory: builder.query<Response<Course[]>, { category_slug: string }>({
             query: ({ category_slug }) => {
                 return {
                     url: `courses-by-category/${category_slug}`,
@@ -115,10 +99,7 @@ export const CourseApi = createApi({
                 };
             },
             providesTags: ["Course"],
-            transformResponse: (
-                rawResult: { data: PaginatedResponse<Course>; message: string },
-                meta
-            ) => {
+            transformResponse: (rawResult: { data: PaginatedResponse<Course>; message: string }, meta) => {
                 const { data } = rawResult;
                 return data;
             },
