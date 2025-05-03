@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import styles from "./CheckoutForm.module.css";
 
 interface CheckoutFormProps {
     courseIds: number[];
@@ -75,6 +76,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                             value={formData.fullName}
                             onChange={handleChange}
                             required
+                            className={`form-control-lg ${styles.formControl}`}
+                            placeholder="Enter your full name"
                         />
                     </Form.Group>
 
@@ -86,6 +89,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            className={`form-control-lg ${styles.formControl}`}
+                            placeholder="Enter your email"
                         />
                     </Form.Group>
 
@@ -97,6 +102,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                             value={formData.address}
                             onChange={handleChange}
                             required
+                            className={`form-control-lg ${styles.formControl}`}
+                            placeholder="Enter your address"
                         />
                     </Form.Group>
 
@@ -110,6 +117,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                                     value={formData.city}
                                     onChange={handleChange}
                                     required
+                                    className={`form-control-lg ${styles.formControl}`}
+                                    placeholder="Enter your city"
                                 />
                             </Form.Group>
                         </div>
@@ -122,6 +131,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                                     value={formData.country}
                                     onChange={handleChange}
                                     required
+                                    className={`form-control-lg ${styles.formControl}`}
+                                    placeholder="Enter your country"
                                 />
                             </Form.Group>
                         </div>
@@ -135,6 +146,8 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                             value={formData.zipCode}
                             onChange={handleChange}
                             required
+                            className={`form-control-lg ${styles.formControl}`}
+                            placeholder="Enter your ZIP code"
                         />
                     </Form.Group>
 
@@ -142,7 +155,7 @@ const CheckoutForm = ({ courseIds, totalPrice }: CheckoutFormProps) => {
                         variant="primary"
                         type="submit"
                         disabled={isLoading}
-                        className="w-100"
+                        className="w-100 btn-lg"
                     >
                         {isLoading ? "Processing..." : "Complete Purchase"}
                     </Button>
