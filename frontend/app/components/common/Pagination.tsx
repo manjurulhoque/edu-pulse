@@ -1,3 +1,4 @@
+import { PaginatedResponse } from "@/app/models/request.interface";
 import React from "react";
 
 interface PaginationProps<T> {

@@ -30,8 +30,10 @@ export default function CourseList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [courses, setCourses] = useState<Course[]>([]);
 
-    const { data: courseResult, isLoading: isCoursesLoading } =
-        useAllCoursesQuery({ page: pageNumber, page_size: pageSize });
+    const { data: courseResult, isLoading: isCoursesLoading } = useAllCoursesQuery({
+        page: pageNumber,
+        page_size: pageSize,
+    });
     const { data: categories } = useCategoriesQuery(null);
 
     useEffect(() => {
@@ -54,9 +56,7 @@ export default function CourseList() {
         let filteredArrays: any = [];
 
         if (filterInstructors.length > 0) {
-            const filtered = refItems?.filter((elm) =>
-                filterInstructors.includes(elm.user.name)
-            );
+            const filtered = refItems?.filter((elm) => filterInstructors.includes(elm.user.name));
             filteredArrays = [...filteredArrays, filtered];
         }
         if (filterCategories.length > 0) {
@@ -66,9 +66,7 @@ export default function CourseList() {
             // filteredArrays = [...filteredArrays, filtered];
         }
         if (filterLevels.length > 0) {
-            const filtered = refItems?.filter((elm) =>
-                filterLevels.includes(elm.level)
-            );
+            const filtered = refItems?.filter((elm) => filterLevels.includes(elm.level));
             filteredArrays = [...filteredArrays, filtered];
         }
         // if (filterLanguage.length > 0) {
@@ -86,9 +84,7 @@ export default function CourseList() {
         //     filteredArrays = [...filteredArrays, filtered];
         // }
 
-        const commonItems = refItems?.filter((item) =>
-            filteredArrays.every((array: any) => array.includes(item))
-        );
+        const commonItems = refItems?.filter((item) => filteredArrays.every((array: any) => array.includes(item)));
         setFilteredData(commonItems);
         setPageNumber(1);
     }, [
@@ -105,33 +101,17 @@ export default function CourseList() {
         if (currentSortingOption == "Default") {
             setSortedFilteredData(filteredData);
         } else if (currentSortingOption == "Rating (asc)") {
-            setSortedFilteredData(
-                [...filteredData].sort((a, b) => a.rating - b.rating)
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => a.rating - b.rating));
         } else if (currentSortingOption == "Rating (dsc)") {
-            setSortedFilteredData(
-                [...filteredData].sort((a, b) => b.rating - a.rating)
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => b.rating - a.rating));
         } else if (currentSortingOption == "Price (asc)") {
-            setSortedFilteredData(
-                [...filteredData].sort(
-                    (a, b) => a.discountedPrice - b.discountedPrice
-                )
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => a.discountedPrice - b.discountedPrice));
         } else if (currentSortingOption == "Price (dsc)") {
-            setSortedFilteredData(
-                [...filteredData].sort(
-                    (a, b) => b.discountedPrice - a.discountedPrice
-                )
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => b.discountedPrice - a.discountedPrice));
         } else if (currentSortingOption == "Duration (asc)") {
-            setSortedFilteredData(
-                [...filteredData].sort((a, b) => a.duration - b.duration)
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => a.duration - b.duration));
         } else if (currentSortingOption == "Duration (dsc)") {
-            setSortedFilteredData(
-                [...filteredData].sort((a, b) => b.duration - a.duration)
-            );
+            setSortedFilteredData([...filteredData].sort((a, b) => b.duration - a.duration));
         }
     }, [currentSortingOption, filteredData]);
 
@@ -148,9 +128,7 @@ export default function CourseList() {
     };
     const handleFilterInstructors = (item: any) => {
         if (filterInstructors.includes(item)) {
-            const filtered = filterInstructors.filter(
-                (elm: any) => elm != item
-            );
+            const filtered = filterInstructors.filter((elm: any) => elm != item);
             setFilterInstructors([...filtered]);
         } else {
             setFilterInstructors((pre: any) => [...pre, item]);
@@ -184,9 +162,7 @@ export default function CourseList() {
                         <div className="row">
                             <div className="col-auto">
                                 <div>
-                                    <h1 className="page-header__title">
-                                        All available Courses
-                                    </h1>
+                                    <h1 className="page-header__title">All available Courses</h1>
                                 </div>
                             </div>
                         </div>
@@ -219,19 +195,13 @@ export default function CourseList() {
                     {!isCoursesLoading && (
                         <>
                             <div className="accordion js-accordion">
-                                <div
-                                    className={`accordion__item ${
-                                        filterOpen ? "is-active" : ""
-                                    } `}
-                                >
+                                <div className={`accordion__item ${filterOpen ? "is-active" : ""} `}>
                                     <div className="row y-gap-20 items-center justify-between pb-30">
                                         <div className="col-auto">
                                             <div className="text-14 lh-12">
                                                 Showing{" "}
-                                                <span className="text-dark-1 fw-500">
-                                                    {filteredData?.length}
-                                                </span>{" "}
-                                                total results
+                                                <span className="text-dark-1 fw-500">{filteredData?.length}</span> total
+                                                results
                                             </div>
                                         </div>
 
@@ -251,27 +221,17 @@ export default function CourseList() {
                                                                 className="dropdown__button d-flex items-center text-14 rounded-8 px-20 py-10 text-14 lh-12"
                                                                 onClick={() => {
                                                                     document
-                                                                        .getElementById(
-                                                                            "dd61button"
-                                                                        )
-                                                                        ?.classList.toggle(
-                                                                            "-is-dd-active"
-                                                                        );
+                                                                        .getElementById("dd61button")
+                                                                        ?.classList.toggle("-is-dd-active");
                                                                     document
-                                                                        .getElementById(
-                                                                            "dd61content"
-                                                                        )
-                                                                        ?.classList.toggle(
-                                                                            "-is-el-visible"
-                                                                        );
+                                                                        .getElementById("dd61content")
+                                                                        ?.classList.toggle("-is-el-visible");
                                                                 }}
                                                                 data-el-toggle=".js-category-toggle"
                                                                 data-el-toggle-active=".js-category-active"
                                                             >
                                                                 <span className="js-dropdown-title">
-                                                                    {
-                                                                        currentSortingOption
-                                                                    }
+                                                                    {currentSortingOption}
                                                                 </span>
                                                                 <i className="icon text-9 ml-40 icon-chevron-down"></i>
                                                             </div>
@@ -281,56 +241,34 @@ export default function CourseList() {
                                                                 className="toggle-element -dropdown -dark-bg-dark-2 -dark-border-white-10 js-click-dropdown js-category-toggle"
                                                             >
                                                                 <div className="text-14 y-gap-15 js-dropdown-list">
-                                                                    {sortingOptions.map(
-                                                                        (
-                                                                            elm,
-                                                                            i
-                                                                        ) => (
-                                                                            <div
-                                                                                key={
-                                                                                    i
-                                                                                }
-                                                                                onClick={() => {
-                                                                                    setCurrentSortingOption(
-                                                                                        (
-                                                                                            pre
-                                                                                        ) =>
-                                                                                            pre ==
-                                                                                            elm
-                                                                                                ? "Default"
-                                                                                                : elm
+                                                                    {sortingOptions.map((elm, i) => (
+                                                                        <div
+                                                                            key={i}
+                                                                            onClick={() => {
+                                                                                setCurrentSortingOption((pre) =>
+                                                                                    pre == elm ? "Default" : elm
+                                                                                );
+                                                                                document
+                                                                                    .getElementById("dd61button")
+                                                                                    ?.classList.toggle("-is-dd-active");
+                                                                                document
+                                                                                    .getElementById("dd61content")
+                                                                                    ?.classList.toggle(
+                                                                                        "-is-el-visible"
                                                                                     );
-                                                                                    document
-                                                                                        .getElementById(
-                                                                                            "dd61button"
-                                                                                        )
-                                                                                        ?.classList.toggle(
-                                                                                            "-is-dd-active"
-                                                                                        );
-                                                                                    document
-                                                                                        .getElementById(
-                                                                                            "dd61content"
-                                                                                        )
-                                                                                        ?.classList.toggle(
-                                                                                            "-is-el-visible"
-                                                                                        );
-                                                                                }}
+                                                                            }}
+                                                                        >
+                                                                            <span
+                                                                                className={`d-block js-dropdown-link cursor ${
+                                                                                    currentSortingOption == elm
+                                                                                        ? "activeMenu"
+                                                                                        : ""
+                                                                                } `}
                                                                             >
-                                                                                <span
-                                                                                    className={`d-block js-dropdown-link cursor ${
-                                                                                        currentSortingOption ==
-                                                                                        elm
-                                                                                            ? "activeMenu"
-                                                                                            : ""
-                                                                                    } `}
-                                                                                >
-                                                                                    {
-                                                                                        elm
-                                                                                    }
-                                                                                </span>
-                                                                            </div>
-                                                                        )
-                                                                    )}
+                                                                                {elm}
+                                                                            </span>
+                                                                        </div>
+                                                                    ))}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -340,11 +278,7 @@ export default function CourseList() {
                                                 <div className="col-auto">
                                                     <div
                                                         className="accordion__button w-unset"
-                                                        onClick={() =>
-                                                            setFilterOpen(
-                                                                (pre) => !pre
-                                                            )
-                                                        }
+                                                        onClick={() => setFilterOpen((pre) => !pre)}
                                                     >
                                                         <button className="button h-50 px-30 -light-7 text-purple-1">
                                                             <i className="icon-filter mr-10"></i>
@@ -358,97 +292,63 @@ export default function CourseList() {
 
                                     <div
                                         className="accordion__content "
-                                        style={
-                                            filterOpen
-                                                ? { maxHeight: "1800px" }
-                                                : {}
-                                        }
+                                        style={filterOpen ? { maxHeight: "1800px" } : {}}
                                     >
                                         <div className="sidebar -courses px-30 py-30 rounded-8 bg-light-3 mb-50">
                                             <div className="row x-gap-60 y-gap-40">
                                                 <div className="col-xl-3 col-lg-4 col-sm-6">
                                                     <div className="sidebar__item">
-                                                        <h5 className="sidebar__title">
-                                                            Category
-                                                        </h5>
+                                                        <h5 className="sidebar__title">Category</h5>
                                                         <div className="sidebar-checkbox">
                                                             <div
                                                                 className="sidebar-checkbox__item"
-                                                                onClick={() =>
-                                                                    setFilterCategories(
-                                                                        []
-                                                                    )
-                                                                }
+                                                                onClick={() => setFilterCategories([])}
                                                             >
                                                                 <div className="form-checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        defaultChecked={
-                                                                            !filterCategories.length
-                                                                        }
+                                                                        defaultChecked={!filterCategories.length}
                                                                     />
                                                                     <div className="form-checkbox__mark">
                                                                         <div className="form-checkbox__icon icon-check"></div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="sidebar-checkbox__title">
-                                                                    All
-                                                                </div>
+                                                                <div className="sidebar-checkbox__title">All</div>
                                                                 <div className="sidebar-checkbox__count"></div>
                                                             </div>
-                                                            {categories?.map(
-                                                                (
-                                                                    item,
-                                                                    index
-                                                                ) => (
-                                                                    <div
-                                                                        className="sidebar-checkbox__item cursor"
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        onClick={() =>
-                                                                            handleFilterCategories(
+                                                            {categories?.map((item, index) => (
+                                                                <div
+                                                                    className="sidebar-checkbox__item cursor"
+                                                                    key={index}
+                                                                    onClick={() => handleFilterCategories(item.name)}
+                                                                >
+                                                                    <div className="form-checkbox">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            defaultChecked={filterCategories.includes(
                                                                                 item.name
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <div className="form-checkbox">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                defaultChecked={filterCategories.includes(
-                                                                                    item.name
-                                                                                )}
-                                                                            />
-                                                                            <div className="form-checkbox__mark">
-                                                                                <div className="form-checkbox__icon icon-check"></div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="sidebar-checkbox__title">
-                                                                            {
-                                                                                item.name
-                                                                            }
-                                                                        </div>
-                                                                        <div className="sidebar-checkbox__count">
-                                                                            (
-                                                                            {
-                                                                                courses.filter(
-                                                                                    (
-                                                                                        itm
-                                                                                    ) =>
-                                                                                        itm
-                                                                                            .category
-                                                                                            ?.id ==
-                                                                                        item.id
-                                                                                )
-                                                                                    .length
-                                                                            }
-                                                                            )
+                                                                            )}
+                                                                        />
+                                                                        <div className="form-checkbox__mark">
+                                                                            <div className="form-checkbox__icon icon-check"></div>
                                                                         </div>
                                                                     </div>
-                                                                )
-                                                            )}
+
+                                                                    <div className="sidebar-checkbox__title">
+                                                                        {item.name}
+                                                                    </div>
+                                                                    <div className="sidebar-checkbox__count">
+                                                                        (
+                                                                        {
+                                                                            courses.filter(
+                                                                                (itm) => itm.category?.id == item.id
+                                                                            ).length
+                                                                        }
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                         <div className="sidebar__more mt-15">
                                                             <a
@@ -463,88 +363,57 @@ export default function CourseList() {
 
                                                 <div className="col-xl-3 col-lg-4 col-sm-6">
                                                     <div className="sidebar__item">
-                                                        <h5 className="sidebar__title">
-                                                            Level
-                                                        </h5>
+                                                        <h5 className="sidebar__title">Level</h5>
                                                         <div className="sidebar-checkbox">
                                                             <div
                                                                 className="sidebar-checkbox__item cursor"
-                                                                onClick={() =>
-                                                                    setFilterLevels(
-                                                                        []
-                                                                    )
-                                                                }
+                                                                onClick={() => setFilterLevels([])}
                                                             >
                                                                 <div className="form-checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        defaultChecked={
-                                                                            filterLevels.length <
-                                                                            1
-                                                                        }
+                                                                        defaultChecked={filterLevels.length < 1}
                                                                     />
                                                                     <div className="form-checkbox__mark">
                                                                         <div className="form-checkbox__icon icon-check"></div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="sidebar-checkbox__title">
-                                                                    All
-                                                                </div>
+                                                                <div className="sidebar-checkbox__title">All</div>
                                                                 <div className="sidebar-checkbox__count"></div>
                                                             </div>
-                                                            {levels.map(
-                                                                (
-                                                                    item,
-                                                                    index
-                                                                ) => (
-                                                                    <div
-                                                                        className="sidebar-checkbox__item cursor"
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        onClick={() =>
-                                                                            handleFilterLevels(
-                                                                                item.title
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <div className="form-checkbox">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                defaultChecked={
-                                                                                    !!filterLevels.includes(
-                                                                                        item.title
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            <div className="form-checkbox__mark">
-                                                                                <div className="form-checkbox__icon icon-check"></div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="sidebar-checkbox__title">
-                                                                            {
-                                                                                item.title
+                                                            {levels.map((item, index) => (
+                                                                <div
+                                                                    className="sidebar-checkbox__item cursor"
+                                                                    key={index}
+                                                                    onClick={() => handleFilterLevels(item.title)}
+                                                                >
+                                                                    <div className="form-checkbox">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            defaultChecked={
+                                                                                !!filterLevels.includes(item.title)
                                                                             }
-                                                                        </div>
-                                                                        <div className="sidebar-checkbox__count">
-                                                                            (
-                                                                            {
-                                                                                courses?.filter(
-                                                                                    (
-                                                                                        itm
-                                                                                    ) =>
-                                                                                        itm.level ==
-                                                                                        item.title
-                                                                                )
-                                                                                    .length
-                                                                            }
-                                                                            )
+                                                                        />
+                                                                        <div className="form-checkbox__mark">
+                                                                            <div className="form-checkbox__icon icon-check"></div>
                                                                         </div>
                                                                     </div>
-                                                                )
-                                                            )}
+
+                                                                    <div className="sidebar-checkbox__title">
+                                                                        {item.title}
+                                                                    </div>
+                                                                    <div className="sidebar-checkbox__count">
+                                                                        (
+                                                                        {
+                                                                            courses?.filter(
+                                                                                (itm) => itm.level == item.title
+                                                                            ).length
+                                                                        }
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -556,10 +425,7 @@ export default function CourseList() {
 
                             <div className="row y-gap-30">
                                 {courses?.map((elm: any, i: any) => (
-                                    <div
-                                        key={i}
-                                        className="col-xl-3 col-lg-4 col-md-6"
-                                    >
+                                    <div key={i} className="col-xl-3 col-lg-4 col-md-6">
                                         <div className="coursesCard -type-1 ">
                                             <div className="relative">
                                                 <div className="coursesCard__image overflow-hidden rounded-8">
@@ -597,22 +463,15 @@ export default function CourseList() {
 
                                             <div className="h-100 pt-15">
                                                 <div className="d-flex items-center">
-                                                    <div className="text-14 lh-1 text-yellow-1 mr-10">
-                                                        4.9
-                                                    </div>
+                                                    <div className="text-14 lh-1 text-yellow-1 mr-10">4.9</div>
                                                     <div className="d-flex x-gap-5 items-center">
                                                         <Star star={4.9} />
                                                     </div>
-                                                    <div className="text-13 lh-1 ml-10">
-                                                        (345)
-                                                    </div>
+                                                    <div className="text-13 lh-1 ml-10">(345)</div>
                                                 </div>
 
                                                 <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
-                                                    <Link
-                                                        className="linkCustom"
-                                                        href={`/courses/${elm.slug}`}
-                                                    >
+                                                    <Link className="linkCustom" href={`/courses/${elm.slug}`}>
                                                         {elm.title}{" "}
                                                     </Link>
                                                 </div>
@@ -627,9 +486,7 @@ export default function CourseList() {
                                                                 alt="icon"
                                                             />
                                                         </div>
-                                                        <div className="text-14 lh-1">
-                                                            35 lesson
-                                                        </div>
+                                                        <div className="text-14 lh-1">35 lesson</div>
                                                     </div>
 
                                                     <div className="d-flex items-center">
@@ -653,9 +510,7 @@ export default function CourseList() {
                                                                 alt="icon"
                                                             />
                                                         </div>
-                                                        <div className="text-14 lh-1">
-                                                            {elm.level}
-                                                        </div>
+                                                        <div className="text-14 lh-1">{elm.level}</div>
                                                     </div>
                                                 </div>
 
@@ -664,31 +519,17 @@ export default function CourseList() {
                                                         <Image
                                                             width={30}
                                                             height={30}
-                                                            src={getAuthorImageSrc(
-                                                                elm
-                                                            )}
+                                                            src={getAuthorImageSrc(elm)}
                                                             alt="image"
                                                         />
-                                                        <div>
-                                                            {elm.authorName}
-                                                        </div>
+                                                        <div>{elm.authorName}</div>
                                                     </div>
 
                                                     <div className="coursesCard-footer__price">
                                                         {!elm.is_free ? (
                                                             <>
-                                                                <div>
-                                                                    $
-                                                                    {
-                                                                        elm.actual_price
-                                                                    }
-                                                                </div>
-                                                                <div>
-                                                                    $
-                                                                    {
-                                                                        elm.discounted_price
-                                                                    }
-                                                                </div>
+                                                                <div>${elm.actual_price}</div>
+                                                                <div>${elm.discounted_price}</div>
                                                             </>
                                                         ) : (
                                                             <>

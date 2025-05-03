@@ -4,7 +4,6 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { permanentRedirect } from "next/navigation";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import styles from "./Login.module.css";
