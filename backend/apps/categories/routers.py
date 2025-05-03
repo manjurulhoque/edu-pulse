@@ -6,7 +6,7 @@ from starlette import status
 
 from apps.categories.models import Category
 from apps.categories.schemas import CategorySchema
-from apps.users.helpers import get_current_user
+from apps.users.services import get_current_user
 from apps.users.models import User
 from conf.database import get_db
 from utils.response_utils import create_response

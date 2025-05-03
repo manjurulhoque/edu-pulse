@@ -6,7 +6,7 @@ from apps.courses.models import Course, CourseSection
 from apps.lessons.models import Lesson
 from apps.enrollments.models import Enrollment
 from conf.database import SessionLocal
-from apps.users.helpers import get_password_hash
+from apps.users.services import get_password_hash
 
 
 def create_sample_data(db: Session):

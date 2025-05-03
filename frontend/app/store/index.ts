@@ -2,19 +2,22 @@ import { configureStore } from "@reduxjs/toolkit";
 import { CategoryApi } from "@/app/store/reducers/categories/api";
 import { CourseApi } from "@/app/store/reducers/courses/api";
 import { CartApi } from "./reducers/cart/api";
+import { StatisticsApi } from "./reducers/statistics/api";
 
 export const store: any = configureStore({
     reducer: {
         [CategoryApi.reducerPath]: CategoryApi.reducer,
         [CourseApi.reducerPath]: CourseApi.reducer,
         [CartApi.reducerPath]: CartApi.reducer,
+        [StatisticsApi.reducerPath]: StatisticsApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
         getDefaultMiddleware({}).concat(
             CategoryApi.middleware,
             CourseApi.middleware,
-            CartApi.middleware
+            CartApi.middleware,
+            StatisticsApi.middleware
         ),
 });
 

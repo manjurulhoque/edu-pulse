@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from apps.courses.models import Course
-from apps.users.helpers import get_current_user
+from apps.users.services import get_current_user
 from conf.database import get_db
 from utils.response_utils import create_response
 

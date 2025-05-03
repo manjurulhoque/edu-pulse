@@ -7,6 +7,13 @@ from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
 import jwt
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+from apps.courses import models as course_models
+from apps.users import models as user_models
+from apps.enrollments import models as enrollment_models
+from apps.checkout import models as checkout_models
+from apps.lessons import models as lesson_models
 
 from conf.database import get_db
 from . import models, schemas
@@ -147,3 +154,47 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 def get_user_posts(db: Session, user_id: int):
     return db.query(models.Post).filter(models.Post.owner_id == user_id).all()
+
+
+async def get_dashboard_statistics(db: Session, user_id: int):
+    # Get total enrolled courses
+    total_enrolled_courses = db.query(func.count(enrollment_models.Enrollment.id)).filter(
+        enrollment_models.Enrollment.user_id == user_id
+    ).scalar() or 0
+    
+    # Get total completed courses
+    total_completed_courses = db.query(func.count(enrollment_models.Enrollment.id)).filter(
+        enrollment_models.Enrollment.user_id == user_id,
+        enrollment_models.Enrollment.completed == True
+    ).scalar() or 0
+    
+    # Get total lessons completed
+    total_lessons_completed = db.query(func.count(lesson_models.LessonCompletion.id)).filter(
+        lesson_models.LessonCompletion.user_id == user_id
+    ).scalar() or 0
+    
+    # Get total time spent learning (in minutes)
+    total_time_spent = db.query(func.sum(lesson_models.LessonCompletion.time_spent)).filter(
+        lesson_models.LessonCompletion.user_id == user_id
+    ).scalar() or 0
+    
+    # Get certificates earned
+    certificates_earned = db.query(func.count(enrollment_models.Enrollment.id)).filter(
+        enrollment_models.Enrollment.user_id == user_id,
+        enrollment_models.Enrollment.certificate_issued == True
+    ).scalar() or 0
+    
+    # Get recent activity (last 7 days)
+    recent_activity = db.query(func.count(lesson_models.LessonCompletion.id)).filter(
+        lesson_models.LessonCompletion.user_id == user_id,
+        lesson_models.LessonCompletion.completed_at >= func.date('now', '-7 days')
+    ).scalar() or 0
+    
+    return {
+        "total_enrolled_courses": total_enrolled_courses,
+        "total_completed_courses": total_completed_courses,
+        "total_lessons_completed": total_lessons_completed,
+        "total_time_spent": total_time_spent,
+        "certificates_earned": certificates_earned,
+        "recent_activity": recent_activity
+    }

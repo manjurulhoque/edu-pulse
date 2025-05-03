@@ -5,9 +5,9 @@ from starlette import status
 from apps.checkout.models import Checkout, CheckoutItem
 from apps.users.models import User
 from conf.database import get_db
-from apps.users.helpers import get_current_user
+from apps.users.services import get_current_user
 from apps.checkout.schemas import CheckoutInput
-from apps.cart.helpers import get_cart, clear_cart
+from apps.cart.services import get_cart, clear_cart
 from utils.response_utils import create_response
 
 router = APIRouter(prefix="/checkout", tags=["checkout"])

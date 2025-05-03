@@ -16,12 +16,12 @@ from starlette import status
 from starlette.requests import Request
 
 from apps.core.decorators import auth_required
-from apps.courses import helpers
+from apps.courses import services
 from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseSchema
 from apps.lessons.models import Lesson
-from apps.users.helpers import get_current_user
+from apps.users.services import get_current_user
 from apps.users.models import User
 from apps.enrollments.models import Enrollment
 from apps.categories.models import Category
@@ -95,7 +95,7 @@ async def create_course(
     course_data_dict = course_data.model_dump()
     course_data_dict["preview_image"] = await save_image(preview_image)
 
-    new_course = helpers.create_course(db, course_data_dict, current_user)
+    new_course = services.create_course(db, course_data_dict, current_user)
     return create_response(
         data=new_course,
         message="Course created successfully",
