@@ -1,15 +1,11 @@
 from pydantic import BaseModel
 
 
-class CheckoutData(BaseModel):
-    fullName: str
+class CheckoutInput(BaseModel):
+    full_name: str
     email: str
     address: str
     city: str
     country: str
-    zipCode: str
+    zip_code: str
 
-
-class CheckoutRequest(BaseModel):
-    course_id: int
-    checkout_data: CheckoutData 

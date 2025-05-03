@@ -15,6 +15,7 @@ from apps.checkout import models as checkout_models
 from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
+from apps.checkout import routers as checkout_routers
 from utils.response_utils import create_response
 from apps.cart import routers as cart_routers
 
@@ -52,9 +53,7 @@ def init_db():
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
-    return create_response(
-        message=str(exc.detail), status_code=exc.status_code
-    )
+    return create_response(message=str(exc.detail), status_code=exc.status_code)
 
 
 @app.exception_handler(Exception)
@@ -81,6 +80,7 @@ def shutdown_event():
 
     # Clear SQLAlchemy cache
     from conf.database import SessionLocal
+
     session = SessionLocal()
     session.expire_all()
     session.close()
@@ -95,4 +95,5 @@ def main():
 app.include_router(user_routers.router, tags=["users"])
 app.include_router(course_routers.router, tags=["courses"])
 app.include_router(categories_routers.router, tags=["categories"])
-app.include_router(cart_routers.router, tags=["Cart"])
+app.include_router(cart_routers.router, tags=["cart"])
+app.include_router(checkout_routers.router, tags=["checkout"])
