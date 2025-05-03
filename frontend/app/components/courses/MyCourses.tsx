@@ -1,13 +1,11 @@
 "use client";
 
 import { useGetEnrolledCoursesQuery } from "@/app/store/reducers/courses/api";
-import { Card, Container, Row, Col } from "react-bootstrap";
-import Link from "next/link";
-import Image from "next/image";
+import { Container, Row } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
-import { getCourseImagePath } from "@/app/utils/image-path";
 import Pagination from "@/app/components/common/Pagination";
 import { useState } from "react";
+import CourseCard from "@/app/components/dashboard/courses/CourseCard";
 
 const MyCourses = () => {
     const [pageNumber, setPageNumber] = useState(1);
@@ -68,34 +66,7 @@ const MyCourses = () => {
                             <>
                                 <Row className="g-4">
                                     {courses?.map((course) => (
-                                        <Col key={course.id} xs={12} md={6} lg={3}>
-                                            <Link href={`/courses/${course.slug}`} className="text-decoration-none">
-                                                <Card className="h-100">
-                                                    <div
-                                                        style={{
-                                                            position: "relative",
-                                                            height: "200px",
-                                                        }}
-                                                    >
-                                                        <Image
-                                                            src={getCourseImagePath(course)}
-                                                            alt={course.title}
-                                                            fill
-                                                            style={{
-                                                                objectFit: "cover",
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <Card.Body>
-                                                        <Card.Title>{course.title}</Card.Title>
-                                                        <Card.Text className="text-muted">
-                                                            {course.description?.slice(0, 100)}
-                                                            ...
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                </Card>
-                                            </Link>
-                                        </Col>
+                                        <CourseCard key={course.id} course={course} />
                                     ))}
                                 </Row>
 

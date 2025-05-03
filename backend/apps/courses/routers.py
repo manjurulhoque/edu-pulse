@@ -400,6 +400,7 @@ async def enrolled_courses(
     courses = (
         db.query(Course)
         .filter(Course.enrollments.any(Enrollment.user_id == current_user.id))
+        .options(joinedload(Course.user), joinedload(Course.category))
         .offset(skip)
         .limit(params["page_size"])
         .all()
