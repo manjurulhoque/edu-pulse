@@ -1,17 +1,16 @@
 import Login from "@/app/components/auth/Login";
 import { getServerSession } from "next-auth";
 import { permanentRedirect } from "next/navigation";
-import {authOptions} from "@/app/utils/authOptions";
+import { authOptions } from "@/app/utils/authOptions";
 
 const LoginPage = async () => {
     // const router = useRouter();
     const data = await getServerSession(authOptions);
     if (data?.user) {
-        permanentRedirect('/');
+        permanentRedirect("/");
     }
 
-
-    return <Login/>;
+    return <Login />;
 };
 
 export default LoginPage;

@@ -37,6 +37,21 @@ export const CartApi = createApi({
             }),
             invalidatesTags: ["Cart"],
         }),
+        createCheckout: builder.mutation<void, {
+                full_name: string;
+                address: string;
+                city: string;
+                country: string;
+                zip_code: string;
+            }
+        >({
+            query: (checkout) => ({
+                url: `checkout`,
+                method: "POST",
+                body: checkout,
+            }),
+            invalidatesTags: ["Cart"],
+        }),
     }),
 });
 
@@ -45,4 +60,5 @@ export const {
     useAddToCartMutation,
     useRemoveFromCartMutation,
     useClearCartMutation,
+    useCreateCheckoutMutation,
 } = CartApi;
