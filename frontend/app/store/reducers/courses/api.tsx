@@ -1,98 +1,128 @@
-import {createApi} from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
-import { PaginationArgs, Response, PaginatedResponse } from "@/app/models/request.interface";
-
+import {
+    PaginationArgs,
+    Response,
+    PaginatedResponse,
+} from "@/app/models/request.interface";
 
 export const CourseApi = createApi({
     reducerPath: "CourseApi",
     refetchOnFocus: true,
     baseQuery: DynamicBaseQuery,
-    tagTypes: ['Courses', 'Course'],
+    tagTypes: ["Courses", "Course"],
     endpoints: (builder) => ({
         allCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
-            query: ({page, page_size}) => {
+            query: ({ page, page_size }) => {
                 return {
                     url: "all-courses/",
-                    params: {page, page_size}
-                }
+                    params: { page, page_size },
+                };
             },
-            providesTags: ['Courses'],
-            transformResponse: (rawResult: { data: PaginatedResponse<Course>, message: string }, meta) => {
-                const {data} = rawResult;
+            providesTags: ["Courses"],
+            transformResponse: (
+                rawResult: { data: PaginatedResponse<Course>; message: string },
+                meta
+            ) => {
+                const { data } = rawResult;
                 return data;
             },
         }),
         courseDetails: builder.query<Course, { slug: string }>({
-            query: ({slug}) => {
+            query: ({ slug }) => {
                 return {
                     url: `course/${slug}`,
-                }
+                };
             },
-            transformResponse: (rawResult: { data: Course, message: string }, meta) => {
-                const {data} = rawResult;
+            transformResponse: (
+                rawResult: { data: Course; message: string },
+                meta
+            ) => {
+                const { data } = rawResult;
                 return data;
             },
         }),
         myCreatedCourses: builder.query<Course[], null>({
             query: () => {
                 return {
-                    url: 'my-created-courses/',
-                }
+                    url: "my-created-courses/",
+                };
             },
-            providesTags: ['Course'],
-            transformResponse: (rawResult: { data: Course[], message: string }, meta) => {
-                const {data} = rawResult;
+            providesTags: ["Course"],
+            transformResponse: (
+                rawResult: { data: Course[]; message: string },
+                meta
+            ) => {
+                const { data } = rawResult;
                 return data;
             },
         }),
         createCourse: builder.mutation({
             query: (formData) => {
                 return {
-                    url: 'create-course/',
-                    method: 'POST',
+                    url: "create-course/",
+                    method: "POST",
                     body: formData,
-                }
+                };
             },
-            invalidatesTags: ['Course']
+            invalidatesTags: ["Course"],
         }),
         updateCourse: builder.mutation({
-            query: ({id, formData}) => {
+            query: ({ id, formData }) => {
                 return {
                     url: `update-course/${id}/`,
-                    method: 'PUT',
+                    method: "PUT",
                     body: formData,
-                }
+                };
             },
-            invalidatesTags: ['Course']
+            invalidatesTags: ["Course"],
         }),
         publishCourse: builder.mutation({
             query: (formData) => {
                 return {
-                    url: 'publish-course/',
-                    method: 'POST',
+                    url: "publish-course/",
+                    method: "POST",
                     body: formData,
-                }
+                };
             },
-            invalidatesTags: ['Course']
+            invalidatesTags: ["Course"],
         }),
         updateCurriculum: builder.mutation({
-            query: ({id, formData}) => {
+            query: ({ id, formData }) => {
                 return {
                     url: `/course/${id}/update-curriculum/`,
-                    method: 'PUT',
+                    method: "PUT",
                     body: formData,
-                }
+                };
             },
-            invalidatesTags: ['Course'] // used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
+            invalidatesTags: ["Course"], // used to specify tags that should be invalidated when a particular mutation is performed. This helps in managing cache updates efficiently.
         }),
-        getCoursesByCategory: builder.query<Response<Course[]>, { category_slug: string }>({
+        getCoursesByCategory: builder.query<
+            Response<Course[]>,
+            { category_slug: string }
+        >({
             query: ({ category_slug }) => {
                 return {
                     url: `courses-by-category/${category_slug}`,
-                }
+                };
             },
         }),
-    })
+        getEnrolledCourses: builder.query<Course[], null>({
+            query: () => {
+                return {
+                    url: "enrolled-courses/",
+                };
+            },
+            providesTags: ["Course"],
+            transformResponse: (
+                rawResult: { data: Course[]; message: string },
+                meta
+            ) => {
+                const { data } = rawResult;
+                return data;
+            },
+        }),
+    }),
 });
 
 export const {
@@ -104,4 +134,5 @@ export const {
     usePublishCourseMutation,
     useUpdateCurriculumMutation,
     useGetCoursesByCategoryQuery,
+    useGetEnrolledCoursesQuery,
 } = CourseApi;
