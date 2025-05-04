@@ -4,9 +4,14 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { sidebarItems } from "@/app/data/dashBoardSidebar";
+import { useSession } from "next-auth/react";
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const session = useSession();
+
+    const user = session.data?.user;
+
     return (
         <div className="sidebar -dashboard">
             {sidebarItems.map((elm, i) => (
