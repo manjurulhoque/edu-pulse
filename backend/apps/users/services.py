@@ -174,9 +174,7 @@ async def get_dashboard_statistics(db: Session, user_id: int):
     ).scalar() or 0
     
     # Get total time spent learning (in minutes)
-    total_time_spent = db.query(func.sum(enrollment_models.Enrollment.time_spent)).filter(
-        enrollment_models.Enrollment.user_id == user_id
-    ).scalar() or 0
+    total_time_spent = 0
     
     # Get certificates earned
     certificates_earned = db.query(func.count(enrollment_models.Enrollment.id)).filter(
@@ -184,10 +182,14 @@ async def get_dashboard_statistics(db: Session, user_id: int):
         enrollment_models.Enrollment.certificate_issued == True
     ).scalar() or 0
     
+    current_time = datetime.now(timezone.utc)
+
+    one_weeks_ago = current_time - timedelta(weeks=1)
+    
     # Get recent activity (last 7 days)
     recent_activity = db.query(func.count(enrollment_models.LessonCompletion.id)).filter(
         enrollment_models.LessonCompletion.user_id == user_id,
-        enrollment_models.LessonCompletion.completed_at >= func.date('now', '-7 days')
+        enrollment_models.LessonCompletion.completed_at >= one_weeks_ago
     ).scalar() or 0
     
     return {
