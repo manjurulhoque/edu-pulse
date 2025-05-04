@@ -61,13 +61,25 @@ def login(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = services.create_access_token(
-        data={"sub": user.email, "id": user.id, "email": user.email},
+        data={
+            "sub": user.email,
+            "id": user.id,
+            "email": user.email,
+            "is_admin": user.is_admin,
+            "is_instructor": user.is_instructor,
+        },
         expires_delta=access_token_expires,
     )
     # Refresh Token
     refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)  # longer lifespan
     refresh_token = services.create_refresh_token(
-        data={"sub": user.email, "id": user.id, "email": user.email},
+        data={
+            "sub": user.email,
+            "id": user.id,
+            "email": user.email,
+            "is_admin": user.is_admin,
+            "is_instructor": user.is_instructor,
+        },
         expires_delta=refresh_token_expires,
     )
 
@@ -127,14 +139,12 @@ def refresh_access_token(
 
 @router.get("/dashboard/statistics")
 async def get_dashboard_statistics(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
     if not current_user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
         )
-    
+
     statistics = await services.get_dashboard_statistics(db, current_user.id)
     return create_response(data=statistics)

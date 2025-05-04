@@ -11,17 +11,20 @@ export default function Sidebar() {
     const session = useSession();
 
     const user = session.data?.user;
+    let { is_admin, is_instructor } = user || {};
 
     return (
         <div className="sidebar -dashboard">
-            {sidebarItems.map((elm, i) => (
-                <div key={i} className={`sidebar__item   ${pathname == elm.href ? "-is-active" : ""} `}>
-                    <Link key={i} href={elm.href} className="d-flex items-center text-17 lh-1 fw-500 ">
-                        <i className={`${elm.iconClass} mr-15`}></i>
-                        {elm.text}
-                    </Link>
-                </div>
-            ))}
+            {sidebarItems.map((elm, i) =>
+                (i === 3 || i === 4) && !is_instructor ? null : (
+                    <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
+                        <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
+                            <i className={`${elm.iconClass} mr-15`}></i>
+                            {elm.text}
+                        </Link>
+                    </div>
+                )
+            )}
         </div>
     );
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useGetDashboardStatisticsQuery } from "@/app/store/reducers/statistics/api";
-
+import { Grid } from "react-loader-spinner";
 export const states = [
     {
         id: 1,
@@ -37,36 +37,72 @@ export const states = [
 export default function DashboardHome() {
     const { data: statistics, isLoading, error } = useGetDashboardStatisticsQuery();
 
+    const updatedStates = useMemo(
+        () => [
+            {
+                ...states[0],
+                value: statistics?.total_enrolled_courses || 0,
+                new: statistics?.recent_activity || 0,
+            },
+            {
+                ...states[1],
+                value: statistics?.total_completed_courses || 0,
+                new: 0,
+            },
+            {
+                ...states[2],
+                value: statistics?.total_lessons_completed || 0,
+                new: 0,
+            },
+            {
+                ...states[3],
+                value: statistics?.certificates_earned || 0,
+                new: 0,
+            },
+        ],
+        [statistics]
+    );
+
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="dashboard__main">
+                <div className="dashboard__content bg-light-4">
+                    <div className="row pb-50 mb-10">
+                        <div className="col-auto">
+                            <h1 className="text-30 lh-12 fw-700">My Learning Dashboard</h1>
+                            <div className="mt-10">Track your learning progress and achievements</div>
+                        </div>
+                    </div>
+
+                    <div className="row y-gap-30">
+                        <div
+                            style={{
+                                display: isLoading ? "flex" : "none",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100vh",
+                            }}
+                        >
+                            <Grid
+                                visible={isLoading}
+                                height="60"
+                                width="60"
+                                color="#4fa94d"
+                                ariaLabel="grid-loading"
+                                radius="12.5"
+                                wrapperStyle={{}}
+                                wrapperClass="grid-wrapper"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
         return <div>Error loading statistics</div>;
     }
-
-    const updatedStates = [
-        {
-            ...states[0],
-            value: statistics?.total_enrolled_courses || 0,
-            new: statistics?.recent_activity || 0,
-        },
-        {
-            ...states[1],
-            value: statistics?.total_completed_courses || 0,
-            new: 0,
-        },
-        {
-            ...states[2],
-            value: statistics?.total_lessons_completed || 0,
-            new: 0,
-        },
-        {
-            ...states[3],
-            value: statistics?.certificates_earned || 0,
-            new: 0,
-        },
-    ];
 
     return (
         <div className="dashboard__main">

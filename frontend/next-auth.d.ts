@@ -5,6 +5,8 @@ declare module 'next-auth' {
     export interface UserObject {
         id?: string;
         email?: string;
+        is_admin?: boolean;
+        is_instructor?: boolean;
     }
 
     /**
@@ -49,5 +51,7 @@ declare module 'next-auth/jwt' {
         exp: number;
         iat: number;
         jti: string;
+        is_admin?: boolean;
+        is_instructor?: boolean;
     }
 }

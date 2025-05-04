@@ -43,7 +43,7 @@ export const authOptions: AuthOptions = {
                 const result = await customAuthenticationFunction(credentials);
 
                 if (result) {
-                    const { id, email, exp }: DecodedJWT = jwtDecode(
+                    const { id, email, exp, is_admin, is_instructor }: DecodedJWT = jwtDecode(
                         result.data.access
                     );
 
@@ -53,6 +53,8 @@ export const authOptions: AuthOptions = {
                         user: {
                             id,
                             email,
+                            is_admin,
+                            is_instructor,
                         },
                     } as User;
 
