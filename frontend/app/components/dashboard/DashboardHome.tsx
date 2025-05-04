@@ -3,7 +3,46 @@
 import React, { useMemo } from "react";
 import { useGetDashboardStatisticsQuery } from "@/app/store/reducers/statistics/api";
 import { Grid } from "react-loader-spinner";
-export const states = [
+
+interface StatisticCard {
+    id: number;
+    title: string;
+    value: number;
+    new: number;
+    iconClass: string;
+}
+
+const StatisticCard: React.FC<StatisticCard> = ({ title, value, new: newValue, iconClass }) => (
+    <div className="d-flex justify-between items-center py-35 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
+        <div>
+            <div className="lh-1 fw-500">{title}</div>
+            <div className="text-24 lh-1 fw-700 text-dark-1 mt-20">{value}</div>
+            {newValue > 0 && (
+                <div className="lh-1 mt-25">
+                    <span className="text-purple-1">{newValue}</span> Recent Activity
+                </div>
+            )}
+        </div>
+        <i className={`text-40 ${iconClass} text-purple-1`}></i>
+    </div>
+);
+
+const LoadingSpinner: React.FC = () => (
+    <div className="flex justify-center items-center h-screen">
+        <Grid
+            visible={true}
+            height="60"
+            width="60"
+            color="#4fa94d"
+            ariaLabel="grid-loading"
+            radius="12.5"
+            wrapperStyle={{}}
+            wrapperClass="grid-wrapper"
+        />
+    </div>
+);
+
+export const states: StatisticCard[] = [
     {
         id: 1,
         title: "Enrolled Courses",
@@ -33,6 +72,15 @@ export const states = [
         iconClass: "icon-certificate",
     },
 ];
+
+const DashboardHeader: React.FC = () => (
+    <div className="row pb-50 mb-10">
+        <div className="col-auto">
+            <h1 className="text-30 lh-12 fw-700">My Learning Dashboard</h1>
+            <div className="mt-10">Track your learning progress and achievements</div>
+        </div>
+    </div>
+);
 
 export default function DashboardHome() {
     const { data: statistics, isLoading, error } = useGetDashboardStatisticsQuery();
@@ -67,34 +115,8 @@ export default function DashboardHome() {
         return (
             <div className="dashboard__main">
                 <div className="dashboard__content bg-light-4">
-                    <div className="row pb-50 mb-10">
-                        <div className="col-auto">
-                            <h1 className="text-30 lh-12 fw-700">My Learning Dashboard</h1>
-                            <div className="mt-10">Track your learning progress and achievements</div>
-                        </div>
-                    </div>
-
-                    <div className="row y-gap-30">
-                        <div
-                            style={{
-                                display: isLoading ? "flex" : "none",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: "100vh",
-                            }}
-                        >
-                            <Grid
-                                visible={isLoading}
-                                height="60"
-                                width="60"
-                                color="#4fa94d"
-                                ariaLabel="grid-loading"
-                                radius="12.5"
-                                wrapperStyle={{}}
-                                wrapperClass="grid-wrapper"
-                            />
-                        </div>
-                    </div>
+                    <DashboardHeader />
+                    <LoadingSpinner />
                 </div>
             </div>
         );
@@ -107,29 +129,12 @@ export default function DashboardHome() {
     return (
         <div className="dashboard__main">
             <div className="dashboard__content bg-light-4">
-                <div className="row pb-50 mb-10">
-                    <div className="col-auto">
-                        <h1 className="text-30 lh-12 fw-700">My Learning Dashboard</h1>
-                        <div className="mt-10">Track your learning progress and achievements</div>
-                    </div>
-                </div>
+                <DashboardHeader />
 
                 <div className="row y-gap-30">
-                    {updatedStates.map((elm, i) => (
-                        <div key={i} className="col-xl-3 col-md-6">
-                            <div className="d-flex justify-between items-center py-35 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
-                                <div>
-                                    <div className="lh-1 fw-500">{elm.title}</div>
-                                    <div className="text-24 lh-1 fw-700 text-dark-1 mt-20">{elm.value}</div>
-                                    {elm.new > 0 && (
-                                        <div className="lh-1 mt-25">
-                                            <span className="text-purple-1">{elm.new}</span> Recent Activity
-                                        </div>
-                                    )}
-                                </div>
-
-                                <i className={`text-40 ${elm.iconClass} text-purple-1`}></i>
-                            </div>
+                    {updatedStates.map((stat) => (
+                        <div key={stat.id} className="col-xl-3 col-md-6">
+                            <StatisticCard {...stat} />
                         </div>
                     ))}
                 </div>
