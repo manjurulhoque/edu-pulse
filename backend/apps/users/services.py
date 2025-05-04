@@ -169,13 +169,13 @@ async def get_dashboard_statistics(db: Session, user_id: int):
     ).scalar() or 0
     
     # Get total lessons completed
-    total_lessons_completed = db.query(func.count(lesson_models.LessonCompletion.id)).filter(
-        lesson_models.LessonCompletion.user_id == user_id
+    total_lessons_completed = db.query(func.count(enrollment_models.Enrollment.id)).filter(
+        enrollment_models.Enrollment.user_id == user_id
     ).scalar() or 0
     
     # Get total time spent learning (in minutes)
-    total_time_spent = db.query(func.sum(lesson_models.LessonCompletion.time_spent)).filter(
-        lesson_models.LessonCompletion.user_id == user_id
+    total_time_spent = db.query(func.sum(enrollment_models.Enrollment.time_spent)).filter(
+        enrollment_models.Enrollment.user_id == user_id
     ).scalar() or 0
     
     # Get certificates earned
@@ -185,9 +185,9 @@ async def get_dashboard_statistics(db: Session, user_id: int):
     ).scalar() or 0
     
     # Get recent activity (last 7 days)
-    recent_activity = db.query(func.count(lesson_models.LessonCompletion.id)).filter(
-        lesson_models.LessonCompletion.user_id == user_id,
-        lesson_models.LessonCompletion.completed_at >= func.date('now', '-7 days')
+    recent_activity = db.query(func.count(enrollment_models.LessonCompletion.id)).filter(
+        enrollment_models.LessonCompletion.user_id == user_id,
+        enrollment_models.LessonCompletion.completed_at >= func.date('now', '-7 days')
     ).scalar() or 0
     
     return {
