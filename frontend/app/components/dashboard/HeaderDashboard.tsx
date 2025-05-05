@@ -109,14 +109,14 @@ const HeaderDashboard: React.FC = () => {
                                             width={40}
                                             height={40}
                                             className="-light-d-none"
-                                            src="/assets/img/general/logo.png"
+                                            src="/assets/img/general/logo.svg"
                                             alt="logo"
                                         />
                                         <Image
                                             width={40}
                                             height={40}
                                             className="-dark-d-none"
-                                            src="/assets/img/general/logo.png"
+                                            src="/assets/img/general/logo.svg"
                                             alt="logo"
                                         />
                                     </Link>
