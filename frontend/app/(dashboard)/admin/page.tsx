@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Tabs, Tab, Card, Form, Table, Button, InputGroup } from "react-bootstrap";
+import { useAdminRedirect } from "@/app/hooks/useAdminRedirect";
 
 // Mock data - Replace with actual API calls
 const mockUsers = [
@@ -22,6 +23,7 @@ const mockReports = [
 export default function AdminDashboard() {
     const [searchQuery, setSearchQuery] = useState("");
     const [activeTab, setActiveTab] = useState("users");
+    const { session, status } = useAdminRedirect();
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
