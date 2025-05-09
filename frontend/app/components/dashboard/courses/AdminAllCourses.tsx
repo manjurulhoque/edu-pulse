@@ -1,17 +1,14 @@
 "use client";
 
 import { useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
+import { Grid } from "react-loader-spinner";
+import { Container, Row } from "react-bootstrap";
+import CourseCard from "./CourseCard";
 
 const AdminAllCourses = () => {
-    const { data: courses, isLoading: isCoursesLoading } = useAdminGetCoursesQuery({ page: 1, page_size: 10 });
-
-    if (isCoursesLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (courses) {
-        console.log(courses);
-    }
+    const { data: courseData, isLoading: isCoursesLoading } = useAdminGetCoursesQuery({ page: 1, page_size: 10 });
+    let data = courseData?.data;
+    let { results: courses, total } = data || { results: [], total: 0 };
 
     return (
         <div className="dashboard__main">
@@ -24,15 +21,53 @@ const AdminAllCourses = () => {
                 </div>
 
                 <div className="row y-gap-30">
-                    {courses?.results?.map((course) => (
-                        <div key={course.id} className="col-12">
-                            <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                <div className="p-20">
-                                    <h3 className="text-18 lh-14 fw-700">{course.title}</h3>
-                                </div>
-                            </div>
+                    <Container>
+                        <div
+                            style={{
+                                display: isCoursesLoading ? "flex" : "none",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100vh",
+                            }}
+                        >
+                            <Grid
+                                visible={isCoursesLoading}
+                                height="60"
+                                width="60"
+                                color="#4fa94d"
+                                ariaLabel="grid-loading"
+                                radius="12.5"
+                                wrapperStyle={{}}
+                                wrapperClass="grid-wrapper"
+                            />
                         </div>
-                    ))}
+
+                        {!isCoursesLoading && courses && courses.length === 0 && (
+                            <div className="text-center">
+                                <h4>No courses found.</h4>
+                            </div>
+                        )}
+
+                        {!isCoursesLoading && (
+                            <>
+                                <Row className="g-4">
+                                    {courses?.map((course) => (
+                                        <CourseCard key={course.id} course={course} />
+                                    ))}
+                                </Row>
+
+                                <div className="row justify-center pt-90 lg:pt-50">
+                                    <div className="col-auto">
+                                        {/* <Pagination
+                                            pageNumber={pageNumber ?? 1}
+                                            setPageNumber={setPageNumber}
+                                            data={data as any}
+                                        /> */}
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </Container>
                 </div>
             </div>
         </div>

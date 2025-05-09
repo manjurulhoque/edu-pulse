@@ -1,4 +1,4 @@
-import MyCourses from "@/app/components/courses/MyCourses";
+import MyCourses from "@/app/components/dashboard/courses/MyCourses";
 import HeaderDashboard from "@/app/components/dashboard/HeaderDashboard";
 import Sidebar from "@/app/components/dashboard/Sidebar";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
