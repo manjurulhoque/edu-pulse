@@ -11,6 +11,9 @@ import ReduxProvider from "@/app/components/ReduxProvider";
 import { ToastContainer } from "react-toastify";
 import { authOptions } from "@/app/utils/authOptions";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import HeaderDashboard from "../components/dashboard/HeaderDashboard";
+import Sidebar from "../components/dashboard/Sidebar";
+import FooterDashboard from "../components/dashboard/FooterDashboard";
 
 interface Props {
     children: React.ReactNode;
@@ -31,7 +34,23 @@ const DashboardLayout: React.FC<Props> = async ({ children }) => {
                 <AOSInit />
                 <body>
                     <ReduxProvider>
-                        <NuqsAdapter>{children}</NuqsAdapter>
+                        <NuqsAdapter>
+                            <div className="barba-container" data-barba="container">
+                                <main className="main-content">
+                                    <HeaderDashboard />
+                                    <div className="content-wrapper js-content-wrapper overflow-hidden">
+                                        <div id="dashboardOpenClose" className="dashboard -home-9 js-dashboard-home-9">
+                                            <div className="dashboard__sidebar scroll-bar-1">
+                                                <Sidebar />
+                                            </div>
+                                            {children}
+                                        </div>
+                                    </div>
+                                </main>
+
+                                <FooterDashboard />
+                            </div>
+                        </NuqsAdapter>
                     </ReduxProvider>
                     <ToastContainer />
                 </body>

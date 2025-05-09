@@ -1,3 +1,4 @@
+import AdminAllCourses from "@/app/components/courses/AdminAllCourses";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,9 +9,7 @@ export const metadata: Metadata = {
 
 const CoursesPage = () => {
     return (
-        <div>
-            <h1>Courses</h1>
-        </div>
+        <AdminAllCourses />
     );
 };
 
