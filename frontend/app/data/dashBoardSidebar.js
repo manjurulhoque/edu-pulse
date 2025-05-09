@@ -1,20 +1,22 @@
+import { LayoutDashboard, PlayCircle, List, Users } from 'lucide-react';
+
 export const instructorSidebarItems = [
     {
         id: 1,
         href: "/dashboard",
-        iconClass: "text-20 icon-discovery",
+        icon: LayoutDashboard,
         text: "Dashboard",
     },
     {
         id: 3,
         href: "/my-created-courses",
-        iconClass: "text-20 icon-play-button",
+        icon: PlayCircle,
         text: "Created Courses",
     },
     {
         id: 4,
         href: "/create-course",
-        iconClass: "text-20 icon-list",
+        icon: List,
         text: "Create Course",
     },
 ];
@@ -23,20 +25,20 @@ export const adminSidebarItems = [
     {
         id: 1,
         href: "/admin",
-        iconClass: "text-20 icon-discovery",
+        icon: LayoutDashboard,
         text: "Dashboard",
     },
     {
         id: 2,
         href: "/admin/courses",
-        iconClass: "text-20 icon-play-button",
-        text: "Courses",
+        icon: PlayCircle,
+        text: "AllCourses",
     },
     {
         id: 3,
         href: "/admin/users",
-        iconClass: "text-20 icon-users",
-        text: "Users",
+        icon: Users,
+        text: "All Users",
     },
 ];
 
@@ -44,7 +46,7 @@ export const userSidebarItems = [
     {
         id: 1,
         href: "/dashboard/my-courses",
-        iconClass: "text-20 icon-play-button",
+        icon: PlayCircle,
         text: "My Learning",
     },
 ];

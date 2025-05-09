@@ -19,7 +19,7 @@ export default function Sidebar() {
                 ? adminSidebarItems.map((elm, i) => (
                       <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
                           <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
-                              <i className={`${elm.iconClass} mr-15`}></i>
+                              <elm.icon className="w-5 h-5 mr-15" />
                               {elm.text}
                           </Link>
                       </div>
@@ -28,7 +28,7 @@ export default function Sidebar() {
                 ? instructorSidebarItems.map((elm, i) => (
                       <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
                           <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
-                              <i className={`${elm.iconClass} mr-15`}></i>
+                              <elm.icon className="w-5 h-5 mr-15" />
                               {elm.text}
                           </Link>
                       </div>
@@ -36,7 +36,7 @@ export default function Sidebar() {
                 : userSidebarItems.map((elm, i) => (
                       <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
                           <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
-                              <i className={`${elm.iconClass} mr-15`}></i>
+                              <elm.icon className="w-5 h-5 mr-15" />
                               {elm.text}
                           </Link>
                       </div>
