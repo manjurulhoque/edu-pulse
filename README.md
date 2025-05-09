@@ -1,3 +1,9 @@
+# <table><tr><td><img src="frontend/public/assets/img/general/logo.svg" alt="EduPulse Logo" width="50"/></td><td>EduPulse</td></tr></table>
+
+EduPulse is a modern educational platform that connects students and educators, providing an interactive learning environment with real-time feedback and progress tracking.
+
+## Development Setup
+
 Run from root folder:
 
 ```bash
