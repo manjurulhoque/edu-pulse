@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { sidebarItems } from "@/app/data/dashBoardSidebar";
+import { instructorSidebarItems, adminSidebarItems, userSidebarItems } from "@/app/data/dashBoardSidebar";
 import { useSession } from "next-auth/react";
 
 export default function Sidebar() {
@@ -15,16 +15,32 @@ export default function Sidebar() {
 
     return (
         <div className="sidebar -dashboard">
-            {sidebarItems.map((elm, i) =>
-                (i === 3 || i === 4) && !is_instructor ? null : (
-                    <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
-                        <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
-                            <i className={`${elm.iconClass} mr-15`}></i>
-                            {elm.text}
-                        </Link>
-                    </div>
-                )
-            )}
+            {is_admin
+                ? adminSidebarItems.map((elm, i) => (
+                      <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
+                          <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
+                              <i className={`${elm.iconClass} mr-15`}></i>
+                              {elm.text}
+                          </Link>
+                      </div>
+                  ))
+                : is_instructor
+                ? instructorSidebarItems.map((elm, i) => (
+                      <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
+                          <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
+                              <i className={`${elm.iconClass} mr-15`}></i>
+                              {elm.text}
+                          </Link>
+                      </div>
+                  ))
+                : userSidebarItems.map((elm, i) => (
+                      <div key={i} className={`sidebar__item ${pathname === elm.href ? "-is-active" : ""}`}>
+                          <Link href={elm.href} className="d-flex items-center text-17 lh-1 fw-500">
+                              <i className={`${elm.iconClass} mr-15`}></i>
+                              {elm.text}
+                          </Link>
+                      </div>
+                  ))}
         </div>
     );
 }
