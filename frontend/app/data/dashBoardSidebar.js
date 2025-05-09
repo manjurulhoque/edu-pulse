@@ -32,7 +32,7 @@ export const adminSidebarItems = [
         id: 2,
         href: "/admin/courses",
         icon: PlayCircle,
-        text: "AllCourses",
+        text: "All Courses",
     },
     {
         id: 3,

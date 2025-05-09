@@ -5,7 +5,7 @@ import HeaderDashboard from "@/app/components/dashboard/HeaderDashboard";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import AdminDashboardHome from "@/app/components/admin/AdminDashboardHome";
 
-export default function AdminDashboard() {
+export default function AdminDashboardPage() {
     return (
         <div className="barba-container" data-barba="container">
             <main className="main-content">
