@@ -1,16 +1,15 @@
 "use client";
 
-import React, {useCallback, useMemo, useState} from "react";
+import React, { useMemo, useState } from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
-import 'react-quill/dist/quill.snow.css';
-import {useCategoriesQuery} from "@/app/store/reducers/categories/api";
+import "react-quill/dist/quill.snow.css";
+import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import dynamic from "next/dynamic";
-import {useFormik} from "formik";
-import {z} from 'zod';
-import {useCreateCourseMutation} from "@/app/store/reducers/courses/api";
-import {toast} from "react-toastify";
-import Dropzone, {useDropzone} from "react-dropzone";
-import CourseCurriculum from "@/app/components/dashboard/courses/CourseCurriculum";
+import { useFormik } from "formik";
+import { z } from "zod";
+import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
+import { toast } from "react-toastify";
+import Dropzone from "react-dropzone";
 
 interface FormValues {
     title: string;
@@ -30,11 +29,11 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const formSchema = z.object({
-    title: z.string().min(3, 'Title is required'),
-    description: z.string().min(10, 'At least 10 characters is required'),
-    level: z.string().min(1, 'Level is required'),
+    title: z.string().min(3, "Title is required"),
+    description: z.string().min(10, "At least 10 characters is required"),
+    level: z.string().min(1, "Level is required"),
     category_id: z.number().int("Category is required"),
-    short_description: z.string().min(10, 'At least 10 characters is required'),
+    short_description: z.string().min(10, "At least 10 characters is required"),
     is_free: z.boolean(),
     actual_price: z.number().multipleOf(0.01),
     discounted_price: z.number().multipleOf(0.01),
@@ -49,28 +48,24 @@ const formSchema = z.object({
     requirements: z.string().optional(),
 });
 
-
 const CreateCourse: React.FC = () => {
-    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {ssr: false}), []);
-    const {data, error, isLoading: isCategoriesLoading} = useCategoriesQuery(null);
+    const ReactQuill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
+    const { data, error, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
     const [createNewCourse] = useCreateCourseMutation();
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const learningModules = {
-        toolbar: [
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            ['link'],
-        ],
-    }
+        toolbar: [[{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], ["link"]],
+    };
 
     const formik = useFormik<FormValues>({
         initialValues: {
-            title: '',
-            short_description: '',
-            description: '',
-            student_will_learn: '',
-            requirements: '',
-            level: '',
+            title: "",
+            short_description: "",
+            description: "",
+            student_will_learn: "",
+            requirements: "",
+            level: "",
             category_id: null,
             preview_image: null,
             is_free: false,
@@ -78,7 +73,7 @@ const CreateCourse: React.FC = () => {
             discounted_price: null,
         },
         // validationSchema: toFormikValidationSchema(formSchema),
-        validate: values => {
+        validate: (values) => {
             try {
                 formSchema.parse(values);
                 return {};
@@ -123,7 +118,7 @@ const CreateCourse: React.FC = () => {
     const onDrop = (acceptedFiles: File[]) => {
         // Since only one file is allowed, take the first one
         const file = acceptedFiles[0];
-        formik.setFieldValue('preview_image', file);
+        formik.setFieldValue("preview_image", file);
 
         // Create a URL for the file for preview
         const reader = new FileReader();
@@ -153,9 +148,7 @@ const CreateCourse: React.FC = () => {
                             <div className="py-30 px-30">
                                 <form onSubmit={formik.handleSubmit} className="contact-form row y-gap-30">
                                     <div className="col-12">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Course Title*
-                                        </label>
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">Course Title*</label>
 
                                         <input
                                             required
@@ -181,39 +174,45 @@ const CreateCourse: React.FC = () => {
                                             value={formik.values.short_description}
                                             onChange={formik.handleChange}
                                         ></textarea>
-                                        {
-                                            formik.errors.short_description &&
+                                        {formik.errors.short_description && (
                                             <div>{formik.errors.short_description}</div>
-                                        }
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Preview Image*
-                                        </label>
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">Preview Image*</label>
 
-                                        <Dropzone onDrop={onDrop} maxFiles={1}
-                                                  accept={{"image/*": [".png", ".jpg", ".jpeg", ".webp"]}}>
-                                            {({getRootProps, getInputProps, isDragActive}) => (
-                                                <div {...getRootProps()} style={{
-                                                    border: '2px dashed gray',
-                                                    padding: '80px',
-                                                    textAlign: 'center',
-                                                    cursor: 'pointer'
-                                                }}>
+                                        <Dropzone
+                                            onDrop={onDrop}
+                                            maxFiles={1}
+                                            accept={{ "image/*": [".png", ".jpg", ".jpeg", ".webp"] }}
+                                        >
+                                            {({ getRootProps, getInputProps, isDragActive }) => (
+                                                <div
+                                                    {...getRootProps()}
+                                                    style={{
+                                                        border: "2px dashed gray",
+                                                        padding: "80px",
+                                                        textAlign: "center",
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
                                                     <input {...getInputProps()} />
-                                                    {
-                                                        isDragActive ?
-                                                            <p>Drop the file here...</p> :
-                                                            <p>Drag & drop a file here, or click to select a file</p>
-                                                    }
+                                                    {isDragActive ? (
+                                                        <p>Drop the file here...</p>
+                                                    ) : (
+                                                        <p>Drag & drop a file here, or click to select a file</p>
+                                                    )}
                                                 </div>
                                             )}
                                         </Dropzone>
                                         {previewUrl && (
-                                            <div style={{marginTop: '20px', textAlign: 'center'}}>
-                                                <img src={previewUrl} alt="Preview"
-                                                     style={{maxWidth: '100%', maxHeight: '300px'}}/>
+                                            <div style={{ marginTop: "20px", textAlign: "center" }}>
+                                                <img
+                                                    src={previewUrl}
+                                                    alt="Preview"
+                                                    style={{ maxWidth: "100%", maxHeight: "300px" }}
+                                                />
                                             </div>
                                         )}
                                     </div>
@@ -226,7 +225,7 @@ const CreateCourse: React.FC = () => {
                                         <ReactQuill
                                             theme="snow"
                                             value={formik.values.description}
-                                            onChange={(value) => formik.setFieldValue('description', value)}
+                                            onChange={(value) => formik.setFieldValue("description", value)}
                                         />
                                         {formik.errors.description && <div>{formik.errors.description}</div>}
                                     </div>
@@ -239,45 +238,49 @@ const CreateCourse: React.FC = () => {
                                         <ReactQuill
                                             theme="snow"
                                             value={formik.values.student_will_learn}
-                                            onChange={(value) => formik.setFieldValue('student_will_learn', value)}
+                                            onChange={(value) => formik.setFieldValue("student_will_learn", value)}
                                             modules={learningModules}
                                         />
-                                        {formik.errors.student_will_learn &&
-                                            <div>{formik.errors.student_will_learn}</div>}
+                                        {formik.errors.student_will_learn && (
+                                            <div>{formik.errors.student_will_learn}</div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Requirements*
-                                        </label>
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">Requirements*</label>
 
                                         <ReactQuill
                                             theme="snow"
                                             value={formik.values.requirements}
-                                            onChange={(value) => formik.setFieldValue('requirements', value)}
+                                            onChange={(value) => formik.setFieldValue("requirements", value)}
                                             modules={learningModules}
                                         />
-                                        {formik.errors.requirements &&
-                                            <div className="invalid-feedback">{formik.errors.requirements}</div>}
+                                        {formik.errors.requirements && (
+                                            <div className="invalid-feedback">{formik.errors.requirements}</div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-2">
                                         <div className="form-check">
-                                            <input className="form-check-input" type="checkbox"
-                                                   defaultChecked={formik.values.is_free}
-                                                   id="is_free" name="is_free" onChange={formik.handleChange}/>
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                defaultChecked={formik.values.is_free}
+                                                id="is_free"
+                                                name="is_free"
+                                                onChange={formik.handleChange}
+                                            />
                                             <label className="form-check-label" htmlFor="is_free">
                                                 Is free?*
                                             </label>
                                         </div>
-                                        {formik.errors.is_free &&
-                                            <div className="invalid-feedback">{formik.errors.is_free}</div>}
+                                        {formik.errors.is_free && (
+                                            <div className="invalid-feedback">{formik.errors.is_free}</div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-5">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Actual price*
-                                        </label>
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">Actual price*</label>
 
                                         <input
                                             required
@@ -286,12 +289,13 @@ const CreateCourse: React.FC = () => {
                                             step={0.01}
                                             placeholder="Actual price of the course"
                                             name="actual_price"
-                                            value={formik.values.actual_price || ''}
+                                            value={formik.values.actual_price || ""}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
-                                        {formik.errors.actual_price &&
-                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>}
+                                        {formik.errors.actual_price && (
+                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-5">
@@ -306,18 +310,17 @@ const CreateCourse: React.FC = () => {
                                             step={0.01}
                                             placeholder="Price after discount"
                                             name="discounted_price"
-                                            value={formik.values.discounted_price || ''}
+                                            value={formik.values.discounted_price || ""}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
-                                        {formik.errors.actual_price &&
-                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>}
+                                        {formik.errors.actual_price && (
+                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Course Level*
-                                        </label>
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">Course Level*</label>
 
                                         <select
                                             className="form-control"
@@ -340,8 +343,10 @@ const CreateCourse: React.FC = () => {
                                         <select
                                             className="form-control"
                                             name="category_id"
-                                            value={formik.values.category_id ?? ''}
-                                            onChange={(event) => formik.setFieldValue('category_id', parseInt(event.target.value))}
+                                            value={formik.values.category_id ?? ""}
+                                            onChange={(event) =>
+                                                formik.setFieldValue("category_id", parseInt(event.target.value))
+                                            }
                                         >
                                             <option value="">Select category</option>
                                             {!isCategoriesLoading &&
@@ -351,9 +356,9 @@ const CreateCourse: React.FC = () => {
                                                     </option>
                                                 ))}
                                         </select>
-                                        {
-                                            formik.errors.category_id && <div className="invalid-feedback">{formik.errors.category_id}</div>
-                                        }
+                                        {formik.errors.category_id && (
+                                            <div className="invalid-feedback">{formik.errors.category_id}</div>
+                                        )}
                                     </div>
 
                                     {/*<div className="col-12">*/}
@@ -380,9 +385,9 @@ const CreateCourse: React.FC = () => {
                 </div>
             </div>
 
-            <FooterDashboard/>
+            <FooterDashboard />
         </div>
     );
-}
+};
 
 export default CreateCourse;

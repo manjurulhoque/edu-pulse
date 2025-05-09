@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import {useState, useEffect} from "react";
 import {Button, Modal} from "react-bootstrap";
 import {usePublishCourseMutation} from "@/app/store/reducers/courses/api";
 import {toast} from "react-toastify";
 import {redirect} from "next/navigation";
 import Link from "next/link";
+import { Course } from "@/app/models/course.interface";
 
 export default function CoursesCardDashboard({course}: { course: Course }) {
     const [activeShare, setActiveShare] = useState(false);

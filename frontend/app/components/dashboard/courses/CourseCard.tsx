@@ -6,6 +6,7 @@ import { PlayCircle, MoreVertical, Star, StarOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
+import { Course } from "@/app/models/course.interface";
 
 const CourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);

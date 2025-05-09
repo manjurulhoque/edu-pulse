@@ -1,4 +1,4 @@
-import AdminAllCourses from "@/app/components/courses/AdminAllCourses";
+import AdminAllCourses from "@/app/components/dashboard/courses/AdminAllCourses";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

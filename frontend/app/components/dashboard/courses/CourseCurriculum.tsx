@@ -8,7 +8,7 @@ import {
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
+import { Section } from "@/app/models/course.interface";
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
     const { data: course, isLoading } = useCourseDetailsQuery({
