@@ -8,6 +8,7 @@ import Link from "next/link";
 import HomeCourseCard from "./HomeCourseCard";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
+import { Course } from "@/app/models/course.interface";
 
 export default function HomeCourses() {
     const [pageItems, setPageItems] = useState<Course[]>([]);

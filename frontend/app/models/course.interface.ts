@@ -1,4 +1,4 @@
-interface Course {
+export interface Course {
     id: number;
     title: string;
     slug: string;
@@ -20,7 +20,7 @@ interface Course {
     sections: Section[];
 }
 
-interface Section {
+export interface Section {
     id?: number | null | undefined;
     title: string;
     course_id?: number | null | undefined;

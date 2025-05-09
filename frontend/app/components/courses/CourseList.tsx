@@ -9,6 +9,7 @@ import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Grid } from "react-loader-spinner";
 import Star from "@/app/components/common/Star";
 import Pagination from "@/app/components/common/Pagination";
+import { Course } from "@/app/models/course.interface";
 
 export default function CourseList() {
     const [pageSize, setPageSize] = useState(10);

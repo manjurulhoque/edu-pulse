@@ -6,6 +6,7 @@ import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import CoursesCardDashboard from "@/app/components/dashboard/courses/CoursesCardDashboard";
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
+import { Course } from "@/app/models/course.interface";
 
 const MyCreatedCourses: React.FC = () => {
     const [isPublished, setIsPublished] = useQueryState('is_published', parseAsBoolean.withDefault(true));

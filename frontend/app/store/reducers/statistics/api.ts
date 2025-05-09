@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
-import { Response } from "@/app/models/request.interface";
 
 interface Statistics {
     total_enrolled_courses: number;

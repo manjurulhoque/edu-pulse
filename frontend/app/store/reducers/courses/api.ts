@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 import { PaginationArgs, Response, PaginatedResponse } from "@/app/models/request.interface";
+import { Course } from "@/app/models/course.interface";
 
 export const CourseApi = createApi({
     reducerPath: "CourseApi",
