@@ -141,10 +141,5 @@ def refresh_access_token(
 async def get_dashboard_statistics(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    if not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
-        )
-
     statistics = await services.get_dashboard_statistics(db, current_user.id)
     return create_response(data=statistics)

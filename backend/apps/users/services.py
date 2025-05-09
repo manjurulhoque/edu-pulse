@@ -21,7 +21,13 @@ from . import models, schemas
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/login",
+    scheme_name="JWT",
+    auto_error=False,
+    scopes=None,
+    description="JWT token authentication",
+)
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
@@ -77,20 +83,40 @@ def verify_refresh_token(token: str) -> Optional[str]:
         return None
 
 
-def decode_access_token(db, token):
+def decode_access_token(db: Session, token: str) -> models.User:
+    """
+    Decode and validate JWT access token.
+    
+    Args:
+        db: Database session
+        token: JWT token string
+        
+    Returns:
+        User model instance
+        
+    Raises:
+        HTTPException: If token is invalid, expired, or user not found
+    """
     credentials_exception = HTTPException(
         status_code=HTTP_401_UNAUTHORIZED,
-        detail="Invalid credentials",
+        detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
+        email = payload.get("sub")
         if email is None:
             raise credentials_exception
-        # token_data = schemas.TokenData(email=email)
-    except PyJWTError:
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (InvalidTokenError, PyJWTError):
         raise credentials_exception
+        
     user = get_user_by_email(db, email=email)
     if user is None:
         raise credentials_exception

@@ -18,6 +18,7 @@ from apps.categories import routers as categories_routers
 from apps.checkout import routers as checkout_routers
 from utils.response_utils import create_response
 from apps.cart import routers as cart_routers
+from apps.core import admin_routers
 
 load_dotenv()
 
@@ -97,3 +98,4 @@ app.include_router(course_routers.router, tags=["courses"])
 app.include_router(categories_routers.router, tags=["categories"])
 app.include_router(cart_routers.router, tags=["cart"])
 app.include_router(checkout_routers.router, tags=["checkout"])
+app.include_router(admin_routers.admin_router, tags=["admin"])
