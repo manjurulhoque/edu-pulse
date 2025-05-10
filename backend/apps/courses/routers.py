@@ -201,13 +201,14 @@ async def publish_course(
 
 @router.get("/course/{slug}", summary="Get single course")
 async def single_course(slug: str, db: Session = Depends(get_db)):
-    # need to update this query to get lessons separately
     course = (
         db.query(Course)
         .options(
             joinedload(Course.user),
             joinedload(Course.category),
-            joinedload(Course.sections).joinedload(CourseSection.lessons),
+            joinedload(Course.sections).joinedload(
+                CourseSection.lessons.and_(Lesson.is_published == True)
+            ),
         )
         .filter(Course.is_published == True, Course.slug == slug)
         .first()
