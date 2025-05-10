@@ -1,5 +1,5 @@
 import json
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import (
     APIRouter,
@@ -8,14 +8,17 @@ from fastapi import (
     Form,
     HTTPException,
     UploadFile,
-    Body,
 )
 from pydantic import ValidationError
 from sqlalchemy.orm import joinedload, Session
 from starlette import status
 from starlette.requests import Request
 
-from apps.core.decorators import auth_required, admin_or_instructor_required
+from apps.core.decorators import (
+    auth_required,
+    admin_or_instructor_required,
+    instructor_required,
+)
 from apps.courses import services
 from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
@@ -112,7 +115,7 @@ async def update_course(
     course_input: str = Form(...),
     preview_image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(instructor_required),
 ):
     """
     Update course
@@ -295,7 +298,10 @@ async def course_sections(
     summary="Update course curriculum",
 )
 async def update_curriculum(
-    course_id: int, request: Request, db: Session = Depends(get_db)
+    course_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(instructor_required),
 ):
     """
     Update course curriculum
