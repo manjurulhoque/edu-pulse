@@ -40,6 +40,9 @@ router = APIRouter()
 async def all_courses(
     db: Session = Depends(get_db), params: dict = Depends(common_parameters)
 ):
+    """
+    Get all courses
+    """
     query = db.query(Course).filter(Course.is_published == True)
     total = query.count()
     page = params.get("page", 1)
@@ -165,6 +168,9 @@ def my_created_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
 ):
+    """
+    Get all courses created by the current user
+    """
     courses = db.query(Course).filter(Course.user_id == current_user.id).all()
     return create_response(data=courses)
 
@@ -175,6 +181,9 @@ async def publish_course(
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
 ):
+    """
+    Publish course
+    """
     course = (
         db.query(Course)
         .filter(Course.id == course_id, Course.user_id == current_user.id)
@@ -201,6 +210,9 @@ async def publish_course(
 
 @router.get("/course/{slug}", summary="Get single course")
 async def single_course(slug: str, db: Session = Depends(get_db)):
+    """
+    Get single course
+    """
     course = (
         db.query(Course)
         .options(
@@ -225,6 +237,9 @@ async def course_sections(
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
 ):
+    """
+    Get course sections
+    """
     course = (
         db.query(Course)
         .options(joinedload(Course.sections))
@@ -255,6 +270,9 @@ async def course_sections(
 async def update_curriculum(
     course_id: int, request: Request, db: Session = Depends(get_db)
 ):
+    """
+    Update course curriculum
+    """
     data = await request.json()
     sections = data.get("sections", [])
     section_ids_to_keep = [
@@ -345,6 +363,9 @@ async def update_curriculum(
 
 @router.get("/course/{course_id}/instructor", summary="Get course instructor")
 async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
+    """
+    Get course instructor
+    """
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -365,6 +386,9 @@ async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
 
 @router.get("/courses-by-category/{category_slug}", summary="Get courses by category")
 async def get_courses_by_category(category_slug: str, db: Session = Depends(get_db)):
+    """
+    Get courses by category
+    """
     category = db.query(Category).filter(Category.slug == category_slug).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
