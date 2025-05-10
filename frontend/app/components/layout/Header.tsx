@@ -22,6 +22,12 @@ const Header = () => {
         e.preventDefault();
     };
 
+    const user = session?.user;
+    const isAdmin = user?.is_admin;
+    const isInstructor = user?.is_instructor;
+    const isStudent = !user?.is_admin && !user?.is_instructor;
+    const dashboardLink = isAdmin ? "/admin" : isInstructor ? "/instructor/dashboard" : "/student/dashboard";
+
     const onSignOut = async () => {
         await signOut({ callbackUrl: "/" });
     };
@@ -35,28 +41,15 @@ const Header = () => {
                             <div className="header-left d-flex items-center">
                                 <div className="header__logo ">
                                     <Link href="/">
-                                        <Image
-                                            width={40}
-                                            height={40}
-                                            src="/assets/img/general/logo.svg"
-                                            alt="logo"
-                                        />
+                                        <Image width={40} height={40} src="/assets/img/general/logo.svg" alt="logo" />
                                     </Link>
                                 </div>
-                                <HeaderExplore
-                                    allClasses={
-                                        "header__explore text-purple-1 ml-30 xl:d-none"
-                                    }
-                                />
+                                <HeaderExplore allClasses={"header__explore text-purple-1 ml-30 xl:d-none"} />
 
                                 <div className="header-search-field ml-30">
                                     <form onSubmit={handleSubmit}>
                                         <div className="header-search-field__group">
-                                            <input
-                                                required
-                                                type="text"
-                                                placeholder="What do you want to learn?"
-                                            />
+                                            <input required type="text" placeholder="What do you want to learn?" />
                                             <button type="submit">
                                                 <i className="icon icon-search"></i>
                                             </button>
@@ -69,23 +62,15 @@ const Header = () => {
                         <div className="col-auto">
                             <div className="header-right d-flex items-center">
                                 <div className="header-right__icons text-white d-flex items-center">
-                                    <Menu
-                                        allClasses={
-                                            "menu__nav text-dark-1 -is-active"
-                                        }
-                                    />
+                                    <Menu allClasses={"menu__nav text-dark-1 -is-active"} />
                                     <MobileMenu
-                                        setActiveMobileMenu={
-                                            setActiveMobileMenu
-                                        }
+                                        setActiveMobileMenu={setActiveMobileMenu}
                                         activeMobileMenu={activeMobileMenu}
                                     />
 
                                     <div className="d-none xl:d-block ml-20">
                                         <button
-                                            onClick={() =>
-                                                setActiveMobileMenu(true)
-                                            }
+                                            onClick={() => setActiveMobileMenu(true)}
                                             className="text-dark-1 items-center"
                                             data-el-toggle=".js-mobile-menu-toggle"
                                         >
@@ -93,14 +78,8 @@ const Header = () => {
                                         </button>
                                     </div>
 
-                                    <Link
-                                        href="/cart"
-                                        className="relative mr-20"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faCartShopping}
-                                            className="text-2xl text-dark"
-                                        />
+                                    <Link href="/cart" className="relative mr-20">
+                                        <FontAwesomeIcon icon={faCartShopping} className="text-2xl text-dark" />
                                         {session?.user && (
                                             <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                                                 {cart?.items?.length || 0}
@@ -111,30 +90,17 @@ const Header = () => {
 
                                 {!session?.user && (
                                     <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none">
-                                        <Link
-                                            href="/login"
-                                            className="button px-30 h-50 -outline-dark-1 text-dark-1"
-                                        >
+                                        <Link href="/login" className="button px-30 h-50 -outline-dark-1 text-dark-1">
                                             Log in
                                         </Link>
-                                        <Link
-                                            href="/signup"
-                                            className="button px-30 h-50 -dark-1 text-white ml-10"
-                                        >
+                                        <Link href="/signup" className="button px-30 h-50 -dark-1 text-white ml-10">
                                             Sign up
                                         </Link>
                                     </div>
                                 )}
                                 {session?.user && (
                                     <div className="header-right__buttons d-flex items-center xl:ml-20 md:d-none">
-                                        <Link
-                                            href="/dashboard"
-                                            className={`text-dark-1 mr-20 ${
-                                                pathname == "/dashboard"
-                                                    ? "activeMenu"
-                                                    : "inActiveMenu"
-                                            } `}
-                                        >
+                                        <Link href={dashboardLink} className={`text-dark-1 mr-20 inActiveMenu`}>
                                             Dashboard
                                         </Link>
                                         <button

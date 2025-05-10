@@ -11,9 +11,9 @@ import ReduxProvider from "@/app/components/ReduxProvider";
 import { ToastContainer } from "react-toastify";
 import { authOptions } from "@/app/utils/authOptions";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import HeaderDashboard from "../components/dashboard/HeaderDashboard";
-import AdminDashboardSidebar from "../components/dashboard/AdminDashboardSidebar";
 import FooterDashboard from "../components/dashboard/FooterDashboard";
+import HeaderDashboard from "../components/dashboard/HeaderDashboard";
+import StudentDashboardSidebar from "../components/dashboard/StudentDashboardSidebar";
 
 interface Props {
     children: React.ReactNode;
@@ -22,11 +22,6 @@ interface Props {
 const DashboardLayout: React.FC<Props> = async ({ children }) => {
     const session = await getServerSession(authOptions);
     if (!session) permanentRedirect("/login");
-
-    const user = session?.user;
-    const isAdmin = user?.is_admin;
-
-    if (!isAdmin) permanentRedirect("/");
 
     return (
         <NextAuthProvider session={session}>
@@ -37,11 +32,12 @@ const DashboardLayout: React.FC<Props> = async ({ children }) => {
                         <NuqsAdapter>
                             <div className="barba-container" data-barba="container">
                                 <main className="main-content">
+                                    {/*<Preloader />*/}
                                     <HeaderDashboard />
                                     <div className="content-wrapper js-content-wrapper overflow-hidden">
                                         <div id="dashboardOpenClose" className="dashboard -home-9 js-dashboard-home-9">
                                             <div className="dashboard__sidebar scroll-bar-1">
-                                                <AdminDashboardSidebar />
+                                                <StudentDashboardSidebar />
                                             </div>
                                             {children}
                                         </div>
