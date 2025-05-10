@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import { Section } from "@/app/models/course.interface";
 import { Container } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
+import { Lesson } from "@/app/models/lesson.interface";
 
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
@@ -32,7 +33,7 @@ const CourseCurriculum: React.FC = () => {
         const newSection: Section = {
             id: null,
             title: `Untitled section`,
-            lessons: [{ title: "Untitled lesson", content: "" }],
+            lessons: [{ title: "Untitled lesson", content: "", is_free: false, is_published: false }],
         };
         setAllSections([...allSections, newSection]);
     };
@@ -233,6 +234,8 @@ const SectionCurriculum: React.FC<{
             title: "Untitled lesson",
             content: "",
             id: null,
+            is_free: false,
+            is_published: false,
         };
         const updatedSections = sections.map((sec, idx) => {
             if (idx === i) {
@@ -381,6 +384,12 @@ const SectionCurriculum: React.FC<{
                                                     updateSections(updatedSections);
                                                 }}
                                             />
+                                        </div>
+                                        <div className="form-check" style={{ marginTop: "10px" }}>
+                                            <input type="checkbox" className="form-check-input" id={`lesson-${index}`} />
+                                            <label className="form-check-label" htmlFor={`lesson-${index}`}>
+                                                Check this box if you want to make this lesson free for preview
+                                            </label>
                                         </div>
                                     </div>
                                 </div>

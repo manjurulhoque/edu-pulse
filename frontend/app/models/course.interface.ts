@@ -1,3 +1,6 @@
+import { Lesson } from "./lesson.interface";
+import { User } from "./user.interface";
+
 export interface Course {
     id: number;
     title: string;
