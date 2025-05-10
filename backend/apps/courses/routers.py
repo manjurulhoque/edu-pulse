@@ -219,12 +219,11 @@ async def single_course(slug: str, db: Session = Depends(get_db)):
     return create_response(data=course)
 
 
-@router.get("/course/{slug}/sections")
+@router.get("/course/{slug}/sections", summary="Get course sections")
 async def course_sections(
     slug: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
-    summary="Get course sections",
 ):
     course = (
         db.query(Course)
