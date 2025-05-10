@@ -3,19 +3,19 @@ import { LayoutDashboard, PlayCircle, List, Users } from 'lucide-react';
 export const instructorSidebarItems = [
     {
         id: 1,
-        href: "/dashboard",
+        href: "/instructor/dashboard",
         icon: LayoutDashboard,
         text: "Dashboard",
     },
     {
         id: 3,
-        href: "/my-created-courses",
+        href: "/instructor/dashboard/my-created-courses",
         icon: PlayCircle,
         text: "Created Courses",
     },
     {
         id: 4,
-        href: "/create-course",
+        href: "/instructor/dashboard/create-course",
         icon: List,
         text: "Create Course",
     },
@@ -45,7 +45,13 @@ export const adminSidebarItems = [
 export const userSidebarItems = [
     {
         id: 1,
-        href: "/dashboard/my-courses",
+        href: "/student/dashboard",
+        icon: LayoutDashboard,
+        text: "Dashboard",
+    },
+    {
+        id: 2,
+        href: "/student/dashboard/my-courses",
         icon: PlayCircle,
         text: "My Learning",
     },

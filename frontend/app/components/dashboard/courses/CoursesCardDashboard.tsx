@@ -31,7 +31,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
         const result: any = await publishCourse(formData);
         if (result?.data) {
             toast.success("Course published successfully");
-            redirect("/my-created-courses");
+            redirect(`/instructor/dashboard/my-created-courses`);
         } else {
             toast.warning(result?.data?.message || "Something went wrong. Please try again later");
         }
@@ -78,14 +78,14 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                     >
                         <div className="px-25 py-25 bg-white -dark-bg-dark-2 shadow-1 border-light rounded-8">
                             <Link
-                                href={`/edit-course/${course.slug}`}
+                                href={`/instructor/dashboard/edit-course/${course.slug}`}
                                 className="d-flex items-center"
                             >
                                 <div className="icon-share"></div>
                                 <div className="text-17 lh-1 fw-500 ml-12">Edit</div>
                             </Link>
 
-                            <Link href={`/edit-course/${course.slug}/curriculum`} className="d-flex items-center mt-20">
+                            <Link href={`/instructor/dashboard/edit-course/${course.slug}/curriculum`} className="d-flex items-center mt-20">
                                 <div className="icon-bookmark"></div>
                                 <div className="text-17 lh-1 fw-500 ml-12">Edit Curriculum</div>
                             </Link>
