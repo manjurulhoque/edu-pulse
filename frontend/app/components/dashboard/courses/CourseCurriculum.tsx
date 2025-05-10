@@ -386,7 +386,33 @@ const SectionCurriculum: React.FC<{
                                             />
                                         </div>
                                         <div className="form-check" style={{ marginTop: "10px" }}>
-                                            <input type="checkbox" className="form-check-input" id={`lesson-${index}`} />
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id={`lesson-${index}`}
+                                                checked={lesson.is_free}
+                                                onChange={(e) => {
+                                                    const updatedSections = sections.map((sec, idx) => {
+                                                        if (idx === i) {
+                                                            return {
+                                                                ...sec,
+                                                                lessons: sec.lessons?.map((les, lesIdx) => {
+                                                                    if (lesIdx === index) {
+                                                                        return {
+                                                                            ...les,
+                                                                            is_free: e.target.checked,
+                                                                        };
+                                                                    }
+                                                                    return les;
+                                                                }),
+                                                            };
+                                                        }
+                                                        return sec;
+                                                    });
+
+                                                    updateSections(updatedSections);
+                                                }}
+                                            />
                                             <label className="form-check-label" htmlFor={`lesson-${index}`}>
                                                 Check this box if you want to make this lesson free for preview
                                             </label>
