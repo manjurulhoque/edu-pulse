@@ -142,7 +142,7 @@ const CourseCurriculum: React.FC = () => {
                                         >
                                             <button
                                                 type={"button"}
-                                                className="button -md -green-1 text-white sm:w-1/1"
+                                                className="button -md -yellow-1 text-white sm:w-1/1"
                                                 onClick={saveChanges}
                                             >
                                                 Save changes

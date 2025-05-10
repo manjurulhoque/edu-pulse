@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useQueryState, parseAsBoolean } from 'nuqs';
+import { useQueryState, parseAsBoolean } from "nuqs";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import CoursesCardDashboard from "@/app/components/dashboard/courses/CoursesCardDashboard";
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
@@ -9,7 +9,7 @@ import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Course } from "@/app/models/course.interface";
 
 const MyCreatedCourses: React.FC = () => {
-    const [isPublished, setIsPublished] = useQueryState('is_published', parseAsBoolean.withDefault(true));
+    const [isPublished, setIsPublished] = useQueryState("is_published", parseAsBoolean.withDefault(true));
     const [currentCategory, setCurrentCategory] = useState<number>(0);
     const [pageItems, setPageItems] = useState<Course[]>([]);
     const [activeTab, setActiveTab] = useState(1);
@@ -21,13 +21,9 @@ const MyCreatedCourses: React.FC = () => {
         if (courses) {
             // filter published courses
             if (activeTab === 1) {
-                setPageData([
-                    ...(courses ?? [])?.filter((course: Course) => course.is_published)
-                ]);
+                setPageData([...(courses ?? [])?.filter((course: Course) => course.is_published)]);
             } else {
-                setPageData([
-                    ...(courses ?? [])?.filter((course: Course) => !course.is_published)
-                ]);
+                setPageData([...(courses ?? [])?.filter((course: Course) => !course.is_published)]);
             }
         }
     }, [activeTab, courses]);
@@ -40,9 +36,7 @@ const MyCreatedCourses: React.FC = () => {
         if (currentCategory === 0) {
             setPageItems(pageData);
         } else {
-            setPageItems([
-                ...pageData.filter((course: Course) => course.category_id == currentCategory),
-            ]);
+            setPageItems([...pageData.filter((course: Course) => course.category_id == currentCategory)]);
         }
     }, [currentCategory, pageData]);
 
@@ -52,9 +46,7 @@ const MyCreatedCourses: React.FC = () => {
                 <div className="row pb-50 mb-10">
                     <div className="col-auto">
                         <h1 className="text-30 lh-12 fw-700">My Courses</h1>
-                        <div className="mt-10">
-                            My created courses
-                        </div>
+                        <div className="mt-10">My created courses</div>
                     </div>
                 </div>
 
@@ -117,8 +109,12 @@ const MyCreatedCourses: React.FC = () => {
                                                         <div
                                                             id="dd14button"
                                                             onClick={() => {
-                                                                document.getElementById("dd14button")?.classList.toggle("-is-dd-active");
-                                                                document.getElementById("dd14content")?.classList.toggle("-is-el-visible");
+                                                                document
+                                                                    .getElementById("dd14button")
+                                                                    ?.classList.toggle("-is-dd-active");
+                                                                document
+                                                                    .getElementById("dd14content")
+                                                                    ?.classList.toggle("-is-el-visible");
                                                             }}
                                                             className="dropdown js-dropdown js-category-active"
                                                         >
@@ -128,7 +124,9 @@ const MyCreatedCourses: React.FC = () => {
                                                                 data-el-toggle-active=".js-category-active"
                                                             >
                                                                 <span className="js-dropdown-title">
-                                                                    {currentCategory != 0 ? currentCategory : 'Categories'}
+                                                                    {currentCategory != 0
+                                                                        ? currentCategory
+                                                                        : "Categories"}
                                                                 </span>
                                                                 <i className="icon text-9 ml-40 icon-chevron-down"></i>
                                                             </div>
@@ -139,13 +137,9 @@ const MyCreatedCourses: React.FC = () => {
                                                             >
                                                                 <div className="text-14 y-gap-15 js-dropdown-list">
                                                                     <div
-                                                                        onClick={() =>
-                                                                            setCurrentCategory(0)
-                                                                        }
+                                                                        onClick={() => setCurrentCategory(0)}
                                                                         className={`d-block js-dropdown-link cursor ${
-                                                                            currentCategory === 0
-                                                                                ? "activeMenu"
-                                                                                : ""
+                                                                            currentCategory === 0 ? "activeMenu" : ""
                                                                         } `}
                                                                     >
                                                                         <span
@@ -157,9 +151,7 @@ const MyCreatedCourses: React.FC = () => {
                                                                     </div>
                                                                     {categories?.map((item, ind) => (
                                                                         <div
-                                                                            onClick={() =>
-                                                                                setCurrentCategory(item.id)
-                                                                            }
+                                                                            onClick={() => setCurrentCategory(item.id)}
                                                                             key={ind}
                                                                             className={`d-block js-dropdown-link cursor ${
                                                                                 currentCategory === 0
@@ -188,18 +180,19 @@ const MyCreatedCourses: React.FC = () => {
                                                 <h3>Loading courses...</h3>
                                             ) : (
                                                 <>
-                                                    {pageItems?.length === 0 && <h3>No courses found!</h3>}
-                                                    {pageItems?.length > 0 && pageItems?.map((course: Course, i: any) => (
-                                                        <CoursesCardDashboard course={course} key={i} />
-                                                    ))}
+                                                    {!isCoursesLoading && pageItems?.length === 0 && (
+                                                        <h3>No courses found!</h3>
+                                                    )}
+                                                    {pageItems?.length > 0 &&
+                                                        pageItems?.map((course: Course, i: any) => (
+                                                            <CoursesCardDashboard course={course} key={i} />
+                                                        ))}
                                                 </>
                                             )}
                                         </div>
 
                                         <div className="row justify-center pt-30">
-                                            <div className="col-auto">
-                                                {/*<Pagination/>*/}
-                                            </div>
+                                            <div className="col-auto">{/*<Pagination/>*/}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +204,7 @@ const MyCreatedCourses: React.FC = () => {
 
             <FooterDashboard />
         </div>
-    )
-}
+    );
+};
 
 export default MyCreatedCourses;

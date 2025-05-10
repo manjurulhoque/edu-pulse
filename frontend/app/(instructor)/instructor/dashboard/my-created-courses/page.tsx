@@ -9,9 +9,7 @@ export const metadata: Metadata = {
 };
 
 const MyCoursesPage: React.FC = async () => {
-    return (
-        <MyCreatedCourses />
-    );
+    return <MyCreatedCourses />;
 };
 
 export default MyCoursesPage;
