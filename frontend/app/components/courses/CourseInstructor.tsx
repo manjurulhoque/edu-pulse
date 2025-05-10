@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Course } from "@/app/models/course.interface";
 
 interface CourseInstructorProps {
     course: Course;

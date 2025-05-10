@@ -4,6 +4,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Course } from "@/app/models/course.interface";
 
 export default function HomeCourseCard({course, index}: { course: Course, index: number }) {
     const [rating, setRating] = useState<string[]>([]);

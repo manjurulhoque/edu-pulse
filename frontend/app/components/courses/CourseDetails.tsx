@@ -10,6 +10,7 @@ import CourseOverview from "@/app/components/courses/CourseOverview";
 import CourseContent from "@/app/components/courses/CourseContent";
 import Star from "@/app/components/common/Star";
 import CourseInstructor from "./CourseInstructor";
+import { Course } from "@/app/models/course.interface";
 
 const menuItems = [
     {id: 1, href: "#overview", text: "Overview", isActive: true},

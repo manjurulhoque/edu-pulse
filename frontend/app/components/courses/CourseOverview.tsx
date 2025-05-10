@@ -1,27 +1,21 @@
 "use client";
 
-import {faCheck} from "@fortawesome/free-solid-svg-icons";
-import React, {useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { Course } from "@/app/models/course.interface";
 
-export default function CourseOverview({course}: { course: Course }) {
+export default function CourseOverview({ course }: { course: Course }) {
     const [showMore, setShowMore] = useState(false);
 
     return (
         <div id="overview" className="pt-60 lg:pt-40 to-over">
             <h4 className="text-18 fw-500">Description</h4>
 
-            <div
-                className={`show-more  mt-30 js-show-more ${
-                    showMore ? "is-active" : ""
-                } `}
-            >
+            <div className={`show-more  mt-30 js-show-more ${showMore ? "is-active" : ""} `}>
                 <div
                     className="show-more__content "
-                    style={showMore ? {maxHeight: "370px"} : {}}
-                    dangerouslySetInnerHTML={{__html: course.description}}
-                >
-                </div>
+                    style={showMore ? { maxHeight: "370px" } : {}}
+                    dangerouslySetInnerHTML={{ __html: course.description }}
+                ></div>
 
                 <button
                     onClick={() => setShowMore((pre) => !pre)}
@@ -36,7 +30,10 @@ export default function CourseOverview({course}: { course: Course }) {
                 <div className="row x-gap-100 justfiy-between">
                     <div className="col-md-10">
                         <div className="y-gap-20">
-                            <div className="d-flex items-center will-learn" dangerouslySetInnerHTML={{__html: course.student_will_learn}}></div>
+                            <div
+                                className="d-flex items-center will-learn"
+                                dangerouslySetInnerHTML={{ __html: course.student_will_learn }}
+                            ></div>
                         </div>
                     </div>
 
@@ -61,7 +58,7 @@ export default function CourseOverview({course}: { course: Course }) {
 
             <div className="mt-60">
                 <h4 className="text-20 mb-2">Requirements</h4>
-                <div className="requirements" dangerouslySetInnerHTML={{__html: course.requirements}}></div>
+                <div className="requirements" dangerouslySetInnerHTML={{ __html: course.requirements }}></div>
             </div>
         </div>
     );
