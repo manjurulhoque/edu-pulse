@@ -88,7 +88,7 @@ const Header = () => {
                                     </Link>
                                 </div>
 
-                                {!session?.user && (
+                                {!user && (
                                     <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none">
                                         <Link href="/login" className="button px-30 h-50 -outline-dark-1 text-dark-1">
                                             Log in
@@ -98,7 +98,7 @@ const Header = () => {
                                         </Link>
                                     </div>
                                 )}
-                                {session?.user && (
+                                {user && (
                                     <div className="header-right__buttons d-flex items-center xl:ml-20 md:d-none">
                                         <Link href={dashboardLink} className={`text-dark-1 mr-20 inActiveMenu`}>
                                             Dashboard
