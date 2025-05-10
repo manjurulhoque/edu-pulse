@@ -37,14 +37,10 @@ async def get_all_courses(
                 del course.user.password
         except:
             pass
-    return create_response(
-        data=create_paginated_response(
-            data=courses,
-            total=total,
-            page=params["page"],
-            page_size=params["page_size"],
-            path="/admin/courses",
-        ),
-        message="Courses fetched successfully",
-        status_code=status.HTTP_200_OK,
+    return create_paginated_response(
+        data=courses,
+        total=total,
+        page=params["page"],
+        page_size=params["page_size"],
+        path="/admin/courses",
     )

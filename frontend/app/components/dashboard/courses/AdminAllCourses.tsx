@@ -4,11 +4,16 @@ import { useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
 import { Grid } from "react-loader-spinner";
 import { Container, Row } from "react-bootstrap";
 import CourseCard from "./CourseCard";
+import Pagination from "@/app/components/common/Pagination";
+import { useState } from "react";
 
 const AdminAllCourses = () => {
-    const { data: courseData, isLoading: isCoursesLoading } = useAdminGetCoursesQuery({ page: 1, page_size: 10 });
-    let data = courseData?.data;
-    let { results: courses, total } = data || { results: [], total: 0 };
+    const [pageNumber, setPageNumber] = useState(1);
+    const pageSize = 8;
+    const { data, isLoading: isCoursesLoading } = useAdminGetCoursesQuery(
+        { page: pageNumber, page_size: pageSize }
+    );
+    let courses = data?.results;
 
     return (
         <div className="dashboard__main">
@@ -58,11 +63,11 @@ const AdminAllCourses = () => {
 
                                 <div className="row justify-center pt-90 lg:pt-50">
                                     <div className="col-auto">
-                                        {/* <Pagination
+                                        <Pagination
                                             pageNumber={pageNumber ?? 1}
                                             setPageNumber={setPageNumber}
                                             data={data as any}
-                                        /> */}
+                                        />
                                     </div>
                                 </div>
                             </>

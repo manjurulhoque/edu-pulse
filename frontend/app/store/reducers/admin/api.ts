@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
-import { PaginatedResponse, PaginationArgs, Response } from "@/app/models/request.interface";
+import { PaginatedResponse, PaginationArgs } from "@/app/models/request.interface";
 import { Course } from "@/app/models/course.interface";
 
 export const AdminApi = createApi({
@@ -9,7 +9,7 @@ export const AdminApi = createApi({
     tagTypes: ["Admin"],
     endpoints: (builder) => ({
         adminGetCourses: builder.query<
-            Response<PaginatedResponse<Course>>,
+            PaginatedResponse<Course>,
             PaginationArgs
         >({
             query: ({ page, page_size }) => {
