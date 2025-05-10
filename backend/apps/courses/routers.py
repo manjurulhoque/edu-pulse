@@ -15,7 +15,7 @@ from sqlalchemy.orm import joinedload, Session
 from starlette import status
 from starlette.requests import Request
 
-from apps.core.decorators import auth_required
+from apps.core.decorators import auth_required, admin_or_instructor_required
 from apps.courses import services
 from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
@@ -163,7 +163,9 @@ async def update_course(
     )
 
 
-@router.get("/my-created-courses", summary="Get all courses created by the current user")
+@router.get(
+    "/my-created-courses", summary="Get all courses created by the current user"
+)
 def my_created_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_required),
@@ -223,6 +225,31 @@ async def single_course(slug: str, db: Session = Depends(get_db)):
             ),
         )
         .filter(Course.is_published == True, Course.slug == slug)
+        .first()
+    )
+    if hasattr(course.user, "password"):
+        del course.user.password
+
+    return create_response(data=course)
+
+
+@router.get("/course-details/{slug}", summary="Get course details")
+async def course_details_for_admin_and_instructor(
+    slug: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_or_instructor_required),
+):
+    """
+    Get course details for admin and instructor
+    """
+    course = (
+        db.query(Course)
+        .options(
+            joinedload(Course.user),
+            joinedload(Course.category),
+            joinedload(Course.sections).joinedload(CourseSection.lessons),
+        )
+        .filter(Course.slug == slug)
         .first()
     )
     if hasattr(course.user, "password"):
@@ -420,7 +447,11 @@ async def enrolled_courses(
     page = params.get("page", 1)
     page_size = params.get("page_size", 8)
     skip = (page - 1) * page_size
-    total = db.query(Course).filter(Course.enrollments.any(Enrollment.user_id == current_user.id)).count()
+    total = (
+        db.query(Course)
+        .filter(Course.enrollments.any(Enrollment.user_id == current_user.id))
+        .count()
+    )
     courses = (
         db.query(Course)
         .filter(Course.enrollments.any(Enrollment.user_id == current_user.id))

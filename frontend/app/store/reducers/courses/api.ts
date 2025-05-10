@@ -105,6 +105,14 @@ export const CourseApi = createApi({
                 return data;
             },
         }),
+        courseDetailsForAdminAndInstructor: builder.query<Response<Course>, { slug: string }>({
+            query: ({ slug }) => {
+                return {
+                    url: `course-details/${slug}`,
+                };
+            },
+            providesTags: ["Course"],
+        }),
     }),
 });
 
@@ -118,4 +126,5 @@ export const {
     useUpdateCurriculumMutation,
     useGetCoursesByCategoryQuery,
     useGetEnrolledCoursesQuery,
+    useCourseDetailsForAdminAndInstructorQuery,
 } = CourseApi;

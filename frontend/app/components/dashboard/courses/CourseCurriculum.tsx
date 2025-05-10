@@ -2,18 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import {
-    useCourseDetailsQuery,
+    useCourseDetailsForAdminAndInstructorQuery,
     useUpdateCurriculumMutation,
 } from "@/app/store/reducers/courses/api";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Section } from "@/app/models/course.interface";
+
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
-    const { data: course, isLoading } = useCourseDetailsQuery({
+    const { data: courseDetailsData, isLoading } = useCourseDetailsForAdminAndInstructorQuery({
         slug: params.slug as string,
     });
+    const course = courseDetailsData?.data;
     const [allSections, setAllSections] = useState<Section[]>([]); // Initialize as empty array
 
     // Update allSections when course is loaded
