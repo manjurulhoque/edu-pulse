@@ -80,10 +80,10 @@ async def create_course(
     course_input: str = Form(...),
     preview_image: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(instructor_required),
 ):
     """
-    Create new course
+    Create new course as an instructor
     """
     try:
         course_data_dict = json.loads(course_input)
