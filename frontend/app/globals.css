@@ -1,4 +1,4 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 .ql-container {
     min-height: 10rem;
@@ -13,4 +13,26 @@
     flex: 1;
     overflow-y: auto;
     width: 100%;
+}
+
+.btn-primary {
+    background-color: #f14f48;
+    border-color: #f14f48;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #f14f48;
+    border-color: #f14f48;
+}
+
+.btn-secondary {
+    background-color: #34364e;
+    border-color: #34364e;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #34364e;
+    border-color: #34364e;
 }

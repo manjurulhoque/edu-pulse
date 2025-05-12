@@ -151,7 +151,7 @@ const AdminAllUsers = () => {
                                                 <td>{new Date(user.created_at).toLocaleDateString()}</td>
                                                 <td>
                                                     <Button
-                                                        variant="primary"
+                                                        variant="success"
                                                         size="sm"
                                                         className="me-2"
                                                         onClick={() => handleEdit(user)}
@@ -159,7 +159,7 @@ const AdminAllUsers = () => {
                                                         Edit
                                                     </Button>
                                                     <Button
-                                                        variant="danger"
+                                                        variant="primary"
                                                         size="sm"
                                                         onClick={() => handleDelete(user.id)}
                                                     >
@@ -239,9 +239,14 @@ const AdminAllUsers = () => {
                                     }
                                 />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Save Changes
-                            </Button>
+                            <div className="d-flex gap-2 justify-content-end">
+                                <Button variant="primary" type="submit">
+                                    Save
+                                </Button>
+                                <Button variant="secondary" type="button" onClick={() => setShowEditModal(false)}>
+                                    Close
+                                </Button>
+                            </div>
                         </Form>
                     )}
                 </Modal.Body>
