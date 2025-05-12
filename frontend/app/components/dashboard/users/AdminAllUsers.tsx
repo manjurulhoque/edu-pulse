@@ -198,6 +198,7 @@ const AdminAllUsers = () => {
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     type="text"
+                                    className="border"
                                     value={selectedUser.name}
                                     onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
                                 />
@@ -206,10 +207,12 @@ const AdminAllUsers = () => {
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="email"
+                                    className="border"
                                     value={selectedUser.email}
                                     onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
                                 />
                             </Form.Group>
+                            <Form.Label>Other</Form.Label>
                             <Form.Group className="mb-3">
                                 <Form.Check
                                     type="checkbox"
