@@ -18,6 +18,8 @@ class User(Base):
     bio = Column(String, default="", nullable=True)
     website = Column(String, default="", nullable=True)
     is_instructor = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=func.now())
 
     courses = relationship("Course", back_populates="user")
     enrollments = relationship("Enrollment", back_populates="user")
