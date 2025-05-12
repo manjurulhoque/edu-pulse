@@ -36,7 +36,7 @@ export const CourseApi = createApi({
         myCreatedCourses: builder.query<Course[], null>({
             query: () => {
                 return {
-                    url: "my-created-courses/",
+                    url: "my-created-courses",
                 };
             },
             providesTags: ["Course"],

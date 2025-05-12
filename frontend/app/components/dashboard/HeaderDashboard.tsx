@@ -197,11 +197,11 @@ const HeaderDashboard: React.FC = () => {
                                                 <div className="sidebar -dashboard">
                                                     <div className={`sidebar__item`}>
                                                         <Link
-                                                            href={"/create-course"}
-                                                            className="d-flex items-center text-17 lh-1 fw-500 "
+                                                            href={"/"}
+                                                            className="d-flex items-center text-17 lh-1 fw-500"
                                                         >
-                                                            <i className="text-20 icon-list mr-2"></i>
-                                                            Create course
+                                                            <i className="text-20 icon-list mr-5"></i>
+                                                            Profile
                                                         </Link>
                                                     </div>
                                                     <hr/>
@@ -211,7 +211,7 @@ const HeaderDashboard: React.FC = () => {
                                                             onClick={() => signOut({callbackUrl: "/"})}
                                                             className="d-flex items-center text-17 lh-1 fw-500 "
                                                         >
-                                                            <i className="text-20 icon-power mr-2"></i>
+                                                            <i className="text-20 icon-power mr-5"></i>
                                                             Logout
                                                         </a>
                                                     </div>

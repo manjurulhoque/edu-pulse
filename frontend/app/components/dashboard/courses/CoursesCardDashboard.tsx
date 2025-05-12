@@ -46,7 +46,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                 </Modal.Header>
                 <Modal.Footer>
                     <Button onClick={() => onPublishCourse()}>Confirm</Button>
-                    <Button onClick={() => setShowModal(false)} variant={"danger"}>Close</Button>
+                    <Button onClick={() => setShowModal(false)} variant={"secondary"}>Close</Button>
                 </Modal.Footer>
             </Modal>
             <div className="w-1/5 xl:w-1/3 lg:w-1/2 sm:w-1/1">

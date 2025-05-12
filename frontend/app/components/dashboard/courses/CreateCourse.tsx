@@ -108,7 +108,7 @@ const CreateCourse: React.FC = () => {
             const result: any = await createNewCourse(formData);
             if (result.data) {
                 toast.success("Course created successfully");
-                window.location.href = "/my-created-courses";
+                window.location.href = "/instructor/dashboard/my-created-courses";
             } else {
                 toast.warning(result?.data?.message || "Something went wrong. Please try again later");
             }
