@@ -235,7 +235,7 @@ const SectionCurriculum: React.FC<{
             content: "",
             id: null,
             is_free: false,
-            is_published: false,
+            is_published: true,
         };
         const updatedSections = sections.map((sec, idx) => {
             if (idx === i) {
@@ -330,7 +330,10 @@ const SectionCurriculum: React.FC<{
                                                 autoFocus
                                             />
                                         ) : (
-                                            <span className="text-16 lh-14 fw-500 text-dark-1">{lesson.title}</span>
+                                            <span className="text-16 lh-14 fw-500 text-dark-1">
+                                                {lesson.title}
+                                                {lesson.is_free && <span className="text-success"> (Free)</span>}
+                                            </span>
                                         )}
                                     </div>
 
@@ -415,6 +418,38 @@ const SectionCurriculum: React.FC<{
                                             />
                                             <label className="form-check-label" htmlFor={`lesson-${index}`}>
                                                 Check this box if you want to make this lesson free for preview
+                                            </label>
+                                        </div>
+                                        <div className="form-check" style={{ marginTop: "10px" }}>
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id={`lesson-published-${index}`}
+                                                checked={lesson.is_published}
+                                                onChange={(e) => {
+                                                    const updatedSections = sections.map((sec, idx) => {
+                                                        if (idx === i) {
+                                                            return {
+                                                                ...sec,
+                                                                lessons: sec.lessons?.map((les, lesIdx) => {
+                                                                    if (lesIdx === index) {
+                                                                        return {
+                                                                            ...les,
+                                                                            is_published: e.target.checked,
+                                                                        };
+                                                                    }
+                                                                    return les;
+                                                                }),
+                                                            };
+                                                        }
+                                                        return sec;
+                                                    });
+
+                                                    updateSections(updatedSections);
+                                                }}
+                                            />
+                                            <label className="form-check-label" htmlFor={`lesson-published-${index}`}>
+                                                Check this box if you want to make this lesson published
                                             </label>
                                         </div>
                                     </div>

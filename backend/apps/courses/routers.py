@@ -377,7 +377,7 @@ async def update_curriculum(
                 course_lesson.title = lesson.get("title")
                 course_lesson.content = lesson.get("content")
                 course_lesson.is_free = lesson.get("is_free")
-                # course_lesson.is_published = lesson.get("is_published")
+                course_lesson.is_published = lesson.get("is_published")
                 db.add(course_lesson)
                 db.commit()
                 db.refresh(course_lesson)
@@ -388,6 +388,7 @@ async def update_curriculum(
                     section_id=section_id,
                     course_id=course_id,
                     is_free=lesson.get("is_free"),
+                    is_published=lesson.get("is_published"),
                 )
                 db.add(new_lesson)
                 db.commit()

@@ -9,7 +9,7 @@ class Lesson(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     content = Column(Text)  # Youtube URL for now
-    is_completed = Column(Boolean, default=False)
+    # is_completed = Column(Boolean, default=False)
     is_free = Column(Boolean, default=False)
     is_published = Column(Boolean, default=False)
     course_id = Column(Integer, ForeignKey("courses.id"))
