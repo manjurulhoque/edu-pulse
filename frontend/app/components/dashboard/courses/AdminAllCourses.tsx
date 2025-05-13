@@ -25,6 +25,8 @@ const AdminAllCourses = () => {
         instructor: instructor,
         status: status,
         price: price,
+        date: date,
+        search: search,
     });
     let courses = data?.results;
 
@@ -113,7 +115,7 @@ const AdminAllCourses = () => {
                                 <option value="year">This Year</option>
                             </select>
                         </div>
-                        <div>
+                        {/* <div>
                             <label className="fw-bold me-2">Instructor</label>
                             <select
                                 className="form-select d-inline-block w-auto"
@@ -126,7 +128,7 @@ const AdminAllCourses = () => {
                                 <option value="angela">Angela Yu</option>
                                 <option value="jonas">Jonas Schmedtmann</option>
                             </select>
-                        </div>
+                        </div> */}
                         <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
@@ -151,7 +153,7 @@ const AdminAllCourses = () => {
                             onChange={(e) => setSearch(e.target.value)}
                             style={{ minWidth: 200, marginRight: 8 }}
                         />
-                        <button className="btn btn-primary">
+                        <button className="btn btn-primary" onClick={() => setSearch(search)}>
                             <i className="icon icon-search" />
                         </button>
                     </div>

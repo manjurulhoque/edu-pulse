@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session, joinedload
 from starlette import status
@@ -31,7 +33,7 @@ async def get_all_courses(
     price = params.get("price", None)
     date = params.get("date", None)
     search = params.get("search", None)
-    
+
     # Apply filters if provided
     if category:
         query = query.filter(course_models.Course.category_id == category)
@@ -41,7 +43,46 @@ async def get_all_courses(
         query = query.filter(course_models.Course.status == status)
     if search:
         query = query.filter(course_models.Course.title.ilike(f"%{search}%"))
-    
+    if price:
+        if price == "free":
+            query = query.filter(course_models.Course.is_free == True)
+        elif price == "paid":
+            query = query.filter(course_models.Course.is_free == False)
+        elif price == "low":
+            query = query.filter(course_models.Course.actual_price < 20)
+        elif price == "medium":
+            query = query.filter(
+                course_models.Course.actual_price >= 20,
+                course_models.Course.actual_price <= 50,
+            )
+        elif price == "high":
+            query = query.filter(course_models.Course.actual_price > 50)
+    if date:
+        if date == "today":
+            query = query.filter(
+                course_models.Course.created_at >= datetime.now().date()
+            )
+        elif date == "week":
+            query = query.filter(
+                course_models.Course.created_at
+                >= datetime.now().date() - timedelta(days=7)
+            )
+        elif date == "month":
+            query = query.filter(
+                course_models.Course.created_at
+                >= datetime.now().date() - timedelta(days=30)
+            )
+        elif date == "quarter":
+            query = query.filter(
+                course_models.Course.created_at
+                >= datetime.now().date() - timedelta(days=90)
+            )
+        elif date == "year":
+            query = query.filter(
+                course_models.Course.created_at
+                >= datetime.now().date() - timedelta(days=365)
+            )
+
     # Apply ordering before limit and offset
     if sort_by == "recent":
         query = query.order_by(course_models.Course.created_at.desc())
@@ -53,7 +94,7 @@ async def get_all_courses(
     #     query = query.order_by(course_models.Course.enrollments_count.desc())
     # elif sort_by == "rating":
     #     query = query.order_by(course_models.Course.average_rating.desc())
-    
+
     total = query.count()
     # Apply joins, limit and offset after ordering
     courses = (
@@ -65,14 +106,14 @@ async def get_all_courses(
         .limit(params["page_size"])
         .all()
     )
-    
+
     for course in courses:
         try:
             if hasattr(course.user, "password"):
                 del course.user.password
         except:
             pass
-    
+
     return create_paginated_response(
         data=courses,
         total=total,
