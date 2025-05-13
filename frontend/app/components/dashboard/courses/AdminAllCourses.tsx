@@ -3,7 +3,7 @@
 import { useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
 import { Grid } from "react-loader-spinner";
 import { Container, Row } from "react-bootstrap";
-import CourseCard from "./CourseCard";
+import AdminCourseCard from "./AdminCourseCard";
 import Pagination from "@/app/components/common/Pagination";
 import { useState } from "react";
 
@@ -57,7 +57,7 @@ const AdminAllCourses = () => {
                             <>
                                 <Row className="g-4">
                                     {courses?.map((course) => (
-                                        <CourseCard key={course.id} course={course} />
+                                        <AdminCourseCard key={course.id} course={course} />
                                     ))}
                                 </Row>
 
