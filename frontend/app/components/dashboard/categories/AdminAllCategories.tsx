@@ -112,8 +112,6 @@ const AdminAllCategories = () => {
                                         name: "",
                                         description: "",
                                         slug: "",
-                                        created_at: "",
-                                        updated_at: "",
                                     });
                                     setShowCreateModal(true);
                                 }}
@@ -157,7 +155,6 @@ const AdminAllCategories = () => {
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Slug</th>
-                                            <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -168,7 +165,6 @@ const AdminAllCategories = () => {
                                                 <td>{category.name}</td>
                                                 <td>{category.description}</td>
                                                 <td>{category.slug}</td>
-                                                <td>{new Date(category.created_at).toLocaleDateString()}</td>
                                                 <td>
                                                     <Button
                                                         variant="success"
