@@ -11,7 +11,10 @@ import { Course } from "@/app/models/course.interface";
 const AdminCourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
-    
+
+    const approveCourse = async () => {
+        // TODO: Implement approve course
+    };
     return (
         <Col key={course.id} xs={12} md={6} lg={3}>
             <Link href={`/courses/${course.slug}`} className="text-decoration-none">
@@ -68,6 +71,24 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                                     }}
                                     onClick={(e) => e.stopPropagation()}
                                 >
+                                    {
+                                        !course.is_approved ? (
+                                            <div
+                                                style={{
+                                                    padding: "8px 20px",
+                                                    cursor: "pointer",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: 8,
+                                                }}
+                                                onClick={() => {
+                                                    approveCourse();
+                                                }}
+                                            >
+                                                <span>🔓</span> Approve
+                                            </div>
+                                        ) : null
+                                    }
                                     <div
                                         style={{
                                             padding: "8px 20px",
@@ -98,6 +119,9 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                         <Card.Title>{course.title}</Card.Title>
                         <div className="text-muted" style={{ fontSize: 14, marginBottom: 4 }}>
                             {course.user.name}
+                            <p>
+                                <small className="text-muted">Status: {course.status}</small>
+                            </p>
                         </div>
                     </Card.Body>
                 </Card>

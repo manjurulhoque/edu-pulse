@@ -12,6 +12,7 @@ interface AdminGetCoursesArgs extends PaginationArgs {
     status?: string;
     price?: string;
     date?: string;
+    is_approved?: boolean;
     search?: string;
 }
 
@@ -22,10 +23,10 @@ export const AdminApi = createApi({
     tagTypes: ["Admin"],
     endpoints: (builder) => ({
         adminGetCourses: builder.query<PaginatedResponse<Course>, AdminGetCoursesArgs>({
-            query: ({ page, page_size, sort_by, category, instructor, status, price, date, search }) => {
+            query: ({ page, page_size, sort_by, category, instructor, status, price, date, search, is_approved }) => {
                 return {
                     url: "/admin/courses",
-                    params: { page, page_size, sort_by, category, instructor, status, price, date, search },
+                    params: { page, page_size, sort_by, category, instructor, status, price, date, search, is_approved },
                 };
             },
         }),

@@ -16,6 +16,7 @@ const AdminAllCourses = () => {
     const [status, setStatus] = useState("");
     const [price, setPrice] = useState("");
     const [date, setDate] = useState("");
+    const [isApproved, setIsApproved] = useState<boolean | null>(null);
     const [search, setSearch] = useState("");
     const pageSize = 8;
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
@@ -29,6 +30,7 @@ const AdminAllCourses = () => {
         price: price,
         date: date,
         search: search,
+        is_approved: isApproved ?? undefined,
     });
     let courses = data?.results;
 
@@ -117,20 +119,18 @@ const AdminAllCourses = () => {
                                 <option value="year">This Year</option>
                             </select>
                         </div>
-                        {/* <div>
-                            <label className="fw-bold me-2">Instructor</label>
+                        <div>
+                            <label className="fw-bold me-2">Is Approved</label>
                             <select
                                 className="form-select d-inline-block w-auto"
-                                value={instructor}
-                                onChange={(e) => setInstructor(e.target.value)}
+                                value={isApproved === null ? "" : String(isApproved)}
+                                onChange={(e) => setIsApproved(e.target.value === "true" ? true : false)}
                             >
-                                <option value="">All Instructors</option>
-                                <option value="stephen">Stephen Grider</option>
-                                <option value="trevor">Trevor Sawler</option>
-                                <option value="angela">Angela Yu</option>
-                                <option value="jonas">Jonas Schmedtmann</option>
+                                <option value="">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
-                        </div> */}
+                        </div>
                         <button
                             className="btn btn-outline-secondary"
                             onClick={() => {

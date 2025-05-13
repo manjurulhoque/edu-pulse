@@ -1,3 +1,4 @@
+import { Category } from "./category.interface";
 import { Lesson } from "./lesson.interface";
 import { User } from "./user.interface";
 
@@ -13,7 +14,8 @@ export interface Course {
     level: string;
     category: Category | null;
     category_id: number;
-    is_published: boolean;
+    is_approved: boolean;
+    status: "published" | "draft" | "archived" | "flagged";
     is_free: boolean;
     actual_price: number;
     discounted_price: number;
