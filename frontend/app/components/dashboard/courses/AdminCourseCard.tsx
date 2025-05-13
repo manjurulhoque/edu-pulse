@@ -71,55 +71,6 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                                     <div
                                         style={{
                                             padding: "8px 20px",
-                                            fontWeight: 600,
-                                            color: "#888",
-                                        }}
-                                    >
-                                        Lists
-                                    </div>
-                                    <div style={{ padding: "8px 20px", color: "#888" }}>You have no list</div>
-                                    <hr style={{ margin: "8px 0" }} />
-                                    <div
-                                        style={{
-                                            padding: "8px 20px",
-                                            cursor: "pointer",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 8,
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                color: "#a259ff",
-                                                fontWeight: 700,
-                                                fontSize: 18,
-                                            }}
-                                        >
-                                            +
-                                        </span>
-                                        <span
-                                            style={{
-                                                color: "#a259ff",
-                                                fontWeight: 500,
-                                            }}
-                                        >
-                                            Create New List
-                                        </span>
-                                    </div>
-                                    <div
-                                        style={{
-                                            padding: "8px 20px",
-                                            cursor: "pointer",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 8,
-                                        }}
-                                    >
-                                        <span>🔗</span> Share
-                                    </div>
-                                    <div
-                                        style={{
-                                            padding: "8px 20px",
                                             cursor: "pointer",
                                             display: "flex",
                                             alignItems: "center",
@@ -147,27 +98,6 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                         <Card.Title>{course.title}</Card.Title>
                         <div className="text-muted" style={{ fontSize: 14, marginBottom: 4 }}>
                             {course.user.name}
-                        </div>
-                        <div className="progress" style={{ height: 6, marginBottom: 8 }}>
-                            <div
-                                className="progress-bar"
-                                role="progressbar"
-                                style={{ width: `${0}%` }}
-                                aria-valuenow={0}
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                            />
-                        </div>
-                        <div style={{ fontSize: 13, marginBottom: 8 }}>0% complete</div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                            {[1, 2, 3, 4, 5].map((star) =>
-                                0 >= star ? (
-                                    <Star key={star} size={16} color="#f5c518" fill="#f5c518" />
-                                ) : (
-                                    <StarOff key={star} size={16} color="#f5c518" />
-                                )
-                            )}
-                            <span style={{ fontSize: 13, marginLeft: 6 }}>{0 ? "Your rating" : "Leave a rating"}</span>
                         </div>
                     </Card.Body>
                 </Card>
