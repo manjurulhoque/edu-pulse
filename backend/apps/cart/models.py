@@ -19,6 +19,9 @@ class Cart(Base):
         "CartItem", back_populates="cart", cascade="all, delete-orphan"
     )
 
+    def __repr__(self):
+        return f"<Cart(id={self.id}, user_id={self.user_id})>"
+
 
 class CartItem(Base):
     __tablename__ = "cart_items"
@@ -35,3 +38,6 @@ class CartItem(Base):
     # Relationships
     cart = relationship("Cart", back_populates="items")
     course = relationship("Course")
+
+    def __repr__(self):
+        return f"<CartItem(id={self.id}, cart_id={self.cart_id}, course_id={self.course_id})>"

@@ -14,7 +14,10 @@ class Lesson(Base):
     is_published = Column(Boolean, default=False)
     course_id = Column(Integer, ForeignKey("courses.id"))
     section_id = Column(Integer, ForeignKey("course_sections.id", ondelete="CASCADE"))
-    
+
     # Define relationships
     course = relationship("Course", back_populates="lessons")
     section = relationship("CourseSection", back_populates="lessons")
+
+    def __repr__(self):
+        return f"<Lesson(id={self.id}, title='{self.title}', course_id={self.course_id}, section_id={self.section_id})>"

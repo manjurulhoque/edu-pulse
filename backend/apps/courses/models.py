@@ -42,6 +42,9 @@ class Course(BaseModel):
     enrollments = relationship("Enrollment", back_populates="course")
     sections = relationship("CourseSection", back_populates="course")
 
+    def __repr__(self):
+        return f"<Course(id={self.id}, title='{self.title}', user_id={self.user_id})>"
+
 
 @event.listens_for(Course, "before_insert")
 def receive_before_insert(mapper, connection, target):
@@ -57,3 +60,6 @@ class CourseSection(BaseModel):
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="sections")
     lessons = relationship("Lesson", back_populates="section")
+
+    def __repr__(self):
+        return f"<CourseSection(id={self.id}, title='{self.title}', course_id={self.course_id})>"

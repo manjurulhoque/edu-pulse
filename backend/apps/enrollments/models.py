@@ -20,6 +20,9 @@ class Enrollment(Base):
     course = relationship("Course", back_populates="enrollments")
     lesson_completions = relationship("LessonCompletion", back_populates="enrollment")
 
+    def __repr__(self):
+        return f"<Enrollment(id={self.id}, user_id={self.user_id}, course_id={self.course_id})>"
+
 
 class LessonCompletion(Base):
     __tablename__ = "lesson_completions"
@@ -34,3 +37,6 @@ class LessonCompletion(Base):
     # Define relationships
     enrollment = relationship("Enrollment", back_populates="lesson_completions")
     lesson = relationship("Lesson")
+
+    def __repr__(self):
+        return f"<LessonCompletion(id={self.id}, enrollment_id={self.enrollment_id}, lesson_id={self.lesson_id}, user_id={self.user_id})>"
