@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 import { Category } from "@/app/models/category.interface";
+
 export const CategoryApi = createApi({
     reducerPath: "CategoryApi",
     refetchOnFocus: true,

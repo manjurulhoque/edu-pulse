@@ -7,7 +7,7 @@ import { Category } from "@/app/models/category.interface";
 
 interface AdminGetCoursesArgs extends PaginationArgs {
     sort_by?: string;
-    category?: string;
+    category?: number;
     instructor?: string;
     status?: string;
     price?: string;

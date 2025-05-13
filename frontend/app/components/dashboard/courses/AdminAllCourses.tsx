@@ -1,6 +1,7 @@
 "use client";
 
 import { useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
+import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Grid } from "react-loader-spinner";
 import { Container, Row } from "react-bootstrap";
 import AdminCourseCard from "./AdminCourseCard";
@@ -10,18 +11,19 @@ import { useState } from "react";
 const AdminAllCourses = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [sortBy, setSortBy] = useState("recent");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState<number | null>(null);
     const [instructor, setInstructor] = useState("");
     const [status, setStatus] = useState("");
     const [price, setPrice] = useState("");
     const [date, setDate] = useState("");
     const [search, setSearch] = useState("");
     const pageSize = 8;
+    const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
     const { data, isLoading: isCoursesLoading } = useAdminGetCoursesQuery({
         page: pageNumber,
         page_size: pageSize,
         sort_by: sortBy,
-        category: category,
+        category: category ?? undefined,
         instructor: instructor,
         status: status,
         price: price,
@@ -60,15 +62,15 @@ const AdminAllCourses = () => {
                             <label className="fw-bold me-2">Category</label>
                             <select
                                 className="form-select d-inline-block w-auto"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
+                                value={category ?? ""}
+                                onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : null)}
                             >
                                 <option value="">All Categories</option>
-                                <option value="dev">Development</option>
-                                <option value="cloud">Cloud Computing</option>
-                                <option value="data">Data Science</option>
-                                <option value="design">Design</option>
-                                <option value="business">Business</option>
+                                {categories?.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div>
@@ -133,7 +135,7 @@ const AdminAllCourses = () => {
                             className="btn btn-outline-secondary"
                             onClick={() => {
                                 setSortBy("recent");
-                                setCategory("");
+                                setCategory(null);
                                 setStatus("");
                                 setPrice("");
                                 setDate("");
