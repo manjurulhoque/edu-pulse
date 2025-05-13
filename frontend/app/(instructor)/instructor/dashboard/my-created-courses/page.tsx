@@ -3,7 +3,7 @@ import MyCreatedCourses from "@/app/components/dashboard/courses/MyCreatedCourse
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "My created courses || EduPulse - Professional LMS Online Education Course",
+    title: "My created courses | EduPulse - Professional LMS Online Education Course",
     description:
         "Elevate your e-learning content with EduPulse, the most impressive LMS template for online courses, education and LMS platforms.",
 };
