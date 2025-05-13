@@ -7,13 +7,14 @@ from sqlalchemy import (
     Text,
     Boolean,
     Float,
-    Enum,
     event,
 )
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import ENUM
 
 from apps.core.models import BaseModel
 from apps.core.enums import CourseStatus
+
 
 class Course(BaseModel):
     __tablename__ = "courses"
@@ -33,7 +34,11 @@ class Course(BaseModel):
     is_featured = Column(Boolean, default=False)
     is_popular = Column(Boolean, default=False)
     is_approved = Column(Boolean, default=False)
-    status = Column(Enum(CourseStatus), nullable=False, default=CourseStatus.DRAFT)
+    status = Column(
+        ENUM(CourseStatus, name="course_status", native_enum=True, values_callable=lambda x: [e.value for e in x]),
+        nullable=False,
+        default=CourseStatus.DRAFT,
+    )
     # user_id = mapped_column(ForeignKey("users.id"))
     # category_id = mapped_column(ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"))

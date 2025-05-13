@@ -35,6 +35,7 @@ from utils.response_utils import (
     create_response,
 )
 from utils.upload import save_image
+from apps.core.enums import CourseStatus
 
 router = APIRouter()
 
@@ -46,7 +47,7 @@ async def all_courses(
     """
     Get all courses
     """
-    query = db.query(Course).filter(Course.is_published == True)
+    query = db.query(Course).filter(Course.status == CourseStatus.PUBLISHED)
     total = query.count()
     page = params.get("page", 1)
     page_size = params.get("page_size", 10)
@@ -171,7 +172,7 @@ async def update_course(
 )
 def my_created_courses(
     db: Session = Depends(get_db),
-    current_user: User = Depends(auth_required),
+    current_user: User = Depends(instructor_required),
 ):
     """
     Get all courses created by the current user
@@ -184,7 +185,7 @@ def my_created_courses(
 async def publish_course(
     course_id: int = Form(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(auth_required),
+    current_user: User = Depends(instructor_required),
 ):
     """
     Publish course
@@ -200,13 +201,13 @@ async def publish_course(
             status_code=status.HTTP_404_NOT_FOUND,
             message="Course not found",
         )
-    if course.is_published:
+    if course.status == CourseStatus.PUBLISHED:
         return create_response(
             data=None,
             status_code=status.HTTP_304_NOT_MODIFIED,
             message="Course was already published",
         )
-    course.is_published = True
+    course.status = CourseStatus.PUBLISHED
     db.add(course)
     db.commit()
     db.refresh(course)
@@ -227,7 +228,7 @@ async def single_course(slug: str, db: Session = Depends(get_db)):
                 CourseSection.lessons.and_(Lesson.is_published == True)
             ),
         )
-        .filter(Course.is_published == True, Course.slug == slug)
+        .filter(Course.status == CourseStatus.PUBLISHED, Course.slug == slug)
         .first()
     )
     if hasattr(course.user, "password"):

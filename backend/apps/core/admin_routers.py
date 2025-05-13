@@ -39,6 +39,7 @@ async def get_all_courses(
     if instructor:
         query = query.filter(course_models.Course.user_id == instructor)
     if status:
+        print("-------status--------", status)
         query = query.filter(course_models.Course.status == status)
     if search:
         query = query.filter(course_models.Course.title.ilike(f"%{search}%"))
