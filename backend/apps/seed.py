@@ -81,7 +81,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[0].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -99,7 +99,7 @@ def create_sample_data(db: Session):
             actual_price=149.99,
             discounted_price=89.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[1].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -117,7 +117,7 @@ def create_sample_data(db: Session):
             actual_price=79.99,
             discounted_price=39.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[3].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -135,7 +135,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[4].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -153,7 +153,7 @@ def create_sample_data(db: Session):
             actual_price=89.99,
             discounted_price=44.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[5].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -171,7 +171,7 @@ def create_sample_data(db: Session):
             actual_price=149.99,
             discounted_price=99.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[6].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -189,7 +189,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[7].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -207,7 +207,7 @@ def create_sample_data(db: Session):
             actual_price=79.99,
             discounted_price=39.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[8].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -225,7 +225,7 @@ def create_sample_data(db: Session):
             actual_price=89.99,
             discounted_price=44.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[9].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -244,7 +244,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[0].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -262,7 +262,7 @@ def create_sample_data(db: Session):
             actual_price=129.99,
             discounted_price=79.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[0].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -280,7 +280,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[0].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -298,7 +298,7 @@ def create_sample_data(db: Session):
             actual_price=79.99,
             discounted_price=39.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[1].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -316,7 +316,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[1].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -334,7 +334,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[2].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -352,7 +352,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[2].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -370,7 +370,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[2].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -388,7 +388,7 @@ def create_sample_data(db: Session):
             actual_price=79.99,
             discounted_price=39.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[3].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -406,7 +406,7 @@ def create_sample_data(db: Session):
             actual_price=99.99,
             discounted_price=49.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[4].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -424,7 +424,7 @@ def create_sample_data(db: Session):
             actual_price=89.99,
             discounted_price=44.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[5].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -442,7 +442,7 @@ def create_sample_data(db: Session):
             actual_price=149.99,
             discounted_price=99.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[1].id,  # Use actual user ID
             category_id=categories[6].id,  # Use actual category ID
             created_at=datetime.now(),
@@ -460,7 +460,7 @@ def create_sample_data(db: Session):
             actual_price=79.99,
             discounted_price=39.99,
             is_free=False,
-            is_published=True,
+            status="published",
             user_id=users[0].id,  # Use actual user ID
             category_id=categories[7].id,  # Use actual category ID
             created_at=datetime.now(),

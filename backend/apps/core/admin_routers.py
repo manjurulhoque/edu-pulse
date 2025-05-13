@@ -7,7 +7,7 @@ from apps.users.models import User
 from apps.core.decorators import admin_required
 from utils.response_utils import create_response, create_paginated_response
 from apps.courses import models as course_models
-from utils.params import common_parameters
+from utils.params import common_parameters, admin_common_parameters
 from apps.core.schemas import UserUpdate
 from apps.categories import models as category_models
 
@@ -18,13 +18,44 @@ admin_router = APIRouter(prefix="/admin", tags=["admin"])
 async def get_all_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(admin_required),
-    params: dict = Depends(common_parameters),
+    params: dict = Depends(admin_common_parameters),
 ):
     query = db.query(course_models.Course)
     total = query.count()
     page = params.get("page", 1)
     page_size = params.get("page_size", 10)
     skip = (page - 1) * page_size
+    sort_by = params.get("sort_by", "recent")
+    category = params.get("category", None)
+    instructor = params.get("instructor", None)
+    status = params.get("status", None)
+    price = params.get("price", None)
+    date = params.get("date", None)
+    search = params.get("search", None)
+    
+    # Apply filters if provided
+    if category:
+        query = query.filter(course_models.Course.category_id == category)
+    if instructor:
+        query = query.filter(course_models.Course.user_id == instructor)
+    if status:
+        query = query.filter(course_models.Course.status == status)
+    if search:
+        query = query.filter(course_models.Course.title.ilike(f"%{search}%"))
+    
+    # Apply ordering before limit and offset
+    if sort_by == "recent":
+        query = query.order_by(course_models.Course.created_at.desc())
+    elif sort_by == "title":
+        query = query.order_by(course_models.Course.title.asc())
+    elif sort_by == "title_desc":
+        query = query.order_by(course_models.Course.title.desc())
+    # elif sort_by == "enrollments":
+    #     query = query.order_by(course_models.Course.enrollments_count.desc())
+    # elif sort_by == "rating":
+    #     query = query.order_by(course_models.Course.average_rating.desc())
+    
+    # Apply joins, limit and offset after ordering
     courses = (
         query.options(
             joinedload(course_models.Course.user),
@@ -34,12 +65,14 @@ async def get_all_courses(
         .limit(params["page_size"])
         .all()
     )
+    
     for course in courses:
         try:
             if hasattr(course.user, "password"):
                 del course.user.password
         except:
             pass
+    
     return create_paginated_response(
         data=courses,
         total=total,

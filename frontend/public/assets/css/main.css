@@ -16529,7 +16529,7 @@ table.table th {
     padding: 25px;
     font-size: 16px;
     line-height: 1;
-    color: var(--color-purple-1);
+    /* color: var(--color-purple-1); */
     font-weight: 500;
 }
 

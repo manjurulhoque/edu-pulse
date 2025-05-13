@@ -7,12 +7,13 @@ from sqlalchemy import (
     Text,
     Boolean,
     Float,
+    Enum,
     event,
 )
-from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy.orm import relationship
 
 from apps.core.models import BaseModel
-
+from apps.core.enums import CourseStatus
 
 class Course(BaseModel):
     __tablename__ = "courses"
@@ -25,7 +26,6 @@ class Course(BaseModel):
     description = Column(Text, nullable=True)
     student_will_learn = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
-    is_published = Column(Boolean, default=False)
     preview_image = Column(String, nullable=False)
     actual_price = Column(Float, nullable=False, default=0.0)
     discounted_price = Column(Float, nullable=True, default=0.0)
@@ -33,6 +33,7 @@ class Course(BaseModel):
     is_featured = Column(Boolean, default=False)
     is_popular = Column(Boolean, default=False)
     is_approved = Column(Boolean, default=False)
+    status = Column(Enum(CourseStatus), nullable=False, default=CourseStatus.DRAFT)
     # user_id = mapped_column(ForeignKey("users.id"))
     # category_id = mapped_column(ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
