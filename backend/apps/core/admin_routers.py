@@ -21,7 +21,6 @@ async def get_all_courses(
     params: dict = Depends(admin_common_parameters),
 ):
     query = db.query(course_models.Course)
-    total = query.count()
     page = params.get("page", 1)
     page_size = params.get("page_size", 10)
     skip = (page - 1) * page_size
@@ -39,7 +38,6 @@ async def get_all_courses(
     if instructor:
         query = query.filter(course_models.Course.user_id == instructor)
     if status:
-        print("-------status--------", status)
         query = query.filter(course_models.Course.status == status)
     if search:
         query = query.filter(course_models.Course.title.ilike(f"%{search}%"))
@@ -56,6 +54,7 @@ async def get_all_courses(
     # elif sort_by == "rating":
     #     query = query.order_by(course_models.Course.average_rating.desc())
     
+    total = query.count()
     # Apply joins, limit and offset after ordering
     courses = (
         query.options(
