@@ -3,6 +3,7 @@ import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 import { PaginatedResponse, PaginationArgs } from "@/app/models/request.interface";
 import { Course } from "@/app/models/course.interface";
 import { User } from "@/app/models/user.interface";
+import { Category } from "@/app/models/category.interface";
 
 export const AdminApi = createApi({
     reducerPath: "AdminApi",
@@ -45,6 +46,44 @@ export const AdminApi = createApi({
             },
             invalidatesTags: ["Admin"],
         }),
+        adminGetCategories: builder.query<PaginatedResponse<Category>, PaginationArgs>({
+            query: ({ page, page_size }) => {
+                return {
+                    url: "/admin/categories",
+                    params: { page, page_size },
+                };
+            },
+            providesTags: ["Admin"],
+        }),
+        adminCreateCategory: builder.mutation({
+            query: (formData) => {
+                return {
+                    url: "/admin/categories",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["Admin"],
+        }),
+        adminUpdateCategory: builder.mutation({
+            query: ({ id, formData }) => {
+                return {
+                    url: `/admin/categories/${id}`,
+                    method: "PUT",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["Admin"],
+        }),
+        adminDeleteCategory: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/categories/${id}`,
+                    method: "DELETE",
+                };
+            },
+            invalidatesTags: ["Admin"],
+        }),
     }),
 });
 
@@ -53,4 +92,8 @@ export const {
     useAdminGetUsersQuery,
     useAdminUpdateUserMutation,
     useAdminDeleteUserMutation,
+    useAdminGetCategoriesQuery,
+    useAdminCreateCategoryMutation,
+    useAdminUpdateCategoryMutation,
+    useAdminDeleteCategoryMutation,
 } = AdminApi;

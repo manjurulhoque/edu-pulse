@@ -1,28 +1,25 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
-
-
+import { Category } from "@/app/models/category.interface";
 export const CategoryApi = createApi({
     reducerPath: "CategoryApi",
     refetchOnFocus: true,
     baseQuery: DynamicBaseQuery,
-    tagTypes: ['Category'],
+    tagTypes: ["Category"],
     endpoints: (builder) => ({
         categories: builder.query<Category[], null>({
             query: () => {
                 return {
                     url: `categories/`,
-                }
+                };
             },
-            providesTags: ['Category'],
-            transformResponse: (rawResult: { data: Category[], message: string }, meta) => {
+            providesTags: ["Category"],
+            transformResponse: (rawResult: { data: Category[]; message: string }, meta) => {
                 const { data } = rawResult;
                 return data;
             },
-        })
-    })
+        }),
+    }),
 });
 
-export const {
-    useCategoriesQuery
-} = CategoryApi;
+export const { useCategoriesQuery } = CategoryApi;

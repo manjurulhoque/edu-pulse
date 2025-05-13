@@ -40,6 +40,12 @@ export const adminSidebarItems = [
         icon: Users,
         text: "All Users",
     },
+    {
+        id: 4,
+        href: "/admin/categories",
+        icon: List,
+        text: "All Categories",
+    },
 ];
 
 export const userSidebarItems = [
