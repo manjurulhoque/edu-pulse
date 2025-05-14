@@ -12,8 +12,11 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
-    const approveCourse = async () => {
+    const approveCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
         // TODO: Implement approve course
+        alert("Approve course");
     };
     return (
         <Col key={course.id} xs={12} md={6} lg={3}>
@@ -81,8 +84,8 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                                                     alignItems: "center",
                                                     gap: 8,
                                                 }}
-                                                onClick={() => {
-                                                    approveCourse();
+                                                onClick={(e) => {
+                                                    approveCourse(e);
                                                 }}
                                             >
                                                 <span>🔓</span> Approve
