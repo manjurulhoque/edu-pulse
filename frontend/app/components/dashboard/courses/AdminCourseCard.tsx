@@ -8,16 +8,15 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { Course } from "@/app/models/course.interface";
 
-const AdminCourseCard = ({ course }: { course: Course }) => {
+interface AdminCourseCardProps {
+    course: Course;
+    onApproveCourse: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
+}
+
+const AdminCourseCard = ({ course, onApproveCourse }: AdminCourseCardProps) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
-    const approveCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        // TODO: Implement approve course
-        alert("Approve course");
-    };
     return (
         <Col key={course.id} xs={12} md={6} lg={3}>
             <Link href={`/courses/${course.slug}`} className="text-decoration-none">
@@ -74,24 +73,22 @@ const AdminCourseCard = ({ course }: { course: Course }) => {
                                     }}
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    {
-                                        !course.is_approved ? (
-                                            <div
-                                                style={{
-                                                    padding: "8px 20px",
-                                                    cursor: "pointer",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    gap: 8,
-                                                }}
-                                                onClick={(e) => {
-                                                    approveCourse(e);
-                                                }}
-                                            >
-                                                <span>🔓</span> Approve
-                                            </div>
-                                        ) : null
-                                    }
+                                    {!course.is_approved ? (
+                                        <div
+                                            style={{
+                                                padding: "8px 20px",
+                                                cursor: "pointer",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                            }}
+                                            onClick={(e) => {
+                                                onApproveCourse(e, course);
+                                            }}
+                                        >
+                                            <span>🔓</span> Approve
+                                        </div>
+                                    ) : null}
                                     <div
                                         style={{
                                             padding: "8px 20px",

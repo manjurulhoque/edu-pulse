@@ -1,12 +1,14 @@
 "use client";
 
-import { useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
+import { useAdminApproveCourseMutation, useAdminGetCoursesQuery } from "@/app/store/reducers/admin/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Grid } from "react-loader-spinner";
 import { Container, Row } from "react-bootstrap";
 import AdminCourseCard from "./AdminCourseCard";
 import Pagination from "@/app/components/common/Pagination";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { Course } from "@/app/models/course.interface";
 
 const AdminAllCourses = () => {
     const [pageNumber, setPageNumber] = useState(1);
@@ -20,7 +22,7 @@ const AdminAllCourses = () => {
     const [search, setSearch] = useState("");
     const pageSize = 8;
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
-    const { data, isLoading: isCoursesLoading } = useAdminGetCoursesQuery({
+    const { data, isLoading: isCoursesLoading, refetch } = useAdminGetCoursesQuery({
         page: pageNumber,
         page_size: pageSize,
         sort_by: sortBy,
@@ -33,6 +35,20 @@ const AdminAllCourses = () => {
         is_approved: isApproved ?? undefined,
     });
     let courses = data?.results;
+    const [approveCourse, { isLoading }] = useAdminApproveCourseMutation();
+
+    const onApproveCourse = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await approveCourse(course.id);
+            toast.success("Course approved successfully");
+            refetch();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to approve course");
+        }
+    };
 
     return (
         <div className="dashboard__main">
@@ -193,7 +209,11 @@ const AdminAllCourses = () => {
                             <>
                                 <Row className="g-4">
                                     {courses?.map((course) => (
-                                        <AdminCourseCard key={course.id} course={course} />
+                                        <AdminCourseCard
+                                            key={course.id}
+                                            course={course}
+                                            onApproveCourse={onApproveCourse}
+                                        />
                                     ))}
                                 </Row>
 

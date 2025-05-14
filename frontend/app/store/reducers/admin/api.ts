@@ -30,6 +30,15 @@ export const AdminApi = createApi({
                 };
             },
         }),
+        adminApproveCourse: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/courses/${id}/approve`,
+                    method: "PUT",
+                };
+            },
+            invalidatesTags: ["Admin"],
+        }),
         adminGetUsers: builder.query<PaginatedResponse<User>, PaginationArgs>({
             query: ({ page, page_size }) => {
                 return {
@@ -104,6 +113,7 @@ export const AdminApi = createApi({
 
 export const {
     useAdminGetCoursesQuery,
+    useAdminApproveCourseMutation,
     useAdminGetUsersQuery,
     useAdminUpdateUserMutation,
     useAdminDeleteUserMutation,

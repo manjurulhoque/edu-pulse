@@ -126,6 +126,33 @@ async def get_all_courses(
     )
 
 
+@admin_router.put("/courses/{course_id}/approve")
+async def approve_course(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+):
+    course = db.query(course_models.Course).filter(course_models.Course.id == course_id).first()
+    if not course:
+        return create_response(
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if course.is_approved:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Course already approved",
+        )
+    course.is_approved = True
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        status_code=status.HTTP_200_OK,
+        message="Course approved successfully",
+        data=course,
+    )
+
+
 @admin_router.get("/users")
 async def get_all_users(
     db: Session = Depends(get_db),
