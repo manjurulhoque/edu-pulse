@@ -33,8 +33,11 @@ async def get_all_courses(
     price = params.get("price", None)
     date = params.get("date", None)
     search = params.get("search", None)
+    is_approved = params.get("is_approved", None)
 
     # Apply filters if provided
+    if isinstance(is_approved, bool):
+        query = query.filter(course_models.Course.is_approved == is_approved)
     if category:
         query = query.filter(course_models.Course.category_id == category)
     if instructor:

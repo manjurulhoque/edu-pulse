@@ -17,6 +17,7 @@ def admin_common_parameters(
     price: str = Query(None),
     date: str = Query(None),
     search: str = Query(None),
+    is_approved: bool = Query(None),
 ):
     return {
         "page": page,
@@ -28,4 +29,5 @@ def admin_common_parameters(
         "price": price,
         "date": date,
         "search": search,
+        "is_approved": is_approved,
     }
