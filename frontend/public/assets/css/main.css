@@ -3783,8 +3783,9 @@ h1, h2, h3, h4, h5, h6 {
 .coursesCard.-type-1 {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 400px;
     transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    box-shadow: 0px 10px 20px 0px rgba(64, 79, 104, 0.15);
 }
 
 .coursesCard.-type-1 .coursesCard__image {
@@ -3806,6 +3807,7 @@ h1, h2, h3, h4, h5, h6 {
 .coursesCard.-type-1 .coursesCard__image img {
     z-index: 1;
     transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    height: 200px;
 }
 
 .coursesCard.-type-1 .coursesCard-footer {

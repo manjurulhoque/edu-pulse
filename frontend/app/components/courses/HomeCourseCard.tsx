@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
 
-export default function HomeCourseCard({course, index}: { course: Course, index: number }) {
+export default function HomeCourseCard({ course, index }: { course: Course; index: number }) {
     const [rating, setRating] = useState<string[]>([]);
     useEffect(() => {
         // Reset rating array before adding new stars
@@ -15,7 +15,7 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
         const ratingValue = 4;
         // Round to nearest whole number for full stars
         const fullStars = Math.round(ratingValue);
-        
+
         for (let i = 0; i < fullStars; i++) {
             setRating((prev) => [...prev, "star"]);
         }
@@ -23,11 +23,11 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
 
     const getImageSrc = () => {
         return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
-    }
+    };
 
     const getAuthorImageSrc = () => {
         return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.user.avatar}`;
-    }
+    };
 
     return (
         <div className="col-lg-3 col-md-6">
@@ -46,29 +46,27 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                             <div className="coursesCard__image_overlay rounded-top-8"></div>
                         </div>
                         <div className="d-flex justify-between py-10 px-10 absolute-full-center z-3">
-                            <div>
-                                <div className="px-15 rounded-200 bg-purple-1">
-                                    <span className="text-11 lh-1 uppercase fw-500 text-white">
-                                        Popular
-                                    </span>
+                            {course.is_featured && (
+                                <div>
+                                    <div className="px-15 rounded-200 bg-purple-1">
+                                        <span className="text-11 lh-1 uppercase fw-500 text-white">Featured</span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
-                            <div>
-                                <div className="px-15 rounded-200 bg-green-1">
-                                    <span className="text-11 lh-1 uppercase fw-500 text-dark-1">
-                                        Best sellers
-                                    </span>
+                            {course.is_popular && (
+                                <div>
+                                    <div className="px-15 rounded-200 bg-green-1">
+                                        <span className="text-11 lh-1 uppercase fw-500 text-dark-1">Best sellers</span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
 
                     <div className="h-100 pt-15 pb-10 px-20">
                         <div className="d-flex items-center">
-                            <div className="text-14 lh-1 text-yellow-1 mr-10">
-                                4
-                            </div>
+                            <div className="text-14 lh-1 text-yellow-1 mr-10">4</div>
                             <div className="d-flex x-gap-5 items-center">
                                 {rating.map((itm, i) => (
                                     <div key={i} className="icon-star text-9 text-yellow-1"></div>
@@ -105,9 +103,9 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                                         alt="icon"
                                     />
                                 </div>
-                                <div className="text-14 lh-1">{`${Math.floor(
-                                    343 / 60,
-                                )}h ${Math.floor(33423 % 60)}m`}</div>
+                                <div className="text-14 lh-1">{`${Math.floor(343 / 60)}h ${Math.floor(
+                                    33423 % 60
+                                )}m`}</div>
                             </div>
 
                             <div className="d-flex items-center">
@@ -119,18 +117,13 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                                         alt="icon"
                                     />
                                 </div>
-                                <div className="text-14 lh-1">{course.level}</div>
+                                <div className="text-14 lh-1">{course.level.charAt(0).toUpperCase() + course.level.slice(1)}</div>
                             </div>
                         </div>
 
                         <div className="coursesCard-footer">
                             <div className="coursesCard-footer__author">
-                                <Image
-                                    width={30}
-                                    height={30}
-                                    src={getAuthorImageSrc()}
-                                    alt="image"
-                                />
+                                <Image width={30} height={30} src={getAuthorImageSrc()} alt="image" />
                                 <div>{course?.user?.name}</div>
                             </div>
 

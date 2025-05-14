@@ -15,6 +15,8 @@ export interface Course {
     category: Category | null;
     category_id: number;
     is_approved: boolean;
+    is_featured: boolean;
+    is_popular: boolean;
     status: "published" | "draft" | "archived" | "flagged";
     is_free: boolean;
     actual_price: number;
