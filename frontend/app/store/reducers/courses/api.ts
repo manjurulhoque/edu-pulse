@@ -12,7 +12,7 @@ export const CourseApi = createApi({
         allCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
             query: ({ page, page_size }) => {
                 return {
-                    url: "all-courses/",
+                    url: "all-courses",
                     params: { page, page_size },
                 };
             },

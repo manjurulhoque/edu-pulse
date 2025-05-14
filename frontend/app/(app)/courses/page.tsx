@@ -4,7 +4,7 @@ import CourseList from "@/app/components/courses/CourseList";
 import PageLinks from "@/app/components/common/PageLinks";
 
 export const metadata: Metadata = {
-    title: "Course list",
+    title: "Course list | EduPulse - Professional LMS Online Education Course",
     description: "Course list page",
 };
 
