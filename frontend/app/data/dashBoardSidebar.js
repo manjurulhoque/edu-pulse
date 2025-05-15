@@ -1,4 +1,4 @@
-import { LayoutDashboard, PlayCircle, List, Users } from 'lucide-react';
+import { LayoutDashboard, PlayCircle, List, Users, DollarSign } from "lucide-react";
 
 export const instructorSidebarItems = [
     {
@@ -30,18 +30,24 @@ export const adminSidebarItems = [
     },
     {
         id: 2,
+        href: "/admin/sales",
+        icon: DollarSign,
+        text: "Sales",
+    },
+    {
+        id: 3,
         href: "/admin/courses",
         icon: PlayCircle,
         text: "All Courses",
     },
     {
-        id: 3,
+        id: 4,
         href: "/admin/users",
         icon: Users,
         text: "All Users",
     },
     {
-        id: 4,
+        id: 5,
         href: "/admin/categories",
         icon: List,
         text: "All Categories",

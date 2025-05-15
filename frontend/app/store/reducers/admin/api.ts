@@ -16,17 +16,43 @@ interface AdminGetCoursesArgs extends PaginationArgs {
     search?: string;
 }
 
+interface AdminGetSalesArgs extends PaginationArgs {
+    sort_by?: string;
+    date_range?: string;
+    instructor?: string;
+    search?: string;
+}
 
 export const AdminApi = createApi({
     reducerPath: "AdminApi",
     baseQuery: DynamicBaseQuery,
     tagTypes: ["Admin"],
     endpoints: (builder) => ({
+        adminGetSales: builder.query<PaginatedResponse<Course>, AdminGetSalesArgs>({
+            query: ({ page, page_size, sort_by, date_range, instructor, search }) => {
+                return {
+                    url: "/admin/sales",
+                    params: { page, page_size, sort_by, date_range, instructor, search },
+                };
+            },
+            providesTags: ["Admin"],
+        }),
         adminGetCourses: builder.query<PaginatedResponse<Course>, AdminGetCoursesArgs>({
             query: ({ page, page_size, sort_by, category, instructor, status, price, date, search, is_approved }) => {
                 return {
                     url: "/admin/courses",
-                    params: { page, page_size, sort_by, category, instructor, status, price, date, search, is_approved },
+                    params: {
+                        page,
+                        page_size,
+                        sort_by,
+                        category,
+                        instructor,
+                        status,
+                        price,
+                        date,
+                        search,
+                        is_approved,
+                    },
                 };
             },
         }),
@@ -67,10 +93,7 @@ export const AdminApi = createApi({
             },
             invalidatesTags: ["Admin"],
         }),
-        adminGetCategories: builder.query<
-            PaginatedResponse<Category>,
-            PaginationArgs
-        >({
+        adminGetCategories: builder.query<PaginatedResponse<Category>, PaginationArgs>({
             query: ({ page, page_size }) => {
                 return {
                     url: "/admin/categories",
@@ -112,6 +135,7 @@ export const AdminApi = createApi({
 });
 
 export const {
+    useAdminGetSalesQuery,
     useAdminGetCoursesQuery,
     useAdminApproveCourseMutation,
     useAdminGetUsersQuery,

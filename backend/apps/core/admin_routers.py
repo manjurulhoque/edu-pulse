@@ -12,6 +12,7 @@ from apps.courses import models as course_models
 from utils.params import common_parameters, admin_common_parameters
 from apps.core.schemas import UserUpdate
 from apps.categories import models as category_models
+from apps.checkout.models import Checkout, CheckoutItem
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -132,7 +133,11 @@ async def approve_course(
     db: Session = Depends(get_db),
     current_user: User = Depends(admin_required),
 ):
-    course = db.query(course_models.Course).filter(course_models.Course.id == course_id).first()
+    course = (
+        db.query(course_models.Course)
+        .filter(course_models.Course.id == course_id)
+        .first()
+    )
     if not course:
         return create_response(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -366,3 +371,42 @@ async def delete_category(
             status_code=status.HTTP_400_BAD_REQUEST,
             message=f"Failed to delete category: {str(e)}",
         )
+
+
+@admin_router.get("/sales")
+async def get_all_sales(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+    params: dict = Depends(common_parameters),
+):
+    query = db.query(Checkout)
+    total = query.count()
+    page = params.get("page", 1)
+    page_size = params.get("page_size", 10)
+    skip = (page - 1) * page_size
+    
+    sales = (
+        query.options(
+            joinedload(Checkout.user),
+            joinedload(Checkout.items).joinedload(CheckoutItem.course),
+        )
+        .order_by(Checkout.created_at.desc())
+        .offset(skip)
+        .limit(params["page_size"])
+        .all()
+    )
+
+    for sale in sales:
+        try:
+            if hasattr(sale.user, "password"):
+                del sale.user.password
+        except:
+            pass
+
+    return create_paginated_response(
+        data=sales,
+        total=total,
+        page=params["page"],
+        page_size=params["page_size"],
+        path="/admin/sales",
+    )
