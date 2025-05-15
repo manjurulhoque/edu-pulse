@@ -2,14 +2,17 @@
 
 import { useAdminGetSalesQuery } from "@/app/store/reducers/admin/api";
 import { useState } from "react";
-import { Course } from "@/app/models/course.interface";
+import Pagination from "@/app/components/common/Pagination";
+import { Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { Grid } from "react-loader-spinner";
+import { Table } from "react-bootstrap";
 
 const AdminAllSales = () => {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-
+    const [pageNumber, setPageNumber] = useState(1);
+    const pageSize = 10;
     const { data: salesData, isLoading } = useAdminGetSalesQuery({
-        page,
+        page: pageNumber,
         page_size: pageSize,
     });
 
@@ -28,74 +31,92 @@ const AdminAllSales = () => {
         });
     };
 
-    return (
-        <div className="container py-4">
-            <h1 className="h2 mb-4">Sales Overview</h1>
+    const sales = salesData?.results;
 
-            {isLoading ? (
-                <div className="text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
+    return (
+        <div className="dashboard__main">
+            <div className="dashboard__content bg-light-4">
+                <div className="row pb-50 mb-10">
+                    <div className="col-auto">
+                        <h1 className="text-30 lh-12 fw-700">All Sales</h1>
+                        <div className="mt-10">Manage platform sales</div>
                     </div>
                 </div>
-            ) : (
-                <>
-                    <div className="table-responsive">
-                        <table className="table table-striped table-hover">
-                            <thead className="table-light">
-                                <tr>
-                                    <th>Course</th>
-                                    <th>Price</th>
-                                    <th>Date</th>
-                                    <th>Instructor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {salesData?.results.map((course: Course) => (
-                                    <tr key={course.id}>
-                                        <td>{course.title}</td>
-                                        <td>{formatPrice(course.actual_price)}</td>
-                                        <td>{formatDate(course.created_at)}</td>
-                                        <td>{course.user?.name || "N/A"}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
 
-                    {salesData && salesData.results.length > 0 && (
-                        <nav aria-label="Page navigation" className="mt-4">
-                            <ul className="pagination justify-content-center">
-                                <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
-                                    <button
-                                        className="page-link"
-                                        onClick={() => setPage(page - 1)}
-                                        disabled={page === 1}
-                                    >
-                                        Previous
-                                    </button>
-                                </li>
-                                {Array.from({ length: salesData.total_pages }, (_, i) => i + 1).map((pageNum) => (
-                                    <li key={pageNum} className={`page-item ${page === pageNum ? "active" : ""}`}>
-                                        <button className="page-link" onClick={() => setPage(pageNum)}>
-                                            {pageNum}
-                                        </button>
-                                    </li>
-                                ))}
-                                <li className={`page-item ${page >= salesData.total_pages ? "disabled" : ""}`}>
-                                    <button
-                                        className="page-link"
-                                        onClick={() => setPage(page + 1)}
-                                        disabled={page >= salesData.total_pages}
-                                    >
-                                        Next
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-                    )}
-                </>
-            )}
+                <div className="row y-gap-30">
+                    <Container>
+                        <div
+                            style={{
+                                display: isLoading ? "flex" : "none",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100vh",
+                            }}
+                        >
+                            <Grid
+                                visible={isLoading}
+                                height="60"
+                                width="60"
+                                color="#4fa94d"
+                                ariaLabel="grid-loading"
+                                radius="12.5"
+                                wrapperStyle={{}}
+                                wrapperClass="grid-wrapper"
+                            />
+                        </div>
+
+                        {!isLoading && sales && sales.length === 0 && (
+                            <div className="text-center">
+                                <h4>No users found.</h4>
+                            </div>
+                        )}
+
+                        {!isLoading && (
+                            <>
+                                <Table striped bordered hover responsive>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {sales?.map((sale) => (
+                                            <tr key={sale.id}>
+                                                <td>{sale.id}</td>
+                                                <td>{sale.full_name}</td>
+                                                <td>{sale.email}</td>
+                                                <td>{new Date(sale.created_at).toLocaleDateString()}</td>
+                                                <td>
+                                                    <Button variant="success" size="sm" className="me-2">
+                                                        Details
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                    1
+                                </Table>
+
+                                <div className="row justify-center pt-90 lg:pt-50">
+                                    <div className="col-auto">
+                                        <Pagination
+                                            pageNumber={pageNumber}
+                                            setPageNumber={setPageNumber}
+                                            data={salesData as any}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </Container>
+                </div>
+            </div>
         </div>
     );
 };

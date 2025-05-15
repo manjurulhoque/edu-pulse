@@ -4,6 +4,7 @@ import { PaginatedResponse, PaginationArgs } from "@/app/models/request.interfac
 import { Course } from "@/app/models/course.interface";
 import { User } from "@/app/models/user.interface";
 import { Category } from "@/app/models/category.interface";
+import { Checkout } from "@/app/models/checkout.interface";
 
 interface AdminGetCoursesArgs extends PaginationArgs {
     sort_by?: string;
@@ -28,7 +29,7 @@ export const AdminApi = createApi({
     baseQuery: DynamicBaseQuery,
     tagTypes: ["Admin"],
     endpoints: (builder) => ({
-        adminGetSales: builder.query<PaginatedResponse<Course>, AdminGetSalesArgs>({
+        adminGetSales: builder.query<PaginatedResponse<Checkout>, AdminGetSalesArgs>({
             query: ({ page, page_size, sort_by, date_range, instructor, search }) => {
                 return {
                     url: "/admin/sales",
