@@ -197,7 +197,7 @@ const HeaderDashboard: React.FC = () => {
                                                 <div className="sidebar -dashboard">
                                                     <div className={`sidebar__item`}>
                                                         <Link
-                                                            href={"/"}
+                                                            href={"/profile"}
                                                             className="d-flex items-center text-17 lh-1 fw-500"
                                                         >
                                                             <i className="text-20 icon-list mr-5"></i>
