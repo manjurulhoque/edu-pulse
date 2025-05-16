@@ -3,13 +3,13 @@
 import { useAdminGetSalesQuery } from "@/app/store/reducers/admin/api";
 import { useState } from "react";
 import Pagination from "@/app/components/common/Pagination";
-import { Button } from "react-bootstrap";
-import { Container } from "react-bootstrap";
+import { Button, Modal, Table, Container } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
-import { Table } from "react-bootstrap";
-
+import { Checkout } from "@/app/models/checkout.interface";
 const AdminAllSales = () => {
     const [pageNumber, setPageNumber] = useState(1);
+    const [showCourseModal, setShowCourseModal] = useState(false);
+    const [selectedSale, setSelectedSale] = useState<Checkout | null>(null);
     const pageSize = 10;
     const { data: salesData, isLoading } = useAdminGetSalesQuery({
         page: pageNumber,
@@ -29,6 +29,11 @@ const AdminAllSales = () => {
             month: "short",
             day: "numeric",
         });
+    };
+
+    const handleShowCourseDetails = (sale: any) => {
+        setSelectedSale(sale);
+        setShowCourseModal(true);
     };
 
     const sales = salesData?.results;
@@ -67,7 +72,7 @@ const AdminAllSales = () => {
 
                         {!isLoading && sales && sales.length === 0 && (
                             <div className="text-center">
-                                <h4>No users found.</h4>
+                                <h4>No sales found.</h4>
                             </div>
                         )}
 
@@ -89,10 +94,14 @@ const AdminAllSales = () => {
                                                 <td>{sale.id}</td>
                                                 <td>{sale.full_name}</td>
                                                 <td>{sale.email}</td>
-                                                <td>{new Date(sale.created_at).toLocaleDateString()}</td>
+                                                <td>{sale.created_at}</td>
                                                 <td>
-                                                    <Button variant="success" size="sm" className="me-2">
-                                                        Details
+                                                    <Button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        onClick={() => handleShowCourseDetails(sale)}
+                                                    >
+                                                        View Courses
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -114,6 +123,53 @@ const AdminAllSales = () => {
                     </Container>
                 </div>
             </div>
+
+            <Modal show={showCourseModal} onHide={() => setShowCourseModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Course Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedSale && (
+                        <>
+                            <div className="mb-4">
+                                <h5>Customer Information</h5>
+                                <p>
+                                    <strong>Name:</strong> {selectedSale.full_name}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong> {selectedSale.email}
+                                </p>
+                                <p>
+                                    <strong>Purchase Date:</strong> {selectedSale.created_at}
+                                </p>
+                            </div>
+
+                            <h5>Purchased Courses</h5>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {selectedSale.items?.map((item: any) => (
+                                        <tr key={item.id}>
+                                            <td>{item.course.title}</td>
+                                            <td>{formatPrice(item.course.actual_price)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowCourseModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

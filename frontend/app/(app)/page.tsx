@@ -5,7 +5,7 @@ import HomeCourses from "@/app/components/courses/HomeCourses";
 import Preloader from "@/app/components/Preloader";
 
 export const metadata: Metadata = {
-    title: "Home",
+    title: "Home | EduPulse - Professional LMS Online Education Course",
     description: "Home page",
 };
 
