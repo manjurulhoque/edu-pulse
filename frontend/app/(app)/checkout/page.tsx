@@ -2,7 +2,7 @@ import CheckoutForm from "@/app/components/checkout/CheckoutForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Checkout",
+    title: "Checkout | EduPulse - Professional LMS Online Education Course",
     description: "Checkout page",
 };
 

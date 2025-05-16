@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import styles from "./CheckoutForm.module.css";
 import { useCreateCheckoutMutation, useGetCartQuery } from "@/app/store/reducers/cart/api";
 import { useAuthRedirect } from "@/app/hooks/useAuthRedirect";
+import { getCourseImagePath } from "@/app/utils/image-path";
+import Image from "next/image";
 
 const CheckoutForm = () => {
     const { session } = useAuthRedirect();
@@ -19,12 +21,8 @@ const CheckoutForm = () => {
 
     const router = useRouter();
     const totalAmount =
-        cart?.items.reduce(
-            (sum, item) =>
-                sum +
-                (item.course?.is_free ? 0 : item.course?.discounted_price || 0),
-            0
-        ) || 0;
+        cart?.items.reduce((sum, item) => sum + (item.course?.is_free ? 0 : item.course?.discounted_price || 0), 0) ||
+        0;
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -64,7 +62,7 @@ const CheckoutForm = () => {
                 zip_code: formData.zipCode,
             }).unwrap();
             toast.success("Courses purchased successfully!");
-            router.push("/dashboard/my-courses");
+            router.push("/student/dashboard/my-courses");
         } catch (error) {
             toast.error("Failed to complete checkout. Please try again.");
         } finally {
@@ -87,9 +85,7 @@ const CheckoutForm = () => {
                                     <Card.Body>
                                         <Form onSubmit={handleSubmit}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label>
-                                                    Full Name
-                                                </Form.Label>
+                                                <Form.Label>Full Name</Form.Label>
                                                 <Form.Control
                                                     type="text"
                                                     name="fullName"
@@ -131,18 +127,12 @@ const CheckoutForm = () => {
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <Form.Group className="mb-3">
-                                                        <Form.Label>
-                                                            City
-                                                        </Form.Label>
+                                                        <Form.Label>City</Form.Label>
                                                         <Form.Control
                                                             type="text"
                                                             name="city"
-                                                            value={
-                                                                formData.city
-                                                            }
-                                                            onChange={
-                                                                handleChange
-                                                            }
+                                                            value={formData.city}
+                                                            onChange={handleChange}
                                                             required
                                                             className={`form-control-lg ${styles.formControl}`}
                                                             placeholder="Enter your city"
@@ -151,18 +141,12 @@ const CheckoutForm = () => {
                                                 </div>
                                                 <div className="col-md-6">
                                                     <Form.Group className="mb-3">
-                                                        <Form.Label>
-                                                            Country
-                                                        </Form.Label>
+                                                        <Form.Label>Country</Form.Label>
                                                         <Form.Control
                                                             type="text"
                                                             name="country"
-                                                            value={
-                                                                formData.country
-                                                            }
-                                                            onChange={
-                                                                handleChange
-                                                            }
+                                                            value={formData.country}
+                                                            onChange={handleChange}
                                                             required
                                                             className={`form-control-lg ${styles.formControl}`}
                                                             placeholder="Enter your country"
@@ -172,9 +156,7 @@ const CheckoutForm = () => {
                                             </div>
 
                                             <Form.Group className="mb-3">
-                                                <Form.Label>
-                                                    ZIP Code
-                                                </Form.Label>
+                                                <Form.Label>ZIP Code</Form.Label>
                                                 <Form.Control
                                                     type="text"
                                                     name="zipCode"
@@ -192,9 +174,7 @@ const CheckoutForm = () => {
                                                 disabled={isCheckoutLoading}
                                                 className="w-100 btn-lg"
                                             >
-                                                {isCheckoutLoading
-                                                    ? "Processing..."
-                                                    : "Complete Purchase"}
+                                                {isCheckoutLoading ? "Processing..." : "Complete Purchase"}
                                             </Button>
                                         </Form>
                                     </Card.Body>
@@ -209,29 +189,21 @@ const CheckoutForm = () => {
                                         {cart?.items.map((item) => (
                                             <div key={item.id} className="mb-3">
                                                 <div className="d-flex align-items-center">
-                                                    <img
-                                                        src={
-                                                            item.course
-                                                                .preview_image
-                                                        }
+                                                    <Image
+                                                        src={getCourseImagePath(item.course)}
                                                         alt={item.course.title}
                                                         className="rounded"
+                                                        width={60}
+                                                        height={40}
                                                         style={{
-                                                            width: "60px",
-                                                            height: "40px",
                                                             objectFit: "cover",
+                                                            height: "auto",
                                                         }}
                                                     />
                                                     <div className="ms-3">
-                                                        <h6 className="mb-0">
-                                                            {item.course.title}
-                                                        </h6>
+                                                        <h6 className="mb-0">{item.course.title}</h6>
                                                         <small className="text-muted">
-                                                            $
-                                                            {
-                                                                item.course
-                                                                    .discounted_price
-                                                            }
+                                                            ${item.course.discounted_price}
                                                         </small>
                                                     </div>
                                                 </div>
@@ -240,7 +212,7 @@ const CheckoutForm = () => {
                                         <hr />
                                         <div className="d-flex justify-content-between mb-2">
                                             <span>Subtotal:</span>
-                                            <span>${totalAmount}</span>
+                                            <span>${totalAmount.toFixed(2)}</span>
                                         </div>
                                         <div className="d-flex justify-content-between mb-2">
                                             <span>Tax:</span>
@@ -249,7 +221,7 @@ const CheckoutForm = () => {
                                         <hr />
                                         <div className="d-flex justify-content-between">
                                             <strong>Total:</strong>
-                                            <strong>${totalAmount}</strong>
+                                            <strong>${totalAmount.toFixed(2)}</strong>
                                         </div>
                                     </div>
                                 </div>
