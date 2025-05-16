@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useMeQuery, useUpdateProfileMutation } from "@/app/store/reducers/user/api";
 import { User } from "@/app/models/user.interface";
@@ -51,60 +51,70 @@ const UserProfile = () => {
     }
 
     return (
-        <Card className="p-4">
-            <Card.Title className="mb-4">Update Profile</Card.Title>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {success && <Alert variant="success">{success}</Alert>}
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
-                </Form.Group>
+        <Container style={{ marginTop: "100px" }}>
+            <Card className="p-4">
+                <Card.Title className="mb-4">Update Profile</Card.Title>
+                {error && <Alert variant="danger">{error}</Alert>}
+                {success && <Alert variant="success">{success}</Alert>}
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" name="name" className="border" value={formData.name} onChange={handleChange} required />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            name="email"
+                            className="border"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Bio</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="bio"
-                        value={formData.bio}
-                        onChange={handleChange}
-                        placeholder="Tell us about yourself"
-                    />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Bio</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            name="bio"
+                            value={formData.bio}
+                            onChange={handleChange}
+                            placeholder="Tell us about yourself"
+                        />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Website</Form.Label>
-                    <Form.Control
-                        type="url"
-                        name="website"
-                        value={formData.website}
-                        onChange={handleChange}
-                        placeholder="https://your-website.com"
-                    />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Website</Form.Label>
+                        <Form.Control
+                            type="url"
+                            name="website"
+                            value={formData.website}
+                            onChange={handleChange}
+                            placeholder="https://your-website.com"
+                        />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Avatar URL</Form.Label>
-                    <Form.Control
-                        type="url"
-                        name="avatar"
-                        value={formData.avatar}
-                        onChange={handleChange}
-                        placeholder="https://example.com/avatar.png"
-                    />
-                </Form.Group>
-
-                <Button variant="primary" type="submit" disabled={isUpdating}>
-                    {isUpdating ? "Updating..." : "Update Profile"}
-                </Button>
-            </Form>
-        </Card>
+                    {/* <Form.Group className="mb-3">
+                        <Form.Label>Avatar URL</Form.Label>
+                        <Form.Control
+                            type="url"
+                            name="avatar"
+                            value={formData.avatar}
+                            onChange={handleChange}
+                            placeholder="https://example.com/avatar.png"
+                        />
+                    </Form.Group> */}
+                    <div className="d-flex justify-content-end">
+                        <Button variant="primary" type="submit" disabled={isUpdating}>
+                            {isUpdating ? "Updating..." : "Update Profile"}
+                        </Button>
+                    </div>
+                </Form>
+            </Card>
+        </Container>
     );
 };
 

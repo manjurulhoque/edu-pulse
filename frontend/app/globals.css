@@ -26,6 +26,11 @@
     border-color: #f14f48;
 }
 
+.btn-primary:active {
+    background-color: #f14f48 !important;
+    border-color: #f14f48 !important;
+}
+
 .btn-secondary {
     background-color: #34364e;
     border-color: #34364e;
@@ -35,4 +40,9 @@
 .btn-secondary:hover {
     background-color: #34364e;
     border-color: #34364e;
+}
+
+.btn-secondary:active {
+    background-color: #34364e !important;
+    border-color: #34364e !important;
 }
