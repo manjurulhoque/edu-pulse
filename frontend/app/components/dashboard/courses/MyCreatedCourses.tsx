@@ -7,6 +7,7 @@ import CoursesCardDashboard from "@/app/components/dashboard/courses/CoursesCard
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Course } from "@/app/models/course.interface";
+import { CourseStatus } from "@/app/enums/course.enum";
 
 const MyCreatedCourses: React.FC = () => {
     const [isPublished, setIsPublished] = useQueryState("is_published", parseAsBoolean.withDefault(true));
@@ -21,9 +22,9 @@ const MyCreatedCourses: React.FC = () => {
         if (courses) {
             // filter published courses
             if (activeTab === 1) {
-                setPageData([...(courses ?? [])?.filter((course: Course) => course.is_published)]);
+                setPageData([...(courses ?? [])?.filter((course: Course) => course.status === CourseStatus.PUBLISHED)]);
             } else {
-                setPageData([...(courses ?? [])?.filter((course: Course) => !course.is_published)]);
+                setPageData([...(courses ?? [])?.filter((course: Course) => course.status !== CourseStatus.PUBLISHED)]);
             }
         }
     }, [activeTab, courses]);

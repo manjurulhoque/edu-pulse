@@ -12,6 +12,7 @@ import { Section } from "@/app/models/course.interface";
 import { Container } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
 import { Lesson } from "@/app/models/lesson.interface";
+import { CourseStatus } from "@/app/enums/course.enum";
 
 const CourseCurriculum: React.FC = () => {
     const params = useParams();
@@ -95,7 +96,7 @@ const CourseCurriculum: React.FC = () => {
                         <h1 className="text-30 lh-12 fw-700">{course?.title}</h1>
                         <div className="mt-10">Update your outstanding course!</div>
                     </div>
-                    {course?.is_published && (
+                    {course?.status === CourseStatus.PUBLISHED && (
                         <div className="col-auto text-right">
                             <Link
                                 href={`/courses/${course.slug}`}

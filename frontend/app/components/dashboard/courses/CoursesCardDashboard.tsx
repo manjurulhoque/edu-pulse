@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {redirect} from "next/navigation";
 import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
+import { CourseStatus } from "@/app/enums/course.enum";
 
 export default function CoursesCardDashboard({course}: { course: Course }) {
     const [activeShare, setActiveShare] = useState(false);
@@ -96,7 +97,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                             </a>
 
                             {
-                                !course.is_published && (
+                                course.status !== CourseStatus.PUBLISHED && (
                                     <a href="javascript:void(0)" className="d-flex items-center mt-20"
                                        onClick={() => setShowModal(true)}>
                                         <div className="icon-access"></div>

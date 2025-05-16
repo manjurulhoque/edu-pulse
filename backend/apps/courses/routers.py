@@ -411,7 +411,7 @@ async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
     total_students = len(course.enrollments)
     total_published_courses = (
         db.query(Course)
-        .filter(Course.is_published.is_(True), Course.user_id == course.user_id)
+        .filter(Course.status == CourseStatus.PUBLISHED, Course.user_id == course.user_id)
         .count()
     )
 
