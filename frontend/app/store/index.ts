@@ -4,6 +4,7 @@ import { CourseApi } from "@/app/store/reducers/courses/api";
 import { CartApi } from "./reducers/cart/api";
 import { StatisticsApi } from "./reducers/statistics/api";
 import { AdminApi } from "./reducers/admin/api";
+import { UserApi } from "./reducers/user/api";
 
 export const store: any = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store: any = configureStore({
         [CartApi.reducerPath]: CartApi.reducer,
         [StatisticsApi.reducerPath]: StatisticsApi.reducer,
         [AdminApi.reducerPath]: AdminApi.reducer,
+        [UserApi.reducerPath]: UserApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
@@ -20,7 +22,8 @@ export const store: any = configureStore({
             CourseApi.middleware,
             CartApi.middleware,
             StatisticsApi.middleware,
-            AdminApi.middleware
+            AdminApi.middleware,
+            UserApi.middleware,
         ),
 });
 
