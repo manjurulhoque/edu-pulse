@@ -1,17 +1,19 @@
 import http
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, Form, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+from apps.core import schemas as core_schemas
 from conf.database import get_db
 from utils.response_utils import create_response
 from . import schemas, services
-from .services import get_current_user, get_password_hash, verify_password
+from .services import get_current_user
 from .models import User
+
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -141,15 +143,29 @@ def refresh_access_token(
 async def get_dashboard_statistics(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
+    """
+    Get dashboard statistics
+    """
     statistics = await services.get_dashboard_statistics(db, current_user.id)
     return create_response(data=statistics)
 
 
-@router.put("/profile", response_model=schemas.UserReturn)
+@router.put("/profile", response_model=core_schemas.BaseReturn)
 async def update_profile(
     profile_data: schemas.UserUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    """
+    Update user profile
+    """
     updated_user = await services.update_user(db, current_user.id, profile_data)
-    return create_response(data=updated_user)
+    user_dict = {
+        "id": updated_user.id,
+        "email": updated_user.email,
+        "name": updated_user.name,
+        "bio": updated_user.bio,
+        "website": updated_user.website,
+        "avatar": updated_user.avatar,
+    }
+    return create_response(data=user_dict)

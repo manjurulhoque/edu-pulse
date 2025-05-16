@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-
+from typing import Optional
 
 class UserBase(BaseModel):
     email: EmailStr = Field(None, example="user@example.com", title="User email")
@@ -44,4 +44,7 @@ class OAuth2PasswordRequestFormEmail(BaseModel):
 
 
 class UserUpdate(UserBase):
-    pass
+    name: str
+    bio: Optional[str] = None
+    website: Optional[str] = None
+    avatar: Optional[str] = None

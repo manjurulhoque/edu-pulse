@@ -4,6 +4,7 @@ import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useMeQuery, useUpdateProfileMutation } from "@/app/store/reducers/user/api";
 import { User } from "@/app/models/user.interface";
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
     const [formData, setFormData] = useState<
@@ -16,26 +17,34 @@ const UserProfile = () => {
         avatar: "",
     });
     const [error, setError] = useState<string>("");
-    const [success, setSuccess] = useState<string>("");
 
     const { data: user, isLoading: isLoadingUser } = useMeQuery();
     const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
     useEffect(() => {
         if (user) {
-            setFormData(user);
+            setFormData({
+                name: user.name,
+                email: user.email,
+                bio: user.bio,
+                website: user.website,
+                avatar: user.avatar,
+            });
         }
     }, [user]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        updateProfile({ ...formData })
+        updateProfile(formData)
             .unwrap()
             .then(() => {
-                setSuccess("Profile updated successfully!");
+                toast.success("Profile updated successfully!");
                 setError("");
             })
-            .catch((error) => setError(error.message));
+            .catch((error) => {
+                toast.error(error.message || "Failed to update profile");
+                setError(error.message || "Failed to update profile");
+            });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,15 +56,21 @@ const UserProfile = () => {
     };
 
     if (isLoadingUser) {
-        return <div>Loading...</div>;
+        return (
+            <Container style={{ marginTop: "100px" }}>
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </Container>
+        );
     }
 
     return (
         <Container style={{ marginTop: "100px" }}>
             <Card className="p-4">
                 <Card.Title className="mb-4">Update Profile</Card.Title>
-                {error && <Alert variant="danger">{error}</Alert>}
-                {success && <Alert variant="success">{success}</Alert>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Name</Form.Label>
