@@ -79,8 +79,6 @@ const AdminAllSales = () => {
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Status</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -100,7 +98,6 @@ const AdminAllSales = () => {
                                             </tr>
                                         ))}
                                     </tbody>
-                                    1
                                 </Table>
 
                                 <div className="row justify-center pt-90 lg:pt-50">
