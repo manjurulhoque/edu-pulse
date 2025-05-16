@@ -143,3 +143,13 @@ async def get_dashboard_statistics(
 ):
     statistics = await services.get_dashboard_statistics(db, current_user.id)
     return create_response(data=statistics)
+
+
+@router.put("/profile", response_model=schemas.UserReturn)
+async def update_profile(
+    profile_data: schemas.UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    updated_user = await services.update_user(db, current_user.id, profile_data)
+    return create_response(data=updated_user)

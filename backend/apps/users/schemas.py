@@ -2,9 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class UserBase(BaseModel):
-    email: EmailStr = Field(
-        None, example="user@example.com", title="User email"
-    )
+    email: EmailStr = Field(None, example="user@example.com", title="User email")
 
 
 class UserReturn(UserBase):
@@ -43,3 +41,7 @@ class Token(BaseModel):
 class OAuth2PasswordRequestFormEmail(BaseModel):
     email: EmailStr
     password: str
+
+
+class UserUpdate(UserBase):
+    pass

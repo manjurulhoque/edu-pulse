@@ -15,7 +15,7 @@ interface RequestBody {
 export async function POST(req: Request) {
     const {name, username, email, password}: RequestBody = await req.json();
 
-    const response = await fetch(`${process.env.BACKEND_DOCKER_BASE_URL}/signup`, {
+    const response = await fetch(`${process.env.BACKEND_DOCKER_BASE_URL}/users/signup`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

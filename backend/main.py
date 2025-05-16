@@ -93,7 +93,7 @@ def main():
     return RedirectResponse(url="/docs/")
 
 
-app.include_router(user_routers.router, tags=["users"])
+app.include_router(user_routers.router, prefix="/users", tags=["users"])
 app.include_router(course_routers.router, tags=["courses"])
 app.include_router(categories_routers.router, tags=["categories"])
 app.include_router(cart_routers.router, tags=["cart"])

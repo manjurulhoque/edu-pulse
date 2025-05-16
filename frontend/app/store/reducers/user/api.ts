@@ -6,14 +6,14 @@ export const UserApi = createApi({
     baseQuery: DynamicBaseQuery,
     endpoints: (builder) => ({
         me: builder.query<User, void>({
-            query: () => "/api/user",
+            query: () => "/users/me",
         }),
         updateProfile: builder.mutation<
             User,
             Omit<User, "id" | "created_at" | "is_admin" | "is_instructor" | "is_active">
         >({
             query: (data) => ({
-                url: "/api/user",
+                url: "/users/profile",
                 method: "PUT",
                 body: data,
             }),

@@ -19,7 +19,7 @@ export const StatisticsApi = createApi({
         getDashboardStatistics: builder.query<Statistics, void>({
             query: () => {
                 return {
-                    url: "dashboard/statistics",
+                    url: "users/dashboard/statistics",
                 };
             },
             providesTags: ["Statistics"],
