@@ -9,6 +9,7 @@ from apps.users.services import get_current_user
 from apps.checkout.schemas import CheckoutInput
 from apps.cart.services import get_cart, clear_cart
 from utils.response_utils import create_response
+from apps.enrollments.services import get_enrollment, add_course_to_enrollment
 
 router = APIRouter(prefix="/checkout", tags=["checkout"])
 
@@ -58,6 +59,10 @@ async def create_checkout(
         }
         db_checkout_item = CheckoutItem(**checkout_item_data)
         db.add(db_checkout_item)
+        course_id = item.course_id
+        enrollment = get_enrollment(db, current_user.id, course_id)
+        if not enrollment:
+            add_course_to_enrollment(db, current_user.id, course_id)
     db.commit()
     db.refresh(db_checkout)
 
