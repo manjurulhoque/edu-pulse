@@ -1,5 +1,6 @@
 import http
 from datetime import timedelta
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -150,7 +151,7 @@ async def get_dashboard_statistics(
     return create_response(data=statistics)
 
 
-@router.put("/profile", response_model=core_schemas.BaseReturn)
+@router.put("/profile", response_model=core_schemas.BaseReturn[schemas.UserUpdateResponse])
 async def update_profile(
     profile_data: schemas.UserUpdate,
     db: Session = Depends(get_db),
