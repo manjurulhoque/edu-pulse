@@ -1,3 +1,5 @@
+import { Course } from "../models/course.interface";
+
 export const getCourseImagePath = (course: Course) => {
     return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
 };

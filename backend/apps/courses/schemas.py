@@ -12,6 +12,7 @@ class CourseSchema(BaseModel):
     actual_price: float
     discounted_price: float | None
     is_free: bool
+    preview_image: str | None
 
     class Config:
         # orm_mode = True
