@@ -25,6 +25,7 @@ class User(Base):
     enrollments = relationship("Enrollment", back_populates="user")
     cart = relationship(Cart, back_populates="user", uselist=False, lazy="joined")
     checkouts = relationship("Checkout", back_populates="user")
+    reviews = relationship("CourseReview", back_populates="user")
 
     def __repr__(self):
         return f"<User(email='{self.email}')>"

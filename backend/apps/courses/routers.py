@@ -1,40 +1,30 @@
 import json
 from typing import Optional
 
-from fastapi import (
-    APIRouter,
-    Depends,
-    File,
-    Form,
-    HTTPException,
-    UploadFile,
-)
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import ValidationError
-from sqlalchemy.orm import joinedload, Session
+from sqlalchemy.orm import Session, joinedload
 from starlette import status
 from starlette.requests import Request
 
+from apps.categories.models import Category
 from apps.core.decorators import (
-    auth_required,
     admin_or_instructor_required,
+    auth_required,
     instructor_required,
 )
+from apps.core.enums import CourseStatus
 from apps.courses import services
 from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseSchema
+from apps.enrollments.models import Enrollment
 from apps.lessons.models import Lesson
 from apps.users.models import User
-from apps.enrollments.models import Enrollment
-from apps.categories.models import Category
 from conf.database import get_db
 from utils.params import common_parameters
-from utils.response_utils import (
-    create_paginated_response,
-    create_response,
-)
+from utils.response_utils import create_paginated_response, create_response
 from utils.upload import save_image
-from apps.core.enums import CourseStatus
 
 router = APIRouter()
 

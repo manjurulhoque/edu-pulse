@@ -50,6 +50,7 @@ class Course(BaseModel):
     lessons = relationship("Lesson", back_populates="course")
     enrollments = relationship("Enrollment", back_populates="course")
     sections = relationship("CourseSection", back_populates="course")
+    reviews = relationship("CourseReview", back_populates="course")
 
     def __repr__(self):
         return f"<Course(id={self.id}, title='{self.title}', user_id={self.user_id})>"
