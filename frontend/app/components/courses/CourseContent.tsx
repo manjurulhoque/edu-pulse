@@ -1,11 +1,11 @@
 "use client";
 
-import React, {useState} from "react";
-import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Course } from "@/app/models/course.interface";
 
-const CourseContent: React.FC<{ course: Course }> = ({course}) => {
+const CourseContent: React.FC<{ course: Course }> = ({ course }) => {
     const [activeItemId, setActiveItemId] = useState<number | null>(null);
     const [isAllExpanded, setIsAllExpanded] = useState(false);
 
@@ -30,9 +30,9 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
             </div>
 
             <div className="mt-10">
-                {
-                    course?.sections.map((section, i) => (
-                        <div key={i} className="accordion -block-1 text-left js-accordion mb-5">
+                {course?.sections.map((section, i) => (
+                    <div key={i} className="accordion -block-1 text-left js-accordion mb-5">
+                        {section.lessons && section.lessons.length > 0 ? (
                             <div
                                 className={`accordion__item ${
                                     activeItemId === section.id || activeItemId === -1 ? "is-active" : ""
@@ -47,30 +47,29 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
                                     <div className="d-flex items-center">
                                         <div className="accordion__icon ml-10">
                                             <div className="icon">
-                                                <FontAwesomeIcon icon={faChevronDown}/>
+                                                <FontAwesomeIcon icon={faChevronDown} />
                                             </div>
                                             <div className="icon">
-                                                <FontAwesomeIcon icon={faChevronUp}/>
+                                                <FontAwesomeIcon icon={faChevronUp} />
                                             </div>
                                         </div>
-                                        <span className="text-17 fw-500 text-dark-1 ml-3">
-                                          {section.title}
-                                        </span>
+                                        <span className="text-17 fw-500 text-dark-1 ml-3">{section.title}</span>
                                     </div>
-                                    <div>
-                                        {section.lessons?.length} lectures
-                                    </div>
+                                    <div>{section.lessons?.length} lectures</div>
                                 </div>
 
-                                <div className="accordion__content"
-                                     style={activeItemId == section.id || activeItemId === -1 ? {maxHeight: "700px"} : {}}>
+                                <div
+                                    className="accordion__content"
+                                    style={
+                                        activeItemId == section.id || activeItemId === -1 ? { maxHeight: "700px" } : {}
+                                    }
+                                >
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="y-gap-20">
                                             {section.lessons?.map((lesson, index) => (
                                                 <div key={index} className="d-flex justify-between">
                                                     <div className="d-flex items-center">
-                                                        <div
-                                                            className="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div className="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
                                                             <div className="icon-play text-9"></div>
                                                         </div>
                                                         <div>{lesson.title}</div>
@@ -81,12 +80,12 @@ const CourseContent: React.FC<{ course: Course }> = ({course}) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                }
+                        ) : null}
+                    </div>
+                ))}
             </div>
         </div>
     );
-}
+};
 
 export default CourseContent;
