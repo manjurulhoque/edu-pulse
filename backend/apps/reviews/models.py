@@ -17,10 +17,10 @@ class CourseReview(Base):
     __tablename__ = "course_reviews"
     __table_args__ = (UniqueConstraint("user_id", "course_id", name="uix_user_course"),)
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    course_id = Column(Integer, ForeignKey("courses.id"))
-    rating = Column(Float, nullable=False, default=0.0)
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), index=True)
+    course_id = Column(Integer, ForeignKey("courses.id"), index=True)
+    rating = Column(Float, nullable=False, default=0.0, index=True)
     comment = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
