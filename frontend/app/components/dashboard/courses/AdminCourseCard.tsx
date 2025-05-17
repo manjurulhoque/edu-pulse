@@ -2,7 +2,7 @@
 
 import { Col, Card } from "react-bootstrap";
 import { getCourseImagePath } from "@/app/utils/image-path";
-import { PlayCircle, MoreVertical, Star, StarOff } from "lucide-react";
+import { PlayCircle, MoreVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
@@ -11,9 +11,20 @@ import { Course } from "@/app/models/course.interface";
 interface AdminCourseCardProps {
     course: Course;
     onApproveCourse: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
+    onMakeFeatured: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
+    onRemoveFromFeatured: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
+    onMakePopular: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
+    onRemoveFromPopular: (e: React.MouseEvent<HTMLDivElement>, course: Course) => void;
 }
 
-const AdminCourseCard = ({ course, onApproveCourse }: AdminCourseCardProps) => {
+const AdminCourseCard = ({
+    course,
+    onApproveCourse,
+    onMakeFeatured,
+    onRemoveFromFeatured,
+    onMakePopular,
+    onRemoveFromPopular,
+}: AdminCourseCardProps) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -97,8 +108,21 @@ const AdminCourseCard = ({ course, onApproveCourse }: AdminCourseCardProps) => {
                                             alignItems: "center",
                                             gap: 8,
                                         }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            course.is_featured ? onRemoveFromFeatured(e, course) : onMakeFeatured(e, course);
+                                        }}
                                     >
-                                        <span>★</span> Favorite
+                                        {course.is_featured ? (
+                                            <>
+                                                <span>★</span> Remove featured
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>★</span> Make featured
+                                            </>
+                                        )}
                                     </div>
                                     <div
                                         style={{
@@ -108,8 +132,21 @@ const AdminCourseCard = ({ course, onApproveCourse }: AdminCourseCardProps) => {
                                             alignItems: "center",
                                             gap: 8,
                                         }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            course.is_popular ? onRemoveFromPopular(e, course) : onMakePopular(e, course);
+                                        }}
                                     >
-                                        <span>🗂️</span> Archive
+                                        {course.is_popular ? (
+                                            <>
+                                                <span>🗂️</span> Remove popular
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>🗂️</span> Make popular
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             )}

@@ -132,6 +132,34 @@ export const AdminApi = createApi({
             },
             invalidatesTags: ["Admin"],
         }),
+        adminMakeFeatured: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/courses/${id}/make-featured`,
+                };
+            },
+        }),
+        adminRemoveFromFeatured: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/courses/${id}/remove-from-featured`,
+                };
+            },
+        }),
+        adminMakePopular: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/courses/${id}/make-popular`,
+                };
+            },
+        }),
+        adminRemoveFromPopular: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/admin/courses/${id}/remove-from-popular`,
+                };
+            },
+        }),
     }),
 });
 
@@ -146,4 +174,8 @@ export const {
     useAdminCreateCategoryMutation,
     useAdminUpdateCategoryMutation,
     useAdminDeleteCategoryMutation,
+    useAdminMakeFeaturedMutation,
+    useAdminRemoveFromFeaturedMutation,
+    useAdminMakePopularMutation,
+    useAdminRemoveFromPopularMutation,
 } = AdminApi;

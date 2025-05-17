@@ -9,6 +9,12 @@ import Pagination from "@/app/components/common/Pagination";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Course } from "@/app/models/course.interface";
+import {
+    useAdminMakeFeaturedMutation,
+    useAdminRemoveFromFeaturedMutation,
+    useAdminMakePopularMutation,
+    useAdminRemoveFromPopularMutation,
+} from "@/app/store/reducers/admin/api";
 
 const AdminAllCourses = () => {
     const [pageNumber, setPageNumber] = useState(1);
@@ -20,6 +26,7 @@ const AdminAllCourses = () => {
     const [date, setDate] = useState("");
     const [isApproved, setIsApproved] = useState<boolean | null>(null);
     const [isFeatured, setIsFeatured] = useState<boolean | null>(null);
+    const [isPopular, setIsPopular] = useState<boolean | null>(null);
     const [search, setSearch] = useState("");
     const pageSize = 8;
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
@@ -41,6 +48,10 @@ const AdminAllCourses = () => {
     });
     let courses = data?.results;
     const [approveCourse, { isLoading }] = useAdminApproveCourseMutation();
+    const [makeFeatured, { isLoading: isMakeFeaturedLoading }] = useAdminMakeFeaturedMutation();
+    const [removeFromFeatured, { isLoading: isRemoveFromFeaturedLoading }] = useAdminRemoveFromFeaturedMutation();
+    const [makePopular, { isLoading: isMakePopularLoading }] = useAdminMakePopularMutation();
+    const [removeFromPopular, { isLoading: isRemoveFromPopularLoading }] = useAdminRemoveFromPopularMutation();
 
     const onApproveCourse = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
         e.preventDefault();
@@ -52,6 +63,58 @@ const AdminAllCourses = () => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to approve course");
+        }
+    };
+
+    const onMakeFeatured = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await makeFeatured(course.id);
+            toast.success("Course made featured successfully");
+            refetch();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to make course featured");
+        }
+    };
+
+    const onRemoveFromFeatured = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await removeFromFeatured(course.id);
+            toast.success("Course removed from featured successfully");
+            refetch();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to remove course from featured");
+        }
+    };
+
+    const onMakePopular = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await makePopular(course.id);
+            toast.success("Course made popular successfully");
+            refetch();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to make course popular");
+        }
+    };
+
+    const onRemoveFromPopular = async (e: React.MouseEvent<HTMLDivElement>, course: Course) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await removeFromPopular(course.id);
+            toast.success("Course removed from popular successfully");
+            refetch();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to remove course from popular");
         }
     };
 
@@ -170,6 +233,18 @@ const AdminAllCourses = () => {
                                 <option value="false">No</option>
                             </select>
                         </div>
+                        <div>
+                            <label className="fw-bold me-2">Is Popular</label>
+                            <select
+                                className="form-select d-inline-block w-auto"
+                                value={isPopular === null ? "" : String(isPopular)}
+                                onChange={(e) => setIsPopular(e.target.value === "true" ? true : false)}
+                            >
+                                <option value="">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
                         <button
                             className="btn btn-secondary"
                             onClick={() => {
@@ -236,6 +311,10 @@ const AdminAllCourses = () => {
                                             key={course.id}
                                             course={course}
                                             onApproveCourse={onApproveCourse}
+                                            onMakeFeatured={onMakeFeatured}
+                                            onRemoveFromFeatured={onRemoveFromFeatured}
+                                            onMakePopular={onMakePopular}
+                                            onRemoveFromPopular={onRemoveFromPopular}
                                         />
                                     ))}
                                 </Row>
