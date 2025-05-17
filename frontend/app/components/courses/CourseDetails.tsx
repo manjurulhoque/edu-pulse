@@ -56,21 +56,25 @@ const CourseDetails = () => {
                                     <div className="row y-gap-30 relative">
                                         <div className="col-xl-7 col-lg-8">
                                             <div className="d-flex x-gap-15 y-gap-10 pb-20">
-                                                <div>
-                                                    <div className="badge px-15 py-8 text-11 bg-green-1 text-dark-1 fw-400">
-                                                        BEST SELLER
+                                                {course?.is_featured && (
+                                                    <div>
+                                                        <div className="badge px-15 py-8 text-11 bg-green-1 text-dark-1 fw-400">
+                                                            BEST SELLER
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div>
+                                                )}
+                                                {course?.is_popular && (
+                                                    <div>
+                                                        <div className="badge px-15 py-8 text-11 bg-orange-1 text-white fw-400">
+                                                            POPULAR
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {/* <div>
                                                     <div className="badge px-15 py-8 text-11 bg-orange-1 text-white fw-400">
                                                         NEW
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <div className="badge px-15 py-8 text-11 bg-blue-1 text-white fw-400">
-                                                        POPULAR
-                                                    </div>
-                                                </div>
+                                                </div> */}
                                             </div>
 
                                             <div>

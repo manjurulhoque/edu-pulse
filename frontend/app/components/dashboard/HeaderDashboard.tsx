@@ -127,14 +127,14 @@ const HeaderDashboard: React.FC = () => {
                         <div className="col-auto">
                             <div className="d-flex items-center">
                                 <div className="d-flex items-center sm:d-none">
-                                    <div className="relative">
+                                    {/* <div className="relative">
                                         <button
                                             onClick={handleDarkMode}
                                             className="js-darkmode-toggle text-light-1 d-flex items-center justify-center size-50 rounded-16 -hover-dshb-header-light"
                                         >
                                             <i className="text-24 icon icon-night"></i>
                                         </button>
-                                    </div>
+                                    </div> */}
 
                                     <div className="relative">
                                         <button
@@ -145,7 +145,7 @@ const HeaderDashboard: React.FC = () => {
                                         </button>
                                     </div>
 
-                                    <div
+                                    {/* <div
                                         className="relative"
                                         onClick={() => setMessageOpen(true)}
                                     >
@@ -169,7 +169,7 @@ const HeaderDashboard: React.FC = () => {
                                         >
                                             <i className="text-24 icon icon-notification"></i>
                                         </a>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 <div
