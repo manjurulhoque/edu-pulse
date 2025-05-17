@@ -136,6 +136,7 @@ export const AdminApi = createApi({
             query: (id) => {
                 return {
                     url: `/admin/courses/${id}/make-featured`,
+                    method: "PUT",
                 };
             },
         }),
@@ -143,6 +144,7 @@ export const AdminApi = createApi({
             query: (id) => {
                 return {
                     url: `/admin/courses/${id}/remove-from-featured`,
+                    method: "PUT",
                 };
             },
         }),
@@ -150,6 +152,7 @@ export const AdminApi = createApi({
             query: (id) => {
                 return {
                     url: `/admin/courses/${id}/make-popular`,
+                    method: "PUT",
                 };
             },
         }),
@@ -157,6 +160,7 @@ export const AdminApi = createApi({
             query: (id) => {
                 return {
                     url: `/admin/courses/${id}/remove-from-popular`,
+                    method: "PUT",
                 };
             },
         }),

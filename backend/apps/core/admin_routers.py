@@ -384,7 +384,7 @@ async def get_all_sales(
     page = params.get("page", 1)
     page_size = params.get("page_size", 10)
     skip = (page - 1) * page_size
-    
+
     sales = (
         query.options(
             joinedload(Checkout.user),
@@ -409,4 +409,128 @@ async def get_all_sales(
         page=params["page"],
         page_size=params["page_size"],
         path="/admin/sales",
+    )
+
+
+@admin_router.put("/courses/{course_id}/make-featured")
+async def make_course_featured(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+):
+    course = (
+        db.query(course_models.Course)
+        .filter(course_models.Course.id == course_id)
+        .first()
+    )
+    if not course:
+        return create_response(
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if course.is_featured:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Course already featured",
+        )
+    course.is_featured = True
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        status_code=status.HTTP_200_OK,
+        message="Course made featured successfully",
+        data=course,
+    )
+
+
+@admin_router.put("/courses/{course_id}/remove-from-featured")
+async def remove_course_from_featured(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+):
+    course = (
+        db.query(course_models.Course)
+        .filter(course_models.Course.id == course_id)
+        .first()
+    )
+    if not course:
+        return create_response(
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if not course.is_featured:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Course is not featured",
+        )
+    course.is_featured = False
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        status_code=status.HTTP_200_OK,
+        message="Course removed from featured successfully",
+        data=course,
+    )
+
+
+@admin_router.put("/courses/{course_id}/make-popular")
+async def make_course_popular(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+):
+    course = (
+        db.query(course_models.Course)
+        .filter(course_models.Course.id == course_id)
+        .first()
+    )
+    if not course:
+        return create_response(
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if course.is_popular:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Course already popular",
+        )
+    course.is_popular = True
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        status_code=status.HTTP_200_OK,
+        message="Course made popular successfully",
+        data=course,
+    )
+
+
+@admin_router.put("/courses/{course_id}/remove-from-popular")
+async def remove_course_from_popular(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required),
+):
+    course = (
+        db.query(course_models.Course)
+        .filter(course_models.Course.id == course_id)
+        .first()
+    )
+    if not course:
+        return create_response(
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    if not course.is_popular:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Course is not popular",
+        )
+    course.is_popular = False
+    db.commit()
+    db.refresh(course)
+    return create_response(
+        status_code=status.HTTP_200_OK,
+        message="Course removed from popular successfully",
+        data=course,
     )
