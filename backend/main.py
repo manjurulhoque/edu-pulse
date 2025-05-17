@@ -12,6 +12,7 @@ from apps.lessons import models as lesson_models
 from apps.categories import models as categories_models
 from apps.cart import models as cart_models
 from apps.checkout import models as checkout_models
+from apps.reviews import models as review_models
 from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
