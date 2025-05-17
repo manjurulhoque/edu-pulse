@@ -6,8 +6,12 @@ import { useSession } from "next-auth/react";
 import { useAddToCartMutation } from "@/app/store/reducers/cart/api";
 import { toast } from "react-toastify";
 import { Course } from "@/app/models/course.interface";
+import { useIsAlreadyEnrolledQuery } from "@/app/store/reducers/courses/api";
 
 export default function PinContent({ course }: { course: Course }) {
+    const { data: isAlreadyEnrolledResponse } = useIsAlreadyEnrolledQuery({ course_id: course.id });
+    const isAlreadyEnrolled = isAlreadyEnrolledResponse?.data?.enrolled || false;
+    const enrolledAt = isAlreadyEnrolledResponse?.data?.enrolled_at || null;
     const [isOpen, setIsOpen] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const { data: session } = useSession();
@@ -88,14 +92,27 @@ export default function PinContent({ course }: { course: Course }) {
                             )}
                         </div>
 
-                        <button
-                            onClick={handleAddToCart}
-                            disabled={isLoading}
-                            className="button -md -purple-1 text-white w-1/1"
-                        >
-                            {isLoading ? "Adding..." : "Add To Cart"}
-                        </button>
-                        <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">Buy Now</button>
+                        {isAlreadyEnrolled ? (
+                            <>
+                                <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">
+                                    Enrolled on {new Date(enrolledAt || "").toLocaleDateString()}
+                                </button>
+                                <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">
+                                    View Course
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={handleAddToCart}
+                                    disabled={isLoading}
+                                    className="button -md -purple-1 text-white w-1/1"
+                                >
+                                    {isLoading ? "Adding..." : "Add To Cart"}
+                                </button>
+                                <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">Buy Now</button>
+                            </>
+                        )}
 
                         <div className="text-14 lh-1 text-center mt-30">30-Day Money-Back Guarantee</div>
 

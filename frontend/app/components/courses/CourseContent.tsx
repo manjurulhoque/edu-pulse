@@ -3,6 +3,7 @@
 import React, {useState} from "react";
 import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { Course } from "@/app/models/course.interface";
 
 const CourseContent: React.FC<{ course: Course }> = ({course}) => {
     const [activeItemId, setActiveItemId] = useState<number | null>(null);
