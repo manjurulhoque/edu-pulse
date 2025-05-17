@@ -19,10 +19,15 @@ const AdminAllCourses = () => {
     const [price, setPrice] = useState("");
     const [date, setDate] = useState("");
     const [isApproved, setIsApproved] = useState<boolean | null>(null);
+    const [isFeatured, setIsFeatured] = useState<boolean | null>(null);
     const [search, setSearch] = useState("");
     const pageSize = 8;
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
-    const { data, isLoading: isCoursesLoading, refetch } = useAdminGetCoursesQuery({
+    const {
+        data,
+        isLoading: isCoursesLoading,
+        refetch,
+    } = useAdminGetCoursesQuery({
         page: pageNumber,
         page_size: pageSize,
         sort_by: sortBy,
@@ -78,18 +83,24 @@ const AdminAllCourses = () => {
                         </div>
                         <div>
                             <label className="fw-bold me-2">Category</label>
-                            <select
-                                className="form-select d-inline-block w-auto"
-                                value={category ?? ""}
-                                onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : null)}
-                            >
-                                <option value="">All Categories</option>
-                                {categories?.map((category) => (
-                                    <option key={category.id} value={category.id}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
+                            {isCategoriesLoading ? (
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            ) : (
+                                <select
+                                    className="form-select d-inline-block w-auto"
+                                    value={category ?? ""}
+                                    onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : null)}
+                                >
+                                    <option value="">All Categories</option>
+                                    {categories?.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
                         <div>
                             <label className="fw-bold me-2">Status</label>
@@ -147,8 +158,20 @@ const AdminAllCourses = () => {
                                 <option value="false">No</option>
                             </select>
                         </div>
+                        <div>
+                            <label className="fw-bold me-2">Is Featured</label>
+                            <select
+                                className="form-select d-inline-block w-auto"
+                                value={isFeatured === null ? "" : String(isFeatured)}
+                                onChange={(e) => setIsFeatured(e.target.value === "true" ? true : false)}
+                            >
+                                <option value="">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
                         <button
-                            className="btn btn-outline-secondary"
+                            className="btn btn-secondary"
                             onClick={() => {
                                 setSortBy("recent");
                                 setCategory(null);
