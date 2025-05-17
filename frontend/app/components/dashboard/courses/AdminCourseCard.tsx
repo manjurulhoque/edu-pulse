@@ -2,7 +2,7 @@
 
 import { Col, Card } from "react-bootstrap";
 import { getCourseImagePath } from "@/app/utils/image-path";
-import { PlayCircle, MoreVertical } from "lucide-react";
+import { PlayCircle, MoreVertical, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
@@ -140,11 +140,11 @@ const AdminCourseCard = ({
                                     >
                                         {course.is_popular ? (
                                             <>
-                                                <span>🗂️</span> Remove popular
+                                                <Star size={16} /> Remove popular
                                             </>
                                         ) : (
                                             <>
-                                                <span>🗂️</span> Make popular
+                                                <Star size={16} /> Make popular
                                             </>
                                         )}
                                     </div>
