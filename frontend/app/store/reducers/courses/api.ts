@@ -113,6 +113,13 @@ export const CourseApi = createApi({
             },
             providesTags: ["Course"],
         }),
+        isAlreadyEnrolled: builder.query<Response<{ enrolled: boolean; enrolled_at: string }>, { course_id: number }>({
+            query: ({ course_id }) => {
+                return {
+                    url: `is-already-enrolled/${course_id}`,
+                };
+            },
+        }),
     }),
 });
 
@@ -127,4 +134,5 @@ export const {
     useGetCoursesByCategoryQuery,
     useGetEnrolledCoursesQuery,
     useCourseDetailsForAdminAndInstructorQuery,
+    useIsAlreadyEnrolledQuery,
 } = CourseApi;
