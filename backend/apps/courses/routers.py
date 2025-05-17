@@ -24,7 +24,6 @@ from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseSchema
 from apps.lessons.models import Lesson
-from apps.users.services import get_current_user
 from apps.users.models import User
 from apps.enrollments.models import Enrollment
 from apps.categories.models import Category
@@ -411,7 +410,9 @@ async def get_course_instructor(course_id: int, db: Session = Depends(get_db)):
     total_students = len(course.enrollments)
     total_published_courses = (
         db.query(Course)
-        .filter(Course.status == CourseStatus.PUBLISHED, Course.user_id == course.user_id)
+        .filter(
+            Course.status == CourseStatus.PUBLISHED, Course.user_id == course.user_id
+        )
         .count()
     )
 
@@ -480,3 +481,25 @@ async def enrolled_courses(
             path="/enrolled-courses",
         )
     )
+
+
+@router.get("/is-already-enrolled/{course_id}")
+async def is_already_enrolled(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(auth_required),
+):
+    """
+    Endpoint to check if current user already enrolled in the course or not
+    """
+    enrollment = (
+        db.query(Enrollment)
+        .filter(
+            Enrollment.user_id == current_user.id, Enrollment.course_id == course_id
+        )
+        .first()
+    )
+
+    if not enrollment:
+        return create_response(data=None)
+    return create_response(data=dict(enrolled=True, enrolled_at=enrollment.enrolled_at))
