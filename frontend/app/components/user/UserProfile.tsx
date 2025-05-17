@@ -16,9 +16,9 @@ const UserProfile = () => {
         website: "",
         avatar: "",
     });
-    const [error, setError] = useState<string>("");
 
-    const { data: user, isLoading: isLoadingUser } = useMeQuery();
+    const { data: userResponse, isLoading: isLoadingUser } = useMeQuery();
+    const user = userResponse?.data;
     const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
     useEffect(() => {
@@ -39,11 +39,9 @@ const UserProfile = () => {
             .unwrap()
             .then(() => {
                 toast.success("Profile updated successfully!");
-                setError("");
             })
             .catch((error) => {
                 toast.error(error.message || "Failed to update profile");
-                setError(error.message || "Failed to update profile");
             });
     };
 

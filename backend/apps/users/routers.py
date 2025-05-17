@@ -99,10 +99,19 @@ def login(
 @router.get(
     "/me",
     summary="Get details of currently logged in user",
-    response_model=schemas.UserReturn,
+    response_model=core_schemas.BaseReturn[schemas.UserReturn],
 )
 async def get_me(user: User = Depends(get_current_user)):
-    return user
+    user_return = dict(
+        id=user.id,
+        email=user.email,
+        name=user.name,
+        username=user.username,
+        bio=user.bio,
+        website=user.website,
+        avatar=user.avatar,
+    )
+    return create_response(data=user_return, message="User details")
 
 
 @router.post("/token/refresh/", response_model=schemas.Token)
@@ -151,7 +160,9 @@ async def get_dashboard_statistics(
     return create_response(data=statistics)
 
 
-@router.put("/profile", response_model=core_schemas.BaseReturn[schemas.UserUpdateResponse])
+@router.put(
+    "/profile", response_model=core_schemas.BaseReturn[schemas.UserUpdateResponse]
+)
 async def update_profile(
     profile_data: schemas.UserUpdate,
     db: Session = Depends(get_db),
@@ -160,6 +171,7 @@ async def update_profile(
     """
     Update user profile
     """
+    print(profile_data)
     updated_user = await services.update_user(db, current_user.id, profile_data)
     user_dict = {
         "id": updated_user.id,

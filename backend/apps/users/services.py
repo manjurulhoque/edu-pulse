@@ -232,6 +232,7 @@ async def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     for field, value in user.model_dump().items():
         setattr(db_user, field, value)
+    db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user

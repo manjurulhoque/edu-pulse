@@ -1,11 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 import { User } from "@/app/models/user.interface";
+import { Response } from "@/app/models/request.interface";
 
 export const UserApi = createApi({
     baseQuery: DynamicBaseQuery,
     endpoints: (builder) => ({
-        me: builder.query<User, void>({
+        me: builder.query<Response<User>, void>({
             query: () => "/users/me",
         }),
         updateProfile: builder.mutation<
