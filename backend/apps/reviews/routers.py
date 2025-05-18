@@ -30,14 +30,10 @@ async def get_reviews_for_course(
     Returns:
         A list of reviews for the course
     """
-    page = params.get("page", 1)
-    page_size = params.get("page_size", 10)
     reviews = (
         db.query(review_models.CourseReview)
         .filter(review_models.CourseReview.course_id == course_id)
         .order_by(review_models.CourseReview.created_at.desc())
-        .offset((page - 1) * page_size)
-        .limit(page_size)
         .all()
     )
     return create_response(

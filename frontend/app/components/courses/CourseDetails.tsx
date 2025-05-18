@@ -12,6 +12,7 @@ import Star from "@/app/components/common/Star";
 import CourseInstructor from "./CourseInstructor";
 import { Course } from "@/app/models/course.interface";
 import { getCourseAuthorImagePath, getCourseImagePath } from "@/app/utils/image-path";
+import CourseReviews from "@/app/components/reviews/CourseReviews";
 
 const menuItems = [
     { id: 1, href: "#overview", text: "Overview", isActive: true },
@@ -150,7 +151,7 @@ const CourseDetails = () => {
                                         <CourseOverview course={course} />
                                         <CourseContent course={course} />
                                         <CourseInstructor course={course} />
-                                        {/*<Reviews/>*/}
+                                        <CourseReviews courseId={course.id} />
                                     </div>
                                 </div>
                             </div>
