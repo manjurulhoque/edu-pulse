@@ -11,7 +11,7 @@ from apps.reviews.schemas import ReviewCreate, ReviewSchema
 from conf.database import get_db
 from apps.users.models import User
 
-router = APIRouter(prefix="/reviews", tags=["reviews"])
+router = APIRouter()
 
 
 @router.get("/courses/{course_id}", response_model=List[ReviewSchema])

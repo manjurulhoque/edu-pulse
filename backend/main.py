@@ -17,6 +17,7 @@ from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
 from apps.checkout import routers as checkout_routers
+from apps.reviews import routers as review_routers
 from utils.response_utils import create_response
 from apps.cart import routers as cart_routers
 from apps.core import admin_routers
@@ -95,6 +96,7 @@ def main():
 
 
 app.include_router(user_routers.router, prefix="/users", tags=["users"])
+app.include_router(review_routers.router, prefix="/reviews", tags=["reviews"])
 app.include_router(course_routers.router, tags=["courses"])
 app.include_router(categories_routers.router, tags=["categories"])
 app.include_router(cart_routers.router, tags=["cart"])
