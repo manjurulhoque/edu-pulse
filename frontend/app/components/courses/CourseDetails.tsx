@@ -150,8 +150,8 @@ const CourseDetails = () => {
 
                                         <CourseOverview course={course} />
                                         <CourseContent course={course} />
+                                        <CourseReviews course={course} />
                                         <CourseInstructor course={course} />
-                                        <CourseReviews courseId={course.id} />
                                     </div>
                                 </div>
                             </div>

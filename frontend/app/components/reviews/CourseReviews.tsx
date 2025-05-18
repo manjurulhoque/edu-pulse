@@ -2,11 +2,25 @@
 
 import { useGetReviewsForCourseQuery } from "@/app/store/reducers/reviews/api";
 import Star from "../common/Star";
+import { Course } from "@/app/models/course.interface";
 
-const CourseReviews = ({ courseId }: { courseId: number }) => {
-    const { data: reviewResponse, isLoading, error } = useGetReviewsForCourseQuery({ courseId });
+const CourseReviews = ({ course }: { course: Course }) => {
+    const { data: reviewResponse, isLoading, error } = useGetReviewsForCourseQuery({ courseId: course.id });
     if (isLoading) return <div>Loading...</div>;
-    if (!reviewResponse) return <div>No reviews found</div>;
+    if (!reviewResponse || reviewResponse.data?.length === 0) {
+        return (
+            <div id="reviews" className="pt-60 lg:pt-40">
+                <div className="blogPost -comments">
+                    <div className="blogPost__content">
+                        <h2 className="text-20 fw-500">Student feedback</h2>
+                        <div className="text-center py-50">
+                            <div className="text-16 text-light-1 mb-20">No reviews yet. Check back later.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <div id="reviews" className="pt-60 lg:pt-40">
             <div className="blogPost -comments">
