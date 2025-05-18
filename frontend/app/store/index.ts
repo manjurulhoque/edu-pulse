@@ -5,6 +5,7 @@ import { CartApi } from "./reducers/cart/api";
 import { StatisticsApi } from "./reducers/statistics/api";
 import { AdminApi } from "./reducers/admin/api";
 import { UserApi } from "./reducers/user/api";
+import { ReviewApi } from "./reducers/reviews/api";
 
 export const store: any = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store: any = configureStore({
         [StatisticsApi.reducerPath]: StatisticsApi.reducer,
         [AdminApi.reducerPath]: AdminApi.reducer,
         [UserApi.reducerPath]: UserApi.reducer,
+        [ReviewApi.reducerPath]: ReviewApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
@@ -24,6 +26,7 @@ export const store: any = configureStore({
             StatisticsApi.middleware,
             AdminApi.middleware,
             UserApi.middleware,
+            ReviewApi.middleware,
         ),
 });
 
