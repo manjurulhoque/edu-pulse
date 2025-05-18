@@ -17,7 +17,6 @@ router = APIRouter()
 @router.get("/courses/{course_id}", response_model=List[ReviewSchema])
 async def get_reviews_for_course(
     course_id: int,
-    current_user: User = Depends(auth_required),
     params: dict = Depends(common_parameters),
     db: Session = Depends(get_db),
 ):
