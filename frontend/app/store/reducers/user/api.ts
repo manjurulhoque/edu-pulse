@@ -19,7 +19,10 @@ export const UserApi = createApi({
                 body: data,
             }),
         }),
+        getUserInfo: builder.query<Response<User>, { username: string }>({
+            query: ({ username }) => `/users/${username}`,
+        }),
     }),
 });
 
-export const { useMeQuery, useUpdateProfileMutation } = UserApi;
+export const { useMeQuery, useUpdateProfileMutation, useGetUserInfoQuery } = UserApi;
