@@ -16737,3 +16737,7 @@ table.table td {
     font-weight: 500;
     color: var(--color-dark-1);
 }
+
+footer {
+    background-color: var(--color-light-6);
+}
