@@ -115,10 +115,12 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                         </div>
 
                         <div className="coursesCard-footer">
-                            <div className="coursesCard-footer__author">
-                                <Image width={30} height={30} src={getCourseAuthorImagePath(course)} alt="image" />
-                                <div>{course?.user?.name}</div>
-                            </div>
+                            <Link href={`/user/${course.user?.username}`}>
+                                <div className="coursesCard-footer__author">
+                                    <Image width={30} height={30} src={getCourseAuthorImagePath(course)} alt="image" />
+                                    <div>{course?.user?.name}</div>
+                                </div>
+                            </Link>
 
                             <div className="coursesCard-footer__price">
                                 {!course.is_free ? (
