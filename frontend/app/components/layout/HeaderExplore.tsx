@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 
-export const HeaderExplore = ({allClasses}: any) => {
+export const HeaderExplore = ({ allClasses }: any) => {
     const [exploreActive, setExploreActive] = useState(false);
+    const { data: categories, isLoading } = useCategoriesQuery(null);
     return (
         <>
             <div className={`${allClasses ? allClasses : ""}`}>
@@ -24,162 +26,21 @@ export const HeaderExplore = ({allClasses}: any) => {
                     }`}
                 >
                     <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Architecture
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6`}>
-                                Web Design
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Business
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6}`}>
-                                Web Design
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link href="#" className="text-dark-1">
-                            Computer Programming
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link href="#" className="text-dark-1">
-                            Data Analysis
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Design
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6`}>
-                                Web Design
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="/courses-single-6/3"
-                            className="text-dark-1"
-                        >
-                            Education
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Electronics
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6`}>
-                                Web Design
-                            </Link>
+                        {categories?.map((category: any) => (
                             <Link
-                                className="text-dark-1"
-                                href="/courses-single-2/3"
+                                key={category.id}
+                                href={`/courses/category/${category.slug}`}
+                                className="d-flex items-center justify-between text-dark-1"
                             >
-                                Graphic Design
+                                {category.name}
+                                {/* <div className="icon-chevron-right text-11"></div> */}
                             </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Language
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
+                        ))}
+                        {/* <div className="explore__subnav rounded-8">
                             <Link className="text-dark-1" href={`/courses/6`}>
                                 Web Design
                             </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Marketing
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6`}>
-                                Web Design
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link href="#" className="text-dark-1">
-                            Music Arts
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link href="#" className="text-dark-1">
-                            Social Science
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="#"
-                            className="d-flex items-center justify-between text-dark-1"
-                        >
-                            Photography & Video
-                            <div className="icon-chevron-right text-11"></div>
-                        </Link>
-                        <div className="explore__subnav rounded-8">
-                            <Link className="text-dark-1" href={`/courses/6`}>
-                                Web Design
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link href={`/courses/6`} className="text-dark-1">
-                            IT & Software
-                        </Link>
-                    </div>
-
-                    <div className="explore__item">
-                        <Link
-                            href="/courses"
-                            className="text-purple-1 underline"
-                        >
-                            View All Courses
-                        </Link>
+                        </div> */}
                     </div>
                 </div>
             </div>
