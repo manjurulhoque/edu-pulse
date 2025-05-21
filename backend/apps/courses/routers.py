@@ -39,7 +39,7 @@ async def all_courses(
     query = db.query(Course).filter(Course.status == CourseStatus.PUBLISHED)
     total = query.count()
     page = params.get("page", 1)
-    page_size = params.get("page_size", 10)
+    page_size = params.get("page_size", 8)
     skip = (page - 1) * page_size
     courses = (
         query.options(joinedload(Course.user), joinedload(Course.category))
@@ -47,11 +47,17 @@ async def all_courses(
         .limit(params["page_size"])
         .all()
     )
+    
+    # Add lessons count for each course
     for course in courses:
         try:
-            if hasattr(course.user, "password"):
-                del course.user.password
-        except:
+            # Safely remove password if it exists
+            if course.user and hasattr(course.user, "password") and course.user.password:
+                delattr(course.user, "password")
+            # Count total lessons in the course
+            course.lessons_count = db.query(Lesson).filter(Lesson.course_id == course.id, Lesson.is_published == True).count()
+        except Exception as e:
+            print(e)
             pass
 
     return create_response(

@@ -119,6 +119,7 @@ const AdminAllUsers = () => {
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Username</th>
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Status</th>
@@ -131,6 +132,7 @@ const AdminAllUsers = () => {
                                             <tr key={user.id}>
                                                 <td>{user.id}</td>
                                                 <td>{user.name}</td>
+                                                <td>{user.username}</td>
                                                 <td>{user.email}</td>
                                                 <td>
                                                     {user.is_admin
@@ -142,7 +144,7 @@ const AdminAllUsers = () => {
                                                 <td>
                                                     <span
                                                         className={`badge ${
-                                                            user.is_active ? "bg-success" : "bg-danger"
+                                                            user.is_active ? "bg-secondary" : "bg-danger"
                                                         }`}
                                                     >
                                                         {user.is_active ? "Active" : "Inactive"}
@@ -151,7 +153,7 @@ const AdminAllUsers = () => {
                                                 <td>{new Date(user.created_at).toLocaleDateString()}</td>
                                                 <td>
                                                     <Button
-                                                        variant="success"
+                                                        variant="secondary"
                                                         size="sm"
                                                         className="me-2"
                                                         onClick={() => handleEdit(user)}

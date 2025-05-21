@@ -105,7 +105,7 @@ const AdminAllCategories = () => {
                                 className="w-auto"
                             />
                             <Button
-                                variant="success"
+                                variant="secondary"
                                 onClick={() => {
                                     setSelectedCategory({
                                         id: 0,
@@ -167,7 +167,7 @@ const AdminAllCategories = () => {
                                                 <td>{category.slug}</td>
                                                 <td>
                                                     <Button
-                                                        variant="success"
+                                                        variant="secondary"
                                                         size="sm"
                                                         className="me-2"
                                                         onClick={() => handleEdit(category)}

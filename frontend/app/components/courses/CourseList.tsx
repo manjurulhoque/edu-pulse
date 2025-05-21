@@ -10,7 +10,7 @@ import { Course } from "@/app/models/course.interface";
 import HomeCourseCard from "./HomeCourseCard";
 
 export default function CourseList() {
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(8);
     const [filterOpen, setFilterOpen] = useState(false);
     const [filterCategories, setFilterCategories] = useState<string[]>([]);
     const [filterRatingRange, setFilterRatingRange] = useState([] as any);

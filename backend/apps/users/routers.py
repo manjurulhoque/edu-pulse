@@ -182,3 +182,56 @@ async def update_profile(
         "avatar": updated_user.avatar,
     }
     return create_response(data=user_dict)
+
+
+@router.get(
+    "/user-info/{username}", response_model=core_schemas.BaseReturn[schemas.UserInfo]
+)
+async def get_user_info(
+    username: str,
+    db: Session = Depends(get_db),
+):
+    """
+    Get user info by username
+    """
+    user = (
+        db.query(User).filter(User.username == username, User.is_active == True).first()
+    )
+    if not user:
+        return create_response(data=None, message="User not found")
+    return create_response(
+        data={
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "username": user.username,
+            "bio": user.bio,
+            "website": user.website,
+            "avatar": user.avatar,
+            "is_instructor": user.is_instructor,
+        }
+    )
+
+
+@router.get("/instructor-courses/{user_id}")
+async def get_instructor_courses(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Get instructor courses by user_id
+    """
+    courses = await services.get_instructor_courses(db, user_id)
+    return create_response(data=courses)
+
+
+@router.get("/instructor-stats/{user_id}")
+async def get_instructor_stats(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Get instructor stats by user_id
+    """
+    stats = await services.get_instructor_stats(db, user_id)
+    return create_response(data=stats)

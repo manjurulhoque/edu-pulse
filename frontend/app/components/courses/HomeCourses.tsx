@@ -16,8 +16,8 @@ export default function HomeCourses() {
     const [rating, setRating] = useState("All");
     const [currentDifficulty, setCurrentDifficulty] = useState("All");
     const [currentDropdown, setCurrentDropdown] = useState("");
-    const {data: courseResult} = useAllCoursesQuery({page: 1, page_size: 10});
-    const {data: categories} = useCategoriesQuery(null);
+    const { data: courseResult, isLoading: isCourseLoading } = useAllCoursesQuery({ page: 1, page_size: 10 });
+    const { data: categories } = useCategoriesQuery(null);
 
     useEffect(() => {
         if (courseResult) {
@@ -52,13 +52,9 @@ export default function HomeCourses() {
                 <div className="row y-gap-15 justify-between items-center">
                     <div className="col-lg-6">
                         <div className="sectionTitle ">
-                            <h2 className="sectionTitle__title sm:text-20">
-                                Our Most Popular Courses
-                            </h2>
+                            <h2 className="sectionTitle__title sm:text-20">Our Most Popular Courses</h2>
 
-                            <p className="sectionTitle__text ">
-                                10+ unique online course list designs
-                            </p>
+                            <p className="sectionTitle__text ">10+ unique online course list designs</p>
                         </div>
                     </div>
 
@@ -75,18 +71,14 @@ export default function HomeCourses() {
                                     >
                                         <div
                                             onClick={() =>
-                                                setCurrentDropdown((pre) =>
-                                                    pre == "category" ? "" : "category",
-                                                )
+                                                setCurrentDropdown((pre) => (pre == "category" ? "" : "category"))
                                             }
                                             className="dropdown__button d-flex items-center text-14 rounded-8 px-15 py-10 text-dark-1"
                                             data-el-toggle=".js-drop1-toggle"
                                             data-el-toggle-active=".js-drop1-active"
                                         >
                                             <span className="js-dropdown-title">
-                                                {currentCategory == "All"
-                                                    ? "Category"
-                                                    : currentCategory}
+                                                {currentCategory == "All" ? "Category" : currentCategory}
                                             </span>
                                             <i className="icon text-9 ml-40 icon-chevron-down"></i>
                                         </div>
@@ -123,9 +115,7 @@ export default function HomeCourses() {
                                     >
                                         <div
                                             onClick={() =>
-                                                setCurrentDropdown((pre) =>
-                                                    pre == "rating" ? "" : "rating",
-                                                )
+                                                setCurrentDropdown((pre) => (pre == "rating" ? "" : "rating"))
                                             }
                                             className="dropdown__button d-flex items-center text-14 rounded-8 px-15 py-10 text-dark-1"
                                             data-el-toggle=".js-drop2-toggle"
@@ -169,18 +159,14 @@ export default function HomeCourses() {
                                     >
                                         <div
                                             onClick={() =>
-                                                setCurrentDropdown((pre) =>
-                                                    pre == "difficulty" ? "" : "difficulty",
-                                                )
+                                                setCurrentDropdown((pre) => (pre == "difficulty" ? "" : "difficulty"))
                                             }
                                             className="dropdown__button d-flex items-center text-14 rounded-8 px-15 py-10 text-dark-1"
                                             data-el-toggle=".js-drop3-toggle"
                                             data-el-toggle-active=".js-drop3-active"
                                         >
                                             <span className="js-dropdown-title">
-                                                {currentDifficulty == "All"
-                                                    ? "Difficulty"
-                                                    : currentDifficulty}
+                                                {currentDifficulty == "All" ? "Difficulty" : currentDifficulty}
                                             </span>
                                             <i className="icon text-9 ml-40 icon-chevron-down"></i>
                                         </div>
@@ -214,27 +200,38 @@ export default function HomeCourses() {
                     </div>
                 </div>
 
-                <div
-                    className="row y-gap-30 justify-start pt-50"
-                    data-aos="fade-right"
-                    data-aos-offset="80"
-                    data-aos-duration={800}
-                >
-                    {pageItems?.slice(0, 8).map((elm: Course, i) => (
-                        <HomeCourseCard key={i} course={elm} index={i}/>
-                    ))}
-                </div>
-
-                <div className="row justify-center pt-60 lg:pt-40">
-                    <div className="col-auto">
-                        <Link
-                            href="/courses"
-                            className="button -md -outline-purple-1 text-purple-1"
-                        >
-                            View All Courses
-                        </Link>
+                {isCourseLoading && (
+                    <div className="row justify-center pt-60 lg:pt-40">
+                        <div className="col-auto">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {!isCourseLoading && (
+                    <>
+                        <div
+                            className="row y-gap-30 justify-start pt-50"
+                            data-aos="fade-right"
+                            data-aos-offset="80"
+                            data-aos-duration={800}
+                        >
+                            {pageItems?.slice(0, 8).map((elm: Course, i) => (
+                                <HomeCourseCard key={i} course={elm} index={i} />
+                            ))}
+                        </div>
+
+                        <div className="row justify-center pt-60 lg:pt-40">
+                            <div className="col-auto">
+                                <Link href="/courses" className="button -md -outline-purple-1 text-purple-1">
+                                    View All Courses
+                                </Link>
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
         </section>
     );

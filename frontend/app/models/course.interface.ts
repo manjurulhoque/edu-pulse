@@ -25,6 +25,7 @@ export interface Course {
     updated_at: Date;
     user: User;
     sections: Section[];
+    lessons_count?: number;
 }
 
 export interface Section {

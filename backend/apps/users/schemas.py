@@ -56,3 +56,9 @@ class UserUpdateResponse(UserReturn):
     bio: Optional[str] = None
     website: Optional[str] = None
     avatar: Optional[str] = None
+
+
+class UserInfo(UserReturn):
+    bio: Optional[str] = None
+    website: Optional[str] = None
+    avatar: Optional[str] = None

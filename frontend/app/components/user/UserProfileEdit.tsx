@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Button, Card, Alert, Container } from "react-bootstrap";
+import { Form, Button, Card, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useMeQuery, useUpdateProfileMutation } from "@/app/store/reducers/user/api";
 import { User } from "@/app/models/user.interface";

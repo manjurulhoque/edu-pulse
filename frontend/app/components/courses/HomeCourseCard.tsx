@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
+import { getCourseAuthorImagePath, getCourseImagePath } from "@/app/utils/image-path";
 
 export default function HomeCourseCard({ course, index }: { course: Course; index: number }) {
     const [rating, setRating] = useState<string[]>([]);
@@ -21,14 +22,6 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
         }
     }, [course]);
 
-    const getImageSrc = () => {
-        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`;
-    };
-
-    const getAuthorImageSrc = () => {
-        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course.user.avatar}`;
-    };
-
     return (
         <div className="col-lg-3 col-md-6">
             <div>
@@ -39,7 +32,7 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                                 width={600}
                                 height={420}
                                 className="w-1/1"
-                                src={getImageSrc()}
+                                src={getCourseImagePath(course)}
                                 alt="image"
                                 priority={true}
                             />
@@ -91,10 +84,10 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                                         alt="icon"
                                     />
                                 </div>
-                                <div className="text-14 lh-1">14 lesson</div>
+                                <div className="text-14 lh-1">{course.lessons_count} lessons</div>
                             </div>
 
-                            <div className="d-flex items-center">
+                            {/* <div className="d-flex items-center">
                                 <div className="mr-8">
                                     <Image
                                         width={16}
@@ -106,7 +99,7 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                                 <div className="text-14 lh-1">{`${Math.floor(343 / 60)}h ${Math.floor(
                                     33423 % 60
                                 )}m`}</div>
-                            </div>
+                            </div> */}
 
                             <div className="d-flex items-center">
                                 <div className="mr-8">
@@ -123,15 +116,15 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
 
                         <div className="coursesCard-footer">
                             <div className="coursesCard-footer__author">
-                                <Image width={30} height={30} src={getAuthorImageSrc()} alt="image" />
+                                <Image width={30} height={30} src={getCourseAuthorImagePath(course)} alt="image" />
                                 <div>{course?.user?.name}</div>
                             </div>
 
                             <div className="coursesCard-footer__price">
                                 {!course.is_free ? (
                                     <>
-                                        <div>${course.discounted_price}</div>
                                         <div>${course.actual_price}</div>
+                                        <div>${course.discounted_price}</div>
                                     </>
                                 ) : (
                                     <>

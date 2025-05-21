@@ -14,6 +14,7 @@ from apps.users import models as user_models
 from apps.enrollments import models as enrollment_models
 from apps.checkout import models as checkout_models
 from apps.lessons import models as lesson_models
+from apps.reviews import models as review_models
 
 from conf.database import get_db
 from . import models, schemas
@@ -86,14 +87,14 @@ def verify_refresh_token(token: str) -> Optional[str]:
 def decode_access_token(db: Session, token: str) -> models.User:
     """
     Decode and validate JWT access token.
-    
+
     Args:
         db: Database session
         token: JWT token string
-        
+
     Returns:
         User model instance
-        
+
     Raises:
         HTTPException: If token is invalid, expired, or user not found
     """
@@ -102,7 +103,7 @@ def decode_access_token(db: Session, token: str) -> models.User:
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub")
@@ -116,7 +117,7 @@ def decode_access_token(db: Session, token: str) -> models.User:
         )
     except (InvalidTokenError, PyJWTError):
         raise credentials_exception
-        
+
     user = get_user_by_email(db, email=email)
     if user is None:
         raise credentials_exception
@@ -184,47 +185,68 @@ def get_user_posts(db: Session, user_id: int):
 
 async def get_dashboard_statistics(db: Session, user_id: int):
     # Get total enrolled courses
-    total_enrolled_courses = db.query(func.count(enrollment_models.Enrollment.id)).filter(
-        enrollment_models.Enrollment.user_id == user_id
-    ).scalar() or 0
-    
+    total_enrolled_courses = (
+        db.query(func.count(enrollment_models.Enrollment.id))
+        .filter(enrollment_models.Enrollment.user_id == user_id)
+        .scalar()
+        or 0
+    )
+
     # Get total completed courses
-    total_completed_courses = db.query(func.count(enrollment_models.Enrollment.id)).filter(
-        enrollment_models.Enrollment.user_id == user_id,
-        enrollment_models.Enrollment.completed == True
-    ).scalar() or 0
-    
+    total_completed_courses = (
+        db.query(func.count(enrollment_models.Enrollment.id))
+        .filter(
+            enrollment_models.Enrollment.user_id == user_id,
+            enrollment_models.Enrollment.completed == True,
+        )
+        .scalar()
+        or 0
+    )
+
     # Get total lessons completed
-    total_lessons_completed = db.query(func.count(enrollment_models.Enrollment.id)).filter(
-        enrollment_models.Enrollment.user_id == user_id
-    ).scalar() or 0
-    
+    total_lessons_completed = (
+        db.query(func.count(enrollment_models.Enrollment.id))
+        .filter(enrollment_models.Enrollment.user_id == user_id)
+        .scalar()
+        or 0
+    )
+
     # Get total time spent learning (in minutes)
     total_time_spent = 0
-    
+
     # Get certificates earned
-    certificates_earned = db.query(func.count(enrollment_models.Enrollment.id)).filter(
-        enrollment_models.Enrollment.user_id == user_id,
-        enrollment_models.Enrollment.certificate_issued == True
-    ).scalar() or 0
-    
+    certificates_earned = (
+        db.query(func.count(enrollment_models.Enrollment.id))
+        .filter(
+            enrollment_models.Enrollment.user_id == user_id,
+            enrollment_models.Enrollment.certificate_issued == True,
+        )
+        .scalar()
+        or 0
+    )
+
     current_time = datetime.now(timezone.utc)
 
     one_weeks_ago = current_time - timedelta(weeks=1)
-    
+
     # Get recent activity (last 7 days)
-    recent_activity = db.query(func.count(enrollment_models.LessonCompletion.id)).filter(
-        enrollment_models.LessonCompletion.user_id == user_id,
-        enrollment_models.LessonCompletion.completed_at >= one_weeks_ago
-    ).scalar() or 0
-    
+    recent_activity = (
+        db.query(func.count(enrollment_models.LessonCompletion.id))
+        .filter(
+            enrollment_models.LessonCompletion.user_id == user_id,
+            enrollment_models.LessonCompletion.completed_at >= one_weeks_ago,
+        )
+        .scalar()
+        or 0
+    )
+
     return {
         "total_enrolled_courses": total_enrolled_courses,
         "total_completed_courses": total_completed_courses,
         "total_lessons_completed": total_lessons_completed,
         "total_time_spent": total_time_spent,
         "certificates_earned": certificates_earned,
-        "recent_activity": recent_activity
+        "recent_activity": recent_activity,
     }
 
 
@@ -236,3 +258,26 @@ async def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+async def get_instructor_courses(db: Session, user_id: int):
+    return (
+        db.query(course_models.Course)
+        .filter(
+            course_models.Course.user_id == user_id,
+            course_models.Course.status == course_models.CourseStatus.PUBLISHED,
+        )
+        .all()
+    )
+
+
+async def get_instructor_stats(db: Session, user_id: int):
+    # Only count enrollments and reviews for courses where the instructor is the owner (Course.user_id == user_id)
+    return {
+        "total_students": db.query(enrollment_models.Enrollment)
+        .filter(enrollment_models.Enrollment.course.has(user_id=user_id))
+        .count(),
+        "total_reviews": db.query(review_models.CourseReview)
+        .filter(review_models.CourseReview.course.has(user_id=user_id))
+        .count(),
+    }

@@ -16715,3 +16715,25 @@ table.table td {
 .will-learn ul li, .requirements ul li {
     list-style: disc !important;
 }
+
+.course-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.course-price > div:nth-child(1) {
+    font-size: 15px;
+    line-height: 17px;
+    font-weight: 500;
+    margin-right: 10px;
+    color: var(--color-light-1);
+    text-decoration: line-through;
+}
+
+.course-price > div:nth-child(2) {
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 500;
+    color: var(--color-dark-1);
+}
