@@ -18,8 +18,7 @@ router = APIRouter()
 def get_categories(db: Session = Depends(get_db)):
     categories = db.query(Category).all()
     category_schemas = [
-        CategorySchema.model_validate(category).model_dump()
-        for category in categories
+        CategorySchema.model_validate(category).model_dump() for category in categories
     ]
     return create_response(
         data=category_schemas,
@@ -51,4 +50,19 @@ def create_category(
     return create_response(
         data=CategorySchema.model_validate(new_category).model_dump(),
         message="Category created successfully",
+    )
+
+
+@router.get("/categories/{slug}", response_model=CategorySchema)
+def get_category_by_slug(slug: str, db: Session = Depends(get_db)):
+    category = db.query(Category).filter(Category.slug == slug).first()
+    if not category:
+        return create_response(
+            data=None,
+            message="Category not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
+    return create_response(
+        data=CategorySchema.model_validate(category).model_dump(),
+        message="Category details",
     )

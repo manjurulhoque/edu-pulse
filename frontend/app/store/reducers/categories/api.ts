@@ -20,7 +20,15 @@ export const CategoryApi = createApi({
                 return data;
             },
         }),
+        categoryDetails: builder.query<Category, { slug: string }>({
+            query: ({ slug }) => {
+                return {
+                    url: `categories/${slug}`,
+                };
+            },
+            providesTags: ["Category"],
+        }),
     }),
 });
 
-export const { useCategoriesQuery } = CategoryApi;
+export const { useCategoriesQuery, useCategoryDetailsQuery } = CategoryApi;
