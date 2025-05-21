@@ -13,11 +13,13 @@ from apps.categories import models as categories_models
 from apps.cart import models as cart_models
 from apps.checkout import models as checkout_models
 from apps.reviews import models as review_models
+from apps.wishlist import models as wishlist_models
 from apps.users import routers as user_routers
 from apps.courses import routers as course_routers
 from apps.categories import routers as categories_routers
 from apps.checkout import routers as checkout_routers
 from apps.reviews import routers as review_routers
+from apps.wishlist import routers as wishlist_routers
 from utils.response_utils import create_response
 from apps.cart import routers as cart_routers
 from apps.core import admin_routers
@@ -102,3 +104,4 @@ app.include_router(categories_routers.router, tags=["categories"])
 app.include_router(cart_routers.router, tags=["cart"])
 app.include_router(checkout_routers.router, tags=["checkout"])
 app.include_router(admin_routers.admin_router, tags=["admin"])
+app.include_router(wishlist_routers.router, prefix="/wishlist", tags=["wishlist"])
