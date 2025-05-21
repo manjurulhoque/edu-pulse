@@ -7,15 +7,14 @@ import { HeaderExplore } from "./HeaderExplore";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import { signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
 import { useGetCartQuery } from "@/app/store/reducers/cart/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { ShoppingCart, Heart } from 'lucide-react';
 
 const Header = () => {
     const { data: session, status } = useSession();
-    const pathname = usePathname();
-    const { data: cart } = useGetCartQuery(null, {});
+    const { data: cart } = useGetCartQuery(null, {
+        skip: !session?.user,
+    });
 
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);
     const handleSubmit = (e: any) => {
@@ -78,10 +77,14 @@ const Header = () => {
                                         </button>
                                     </div>
 
+                                    <Link href="/wishlist" className="relative mr-20">
+                                        <Heart className="text-2xl text-dark" />
+                                    </Link>
+
                                     <Link href="/cart" className="relative mr-20">
-                                        <FontAwesomeIcon icon={faCartShopping} className="text-2xl text-dark" />
+                                        <ShoppingCart className="text-2xl text-dark" />
                                         {session?.user && (
-                                            <span className="absolute -top-1 -right-1 bg-purple-1 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                            <span className="badge-notification">
                                                 {cart?.items?.length || 0}
                                             </span>
                                         )}

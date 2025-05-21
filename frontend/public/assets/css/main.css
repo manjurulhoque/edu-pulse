@@ -16738,6 +16738,20 @@ table.table td {
     color: var(--color-dark-1);
 }
 
-footer {
+footer.-type-5 {
     background-color: var(--color-light-6);
+}
+
+.badge-notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    translate: 60% -50%;
+
+    background-color: var(--color-purple-1);
+    color: white;
+    border-radius: 32px;
+    padding: 0 8px;
+    min-width: 24px;
+    min-height: 24px;
 }

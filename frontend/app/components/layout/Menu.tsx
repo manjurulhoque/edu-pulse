@@ -12,17 +12,17 @@ export default function Menu({ allClasses, headerPosition }: any) {
     const pathname = usePathname();
 
     useEffect(() => {
-        menuList.forEach((elm) => {
-            elm?.links?.forEach((elm2) => {
+        menuList.forEach((elm: any) => {
+            elm?.links?.forEach((elm2: any) => {
                 if (elm2.href?.split("/")[1] == pathname.split("/")[1]) {
                     setMenuItem(elm.title);
                 } else {
-                    elm2?.links?.map((elm3) => {
+                    elm2?.links?.map((elm3: any) => {
                         if (
                             elm3.href?.split("/")[1] == pathname.split("/")[1]
                         ) {
                             setMenuItem(elm.title);
-                            setSubmenu(elm2.title);
+                            setSubmenu(elm2.label);
                         }
                     });
                 }
@@ -71,21 +71,6 @@ export default function Menu({ allClasses, headerPosition }: any) {
                                 }
                             >
                                 Courses
-                            </Link>
-                        </li>
-
-                        <li className="menu-item-has-children">
-                            <Link
-                                data-barba
-                                href="/about"
-                                className={
-                                    menuItem == "Pages" &&
-                                    pathname == "/about-1"
-                                        ? "activeMenu"
-                                        : ""
-                                }
-                            >
-                                About
                             </Link>
                         </li>
                     </ul>
