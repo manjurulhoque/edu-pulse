@@ -4,8 +4,9 @@ import { useGetCoursesByCategoryQuery } from "@/app/store/reducers/courses/api";
 import { useParams } from "next/navigation";
 import { Grid } from "react-loader-spinner";
 import HomeCourseCard from "./HomeCourseCard";
+import { Category } from "@/app/models/category.interface";
 
-const CategoryCourses = () => {
+const CategoryCourses = ({ category }: { category: Category }) => {
     const { slug } = useParams();
     const { data, isLoading, error } = useGetCoursesByCategoryQuery({
         category_slug: slug as string,
@@ -19,7 +20,7 @@ const CategoryCourses = () => {
                         <div className="row">
                             <div className="col-auto">
                                 <div>
-                                    <h1 className="page-header__title">All available Courses</h1>
+                                    <h1 className="page-header__title">{category?.name} online courses</h1>
                                 </div>
                             </div>
                         </div>
