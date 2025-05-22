@@ -77,7 +77,7 @@ const Header = () => {
                                         </button>
                                     </div>
 
-                                    <Link href="/wishlist" className="relative mr-20">
+                                    <Link href="/student/dashboard/wishlist" className="relative mr-20">
                                         <Heart className="text-2xl text-dark" />
                                     </Link>
 

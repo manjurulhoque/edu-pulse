@@ -18,9 +18,7 @@ export default function Menu({ allClasses, headerPosition }: any) {
                     setMenuItem(elm.title);
                 } else {
                     elm2?.links?.map((elm3: any) => {
-                        if (
-                            elm3.href?.split("/")[1] == pathname.split("/")[1]
-                        ) {
+                        if (elm3.href?.split("/")[1] == pathname.split("/")[1]) {
                             setMenuItem(elm.title);
                             setSubmenu(elm2.label);
                         }
@@ -31,11 +29,7 @@ export default function Menu({ allClasses, headerPosition }: any) {
     }, []);
 
     return (
-        <div
-            className={`header-menu js-mobile-menu-toggle ${
-                headerPosition ? headerPosition : ""
-            }`}
-        >
+        <div className={`header-menu js-mobile-menu-toggle ${headerPosition ? headerPosition : ""}`}>
             <div className="header-menu__content">
                 <div className="mobile-bg js-mobile-bg"></div>
 
@@ -51,25 +45,13 @@ export default function Menu({ allClasses, headerPosition }: any) {
                 <div className="menu js-navList">
                     <ul className={`${allClasses ? allClasses : ""}`}>
                         <li className="menu-item-has-children">
-                            <Link
-                                data-barba
-                                href="/"
-                                className={
-                                    menuItem == "Home" ? "activeMenu" : ""
-                                }
-                            >
+                            <Link data-barba href="/" className={menuItem == "Home" ? "activeMenu" : ""}>
                                 Home
                             </Link>
                         </li>
 
                         <li className="menu-item-has-children -has-mega-menu">
-                            <Link
-                                data-barba
-                                href="/courses"
-                                className={
-                                    menuItem == "Courses" ? "activeMenu" : ""
-                                }
-                            >
+                            <Link data-barba href="/courses" className={menuItem == "Courses" ? "activeMenu" : ""}>
                                 Courses
                             </Link>
                         </li>
@@ -81,10 +63,7 @@ export default function Menu({ allClasses, headerPosition }: any) {
                 {/* mobile footer end */}
             </div>
 
-            <div
-                className="header-menu-close"
-                data-el-toggle=".js-mobile-menu-toggle"
-            >
+            <div className="header-menu-close" data-el-toggle=".js-mobile-menu-toggle">
                 <div className="size-40 d-flex items-center justify-center rounded-full bg-white">
                     <div className="icon-close text-dark-1 text-16"></div>
                 </div>

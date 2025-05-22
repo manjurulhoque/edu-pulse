@@ -1,4 +1,4 @@
-import { LayoutDashboard, PlayCircle, List, Users, DollarSign } from "lucide-react";
+import { LayoutDashboard, PlayCircle, List, Users, DollarSign, Heart } from "lucide-react";
 
 export const instructorSidebarItems = [
     {
@@ -66,5 +66,11 @@ export const userSidebarItems = [
         href: "/student/dashboard/my-courses",
         icon: PlayCircle,
         text: "My Learning",
+    },
+    {
+        id: 3,
+        href: "/student/dashboard/wishlist",
+        icon: Heart,
+        text: "Wishlist",
     },
 ];
