@@ -76,7 +76,7 @@ const Wishlist = () => {
 
                         {!isLoadingCourses && courses && courses.length === 0 && (
                             <div className="text-center">
-                                <h4>You haven't enrolled in any courses yet.</h4>
+                                <h4>You have no courses in your wishlist.</h4>
                             </div>
                         )}
 
