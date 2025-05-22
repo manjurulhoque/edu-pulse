@@ -7,15 +7,22 @@ import { useAddToCartMutation } from "@/app/store/reducers/cart/api";
 import { toast } from "react-toastify";
 import { Course } from "@/app/models/course.interface";
 import { useIsAlreadyEnrolledQuery } from "@/app/store/reducers/courses/api";
+import { getCourseImagePath } from "@/app/utils/image-path";
+import { useAlreadyInWishlistQuery, useAddToWishlistMutation } from "@/app/store/reducers/wishlist/api";
+import { Heart } from "lucide-react";
 
 export default function PinContent({ course }: { course: Course }) {
     const { data: isAlreadyEnrolledResponse } = useIsAlreadyEnrolledQuery({ course_id: course.id });
+    const { data: isAlreadyInWishlistResponse } = useAlreadyInWishlistQuery({ course_id: course.id });
+    const [addToWishlist, { isLoading: isAddingToWishlist }] = useAddToWishlistMutation();
     const isAlreadyEnrolled = isAlreadyEnrolledResponse?.data?.enrolled || false;
     const enrolledAt = isAlreadyEnrolledResponse?.data?.enrolled_at || null;
     const [isOpen, setIsOpen] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const { data: session } = useSession();
     const [addToCart, { isLoading }] = useAddToCartMutation();
+
+    const isAlreadyInWishlist = isAlreadyInWishlistResponse?.data || false;
 
     // useEffect hook to update the screen width when the window is resized
     useEffect(() => {
@@ -31,13 +38,9 @@ export default function PinContent({ course }: { course: Course }) {
         };
     }, []);
 
-    const getImageSrc = () => {
-        return `${process.env.BACKEND_DOCKER_BASE_URL}/${course?.preview_image}`;
-    };
-
     const handleAddToCart = async () => {
         if (!session?.user) {
-            toast.error("Please login to add courses to cart");
+            toast.error("Please login to add course to cart");
             return;
         }
 
@@ -46,6 +49,20 @@ export default function PinContent({ course }: { course: Course }) {
             toast.success("Course added to cart successfully");
         } catch (error: any) {
             toast.error(error?.data?.message || "Failed to add course to cart");
+        }
+    };
+
+    const handleAddToWishlist = async () => {
+        if (!session?.user) {
+            toast.error("Please login to add course to wishlist");
+            return;
+        }
+
+        try {
+            await addToWishlist({ course_id: course.id }).unwrap();
+            toast.success("Course added to wishlist successfully");
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to add course to wishlist");
         }
     };
 
@@ -65,7 +82,13 @@ export default function PinContent({ course }: { course: Course }) {
                     className="bg-white shadow-2 rounded-8 border-light py-10 px-10"
                 >
                     <div className="relative">
-                        <Image width={368} height={238} className="w-1/1" src={getImageSrc()} alt="image" />
+                        <Image
+                            width={368}
+                            height={238}
+                            className="w-1/1"
+                            src={getCourseImagePath(course)}
+                            alt="image"
+                        />
                         <div className="absolute-full-center d-flex justify-center items-center">
                             <div
                                 onClick={() => setIsOpen(true)}
@@ -103,14 +126,28 @@ export default function PinContent({ course }: { course: Course }) {
                             </>
                         ) : (
                             <>
-                                <button
-                                    onClick={handleAddToCart}
-                                    disabled={isLoading}
-                                    className="button -md -purple-1 text-white w-1/1"
-                                >
-                                    {isLoading ? "Adding..." : "Add To Cart"}
-                                </button>
-                                <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">Buy Now</button>
+                                <div className="d-flex gap-2 w-100">
+                                    <button
+                                        onClick={handleAddToCart}
+                                        disabled={isLoading}
+                                        className="button -md -purple-1 text-white"
+                                        style={{ width: "85%" }}
+                                    >
+                                        {isLoading ? "Adding..." : "Add to cart"}
+                                    </button>
+                                    <button
+                                        onClick={handleAddToWishlist}
+                                        className="button -md -outline-dark-1 text-dark-1"
+                                        style={{ padding: "18px" }}
+                                    >
+                                        {isAlreadyInWishlist ? (
+                                            <Heart fill="#000" />
+                                        ) : (
+                                            <Heart />
+                                        )}
+                                    </button>
+                                </div>
+                                {/* <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">Buy Now</button> */}
                             </>
                         )}
 
