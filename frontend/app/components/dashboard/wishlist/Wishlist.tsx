@@ -5,9 +5,20 @@ import { Container, Row } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
 import CourseCard from "../courses/CourseCard";
 import Pagination from "@/app/components/common/Pagination";
+import { useGetWishlistQuery } from "@/app/store/reducers/wishlist/api";
 
 const Wishlist = () => {
     const [search, setSearch] = useState("");
+    const [pageNumber, setPageNumber] = useState(1);
+
+    const {
+        data,
+        isLoading: isLoadingCourses,
+        error: errorCourses,
+    } = useGetWishlistQuery(undefined, {
+        skip: !pageNumber,
+    });
+    const courses = data?.data;
 
     return (
         <div className="dashboard__main">
@@ -39,14 +50,14 @@ const Wishlist = () => {
                     <Container>
                         <div
                             style={{
-                                display: isLoading ? "flex" : "none",
+                                display: isLoadingCourses ? "flex" : "none",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 height: "100vh",
                             }}
                         >
                             <Grid
-                                visible={isLoading}
+                                visible={isLoadingCourses}
                                 height="200"
                                 width="200"
                                 color="#4fa94d"
@@ -57,19 +68,19 @@ const Wishlist = () => {
                             />
                         </div>
 
-                        {error && (
+                        {errorCourses && (
                             <div className="text-center">
                                 <h4>Error loading courses</h4>
                             </div>
                         )}
 
-                        {!isLoading && courses && courses.length === 0 && (
+                        {!isLoadingCourses && courses && courses.length === 0 && (
                             <div className="text-center">
                                 <h4>You haven't enrolled in any courses yet.</h4>
                             </div>
                         )}
 
-                        {!isLoading && (
+                        {!isLoadingCourses && (
                             <>
                                 <Row className="g-4">
                                     {courses?.map((course) => (

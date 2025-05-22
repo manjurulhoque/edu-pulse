@@ -6,6 +6,7 @@ import { StatisticsApi } from "./reducers/statistics/api";
 import { AdminApi } from "./reducers/admin/api";
 import { UserApi } from "./reducers/user/api";
 import { ReviewApi } from "./reducers/reviews/api";
+import { WishlistApi } from "./reducers/wishlist/api";
 
 export const store: any = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store: any = configureStore({
         [AdminApi.reducerPath]: AdminApi.reducer,
         [UserApi.reducerPath]: UserApi.reducer,
         [ReviewApi.reducerPath]: ReviewApi.reducer,
+        [WishlistApi.reducerPath]: WishlistApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
@@ -27,6 +29,7 @@ export const store: any = configureStore({
             AdminApi.middleware,
             UserApi.middleware,
             ReviewApi.middleware,
+            WishlistApi.middleware,
         ),
 });
 
