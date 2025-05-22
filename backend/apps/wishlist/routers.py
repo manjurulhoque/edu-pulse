@@ -69,7 +69,7 @@ async def delete_wishlist(
         )
     db.delete(db_wishlist)
     db.commit()
-    return create_response(data=None, status_code=status.HTTP_204_NO_CONTENT)
+    return create_response(data=None, status_code=status.HTTP_200_OK)
 
 
 @router.get("/already-in-wishlist/{course_id}")

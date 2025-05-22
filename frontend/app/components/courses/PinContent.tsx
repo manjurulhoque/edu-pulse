@@ -8,12 +8,25 @@ import { toast } from "react-toastify";
 import { Course } from "@/app/models/course.interface";
 import { useIsAlreadyEnrolledQuery } from "@/app/store/reducers/courses/api";
 import { getCourseImagePath } from "@/app/utils/image-path";
-import { useAlreadyInWishlistQuery, useAddToWishlistMutation } from "@/app/store/reducers/wishlist/api";
+import {
+    useAlreadyInWishlistQuery,
+    useAddToWishlistMutation,
+    useRemoveFromWishlistMutation,
+} from "@/app/store/reducers/wishlist/api";
 import { Heart, Loader2 } from "lucide-react";
 
 export default function PinContent({ course }: { course: Course }) {
-    const { data: isAlreadyEnrolledResponse } = useIsAlreadyEnrolledQuery({ course_id: course.id });
-    const { data: isAlreadyInWishlistResponse } = useAlreadyInWishlistQuery({ course_id: course.id });
+    const { data: isAlreadyEnrolledResponse, isLoading: isLoadingIsAlreadyEnrolled } = useIsAlreadyEnrolledQuery({
+        course_id: course.id,
+    });
+    const {
+        data: isAlreadyInWishlistResponse,
+        isLoading: isLoadingAlreadyInWishlist,
+        refetch: refetchIsAlreadyInWishlist,
+    } = useAlreadyInWishlistQuery({
+        course_id: course.id,
+    });
+    const [removeFromWishlist, { isLoading: isRemovingFromWishlist }] = useRemoveFromWishlistMutation();
     const [addToWishlist, { isLoading: isAddingToWishlist }] = useAddToWishlistMutation();
     const isAlreadyEnrolled = isAlreadyEnrolledResponse?.data?.enrolled || false;
     const enrolledAt = isAlreadyEnrolledResponse?.data?.enrolled_at || null;
@@ -64,6 +77,29 @@ export default function PinContent({ course }: { course: Course }) {
         } catch (error: any) {
             toast.error(error?.data?.message || "Failed to add course to wishlist");
         }
+    };
+
+    const handleRemoveFromWishlist = async () => {
+        if (!session?.user) {
+            toast.error("Please login to remove course from wishlist");
+            return;
+        }
+
+        try {
+            await removeFromWishlist({ course_id: course.id }).unwrap();
+            toast.success("Course removed from wishlist successfully");
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to remove course from wishlist");
+        }
+    };
+
+    const handleAddRemoveToWishlist = () => {
+        if (isAlreadyInWishlist) {
+            handleRemoveFromWishlist();
+        } else {
+            handleAddToWishlist();
+        }
+        refetchIsAlreadyInWishlist();
     };
 
     return (
@@ -127,27 +163,35 @@ export default function PinContent({ course }: { course: Course }) {
                         ) : (
                             <>
                                 <div className="d-flex gap-2 w-100">
-                                    <button
-                                        onClick={handleAddToCart}
-                                        disabled={isLoading}
-                                        className="button -md -purple-1 text-white"
-                                        style={{ width: "85%" }}
-                                    >
-                                        {isLoading ? "Adding..." : "Add to cart"}
-                                    </button>
-                                    <button
-                                        onClick={handleAddToWishlist}
-                                        className="button -md -outline-dark-1 text-dark-1"
-                                        style={{ padding: "18px" }}
-                                    >
-                                        {isAddingToWishlist ? (
-                                            <Loader2 className="spinner" />
-                                        ) : isAlreadyInWishlist ? (
-                                            <Heart fill="#000" />
-                                        ) : (
-                                            <Heart />
-                                        )}
-                                    </button>
+                                    {isLoadingIsAlreadyEnrolled ? (
+                                        <Loader2 className="spinner" />
+                                    ) : (
+                                        <button
+                                            onClick={handleAddToCart}
+                                            disabled={isLoading}
+                                            className="button -md -purple-1 text-white"
+                                            style={{ width: "85%" }}
+                                        >
+                                            {isLoading ? "Adding..." : "Add to cart"}
+                                        </button>
+                                    )}
+                                    {isLoadingAlreadyInWishlist ? (
+                                        <Loader2 className="spinner" />
+                                    ) : (
+                                        <button
+                                            onClick={handleAddRemoveToWishlist}
+                                            className="button -md -outline-dark-1 text-dark-1"
+                                            style={{ padding: "18px" }}
+                                        >
+                                            {isAddingToWishlist || isRemovingFromWishlist ? (
+                                                <Loader2 className="spinner" />
+                                            ) : isAlreadyInWishlist ? (
+                                                <Heart fill="#000" />
+                                            ) : (
+                                                <Heart />
+                                            )}
+                                        </button>
+                                    )}
                                 </div>
                                 {/* <button className="button -md -outline-dark-1 text-dark-1 w-1/1 mt-10">Buy Now</button> */}
                             </>
