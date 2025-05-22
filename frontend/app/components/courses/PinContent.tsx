@@ -9,7 +9,7 @@ import { Course } from "@/app/models/course.interface";
 import { useIsAlreadyEnrolledQuery } from "@/app/store/reducers/courses/api";
 import { getCourseImagePath } from "@/app/utils/image-path";
 import { useAlreadyInWishlistQuery, useAddToWishlistMutation } from "@/app/store/reducers/wishlist/api";
-import { Heart } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
 
 export default function PinContent({ course }: { course: Course }) {
     const { data: isAlreadyEnrolledResponse } = useIsAlreadyEnrolledQuery({ course_id: course.id });
@@ -140,7 +140,9 @@ export default function PinContent({ course }: { course: Course }) {
                                         className="button -md -outline-dark-1 text-dark-1"
                                         style={{ padding: "18px" }}
                                     >
-                                        {isAlreadyInWishlist ? (
+                                        {isAddingToWishlist ? (
+                                            <Loader2 className="spinner" />
+                                        ) : isAlreadyInWishlist ? (
                                             <Heart fill="#000" />
                                         ) : (
                                             <Heart />
