@@ -40,3 +40,51 @@ async def get_wishlist(
         .all()
     )
     return create_response(data=wishlist)
+
+
+@router.delete("/{course_id}")
+async def delete_wishlist(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Delete a wishlist item
+    """
+    db_wishlist = (
+        db.query(wishlist_models.Wishlist)
+        .filter(
+            wishlist_models.Wishlist.user_id == current_user.id,
+            wishlist_models.Wishlist.course_id == course_id,
+        )
+        .first()
+    )
+    if not db_wishlist:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Wishlist item not found",
+        )
+    db.delete(db_wishlist)
+    db.commit()
+    return create_response(data=None, status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/already-in-wishlist/{course_id}")
+async def already_in_wishlist(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Check if a course is already in the wishlist
+    """
+    db_wishlist = (
+        db.query(wishlist_models.Wishlist)
+        .filter(
+            wishlist_models.Wishlist.user_id == current_user.id,
+            wishlist_models.Wishlist.course_id == course_id,
+        )
+        .first()
+    )
+    return create_response(data=True if db_wishlist else False)
