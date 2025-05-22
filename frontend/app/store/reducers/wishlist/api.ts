@@ -28,6 +28,11 @@ export const WishlistApi = createApi({
             }),
             invalidatesTags: ["Wishlist"],
         }),
+        alreadyInWishlist: builder.query<Response<boolean>, { course_id: number }>({
+            query: ({ course_id }) => ({
+                url: `/wishlist/already-in-wishlist/${course_id}`,
+            }),
+        }),
     }),
 });
 
