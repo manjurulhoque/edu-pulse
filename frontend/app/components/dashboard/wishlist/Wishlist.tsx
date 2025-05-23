@@ -13,12 +13,12 @@ const Wishlist = () => {
 
     const {
         data,
-        isLoading: isLoadingCourses,
-        error: errorCourses,
+        isLoading: isLoadingWishlist,
+        error: errorWishlist,
     } = useGetWishlistQuery(undefined, {
         skip: !pageNumber,
     });
-    const courses = data?.data;
+    const wishlistList = data?.data;
 
     return (
         <div className="dashboard__main">
@@ -50,14 +50,14 @@ const Wishlist = () => {
                     <Container>
                         <div
                             style={{
-                                display: isLoadingCourses ? "flex" : "none",
+                                display: isLoadingWishlist ? "flex" : "none",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 height: "100vh",
                             }}
                         >
                             <Grid
-                                visible={isLoadingCourses}
+                                visible={isLoadingWishlist}
                                 height="200"
                                 width="200"
                                 color="#4fa94d"
@@ -68,23 +68,23 @@ const Wishlist = () => {
                             />
                         </div>
 
-                        {errorCourses && (
+                        {errorWishlist && (
                             <div className="text-center">
-                                <h4>Error loading courses</h4>
+                                <h4>Error loading wishlist</h4>
                             </div>
                         )}
 
-                        {!isLoadingCourses && courses && courses.length === 0 && (
+                        {!isLoadingWishlist && wishlistList && wishlistList.length === 0 && (
                             <div className="text-center">
                                 <h4>You have no courses in your wishlist.</h4>
                             </div>
                         )}
 
-                        {!isLoadingCourses && (
+                        {!isLoadingWishlist && (
                             <>
                                 <Row className="g-4">
-                                    {courses?.map((course) => (
-                                        <CourseCard key={course.id} course={course} />
+                                    {wishlistList?.map((wishlist) => (
+                                        <CourseCard key={wishlist.id} course={wishlist.course} />
                                     ))}
                                 </Row>
 

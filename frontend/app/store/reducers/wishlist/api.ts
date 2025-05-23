@@ -2,13 +2,14 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import DynamicBaseQuery from "@/app/store/dynamic-base-query";
 import { Course } from "@/app/models/course.interface";
 import { Response } from "@/app/models/request.interface";
+import { Wishlist } from "@/app/models/wishlist.interface";
 
 export const WishlistApi = createApi({
     reducerPath: "WishlistApi",
     baseQuery: DynamicBaseQuery,
     tagTypes: ["Wishlist"],
     endpoints: (builder) => ({
-        getWishlist: builder.query<Response<Course[]>, void>({
+        getWishlist: builder.query<Response<Wishlist[]>, void>({
             query: () => "/wishlist",
             providesTags: ["Wishlist"],
         }),
