@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import { Grid } from "react-loader-spinner";
-import CourseCard from "../courses/CourseCard";
+import WishlistCourseCard from "../courses/WishlistCourseCard";
 import Pagination from "@/app/components/common/Pagination";
 import { useGetWishlistQuery } from "@/app/store/reducers/wishlist/api";
 
@@ -15,6 +15,7 @@ const Wishlist = () => {
         data,
         isLoading: isLoadingWishlist,
         error: errorWishlist,
+        refetch: refetchWishlist,
     } = useGetWishlistQuery(undefined, {
         skip: !pageNumber,
     });
@@ -84,7 +85,12 @@ const Wishlist = () => {
                             <>
                                 <Row className="g-4">
                                     {wishlistList?.map((wishlist) => (
-                                        <CourseCard key={wishlist.id} course={wishlist.course} />
+                                        <WishlistCourseCard
+                                            key={wishlist.id}
+                                            course={wishlist.course}
+                                            wishlist={wishlist}
+                                            refetchWishlist={refetchWishlist}
+                                        />
                                     ))}
                                 </Row>
 
