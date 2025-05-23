@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
 import { getCourseAuthorImagePath, getCourseImagePath } from "@/app/utils/image-path";
+import { BookOpen, CircleGauge } from "lucide-react";
 
 export default function HomeCourseCard({ course, index }: { course: Course; index: number }) {
     const [rating, setRating] = useState<string[]>([]);
@@ -77,12 +78,7 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                         <div className="d-flex x-gap-10 items-center pt-10">
                             <div className="d-flex items-center">
                                 <div className="mr-8">
-                                    <Image
-                                        width={16}
-                                        height={17}
-                                        src="/assets/img/coursesCards/icons/1.svg"
-                                        alt="icon"
-                                    />
+                                    <BookOpen size={16} />
                                 </div>
                                 <div className="text-14 lh-1">{course.lessons_count} lessons</div>
                             </div>
@@ -103,12 +99,7 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
 
                             <div className="d-flex items-center">
                                 <div className="mr-8">
-                                    <Image
-                                        width={16}
-                                        height={17}
-                                        src="/assets/img/coursesCards/icons/3.svg"
-                                        alt="icon"
-                                    />
+                                    <CircleGauge size={16} />
                                 </div>
                                 <div className="text-14 lh-1">{course.level.charAt(0).toUpperCase() + course.level.slice(1)}</div>
                             </div>
