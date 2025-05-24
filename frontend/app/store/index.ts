@@ -7,6 +7,7 @@ import { AdminApi } from "./reducers/admin/api";
 import { UserApi } from "./reducers/user/api";
 import { ReviewApi } from "./reducers/reviews/api";
 import { WishlistApi } from "./reducers/wishlist/api";
+import { LessonApi } from "./reducers/lesson/api";
 
 export const store: any = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store: any = configureStore({
         [UserApi.reducerPath]: UserApi.reducer,
         [ReviewApi.reducerPath]: ReviewApi.reducer,
         [WishlistApi.reducerPath]: WishlistApi.reducer,
+        [LessonApi.reducerPath]: LessonApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
@@ -30,6 +32,7 @@ export const store: any = configureStore({
             UserApi.middleware,
             ReviewApi.middleware,
             WishlistApi.middleware,
+            LessonApi.middleware,
         ),
 });
 
