@@ -19,7 +19,7 @@ import { authOptions } from "@/app/utils/authOptions";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-    title: "Edu Pulse",
+    title: "Edu Pulse - Professional LMS Online Education Course",
     description: "Learn from the experienced teachers",
 };
 
@@ -37,9 +37,7 @@ const CourseLayout: React.FC<Props> = async ({ children }) => {
                 <ReactQueryProvider>
                     <ReduxProvider>
                         <NextAuthProvider session={session}>
-                            <Header />
                             {children}
-                            <Footer />
                             <ToastContainer />
                         </NextAuthProvider>
                     </ReduxProvider>

@@ -7,7 +7,7 @@ import { AdminApi } from "./reducers/admin/api";
 import { UserApi } from "./reducers/user/api";
 import { ReviewApi } from "./reducers/reviews/api";
 import { WishlistApi } from "./reducers/wishlist/api";
-import { LessonApi } from "./reducers/lesson/api";
+import { LessonApi } from "./reducers/lessons/api";
 
 export const store: any = configureStore({
     reducer: {
@@ -32,7 +32,7 @@ export const store: any = configureStore({
             UserApi.middleware,
             ReviewApi.middleware,
             WishlistApi.middleware,
-            LessonApi.middleware,
+            LessonApi.middleware
         ),
 });
 

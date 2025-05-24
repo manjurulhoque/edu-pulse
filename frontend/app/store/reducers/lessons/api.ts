@@ -8,16 +8,16 @@ export const LessonApi = createApi({
     reducerPath: "lesson",
     tagTypes: ["Lesson", "LastAccessedLesson"],
     endpoints: (builder) => ({
-        getLesson: builder.query<Response<Lesson>, { lesson_id: string }>({
+        getCourseLessons: builder.query<Response<Lesson[]>, { slug: string }>({
+            query: ({ slug }) => `/lessons/course/${slug}`,
+        }),
+        getLesson: builder.query<Response<Lesson>, { lesson_id: number }>({
             query: ({ lesson_id }) => `/lessons/${lesson_id}`,
         }),
-        getLastAccessedLesson: builder.query<Response<Lesson>, { course_id: string }>({
-            query: ({ course_id }) => `/lessons/last-accessed/${course_id}`,
+        getLastAccessedLesson: builder.query<Response<Lesson>, { slug: string }>({
+            query: ({ slug }) => `/lessons/last-accessed/${slug}`,
         }),
     }),
 });
 
-export const {
-    useGetLessonQuery,
-    useGetLastAccessedLessonQuery,
-} = LessonApi;
+export const { useGetCourseLessonsQuery, useGetLessonQuery, useGetLastAccessedLessonQuery } = LessonApi;

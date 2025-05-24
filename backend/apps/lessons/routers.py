@@ -3,11 +3,43 @@ from sqlalchemy.orm import Session
 
 from conf.database import get_db
 from apps.lessons.models import Lesson
+from apps.courses.models import Course, CourseStatus
 from apps.users.models import User
 from apps.core.decorators import auth_required
 from utils.response_utils import create_response
 
 router = APIRouter()
+
+
+@router.get("/course/{slug}")
+async def get_course_lessons(
+    slug: str,
+    current_user: User = Depends(auth_required),
+    db: Session = Depends(get_db),
+):
+    """
+    Get all lessons for a course
+
+    Args:
+        course_id: The ID of the course
+
+    Returns:
+        The lessons for the course
+    """
+    course = db.query(Course).filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED).first()
+    if not course:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    course_id = course.id
+    lessons = (
+        db.query(Lesson)
+        .filter(Lesson.course_id == course_id, Lesson.is_published == True)
+        .all()
+    )
+    return create_response(data=lessons)
 
 
 @router.get("/{lesson_id}")
@@ -39,9 +71,9 @@ async def get_lesson(
     return create_response(data=lesson)
 
 
-@router.get("/last-accessed/{course_id}")
+@router.get("/last-accessed/{slug}")
 async def get_last_accessed_lesson(
-    course_id: int,
+    slug: str,
     current_user: User = Depends(auth_required),
     db: Session = Depends(get_db),
 ):
@@ -54,10 +86,17 @@ async def get_last_accessed_lesson(
     Returns:
         The last accessed lesson for the course
     """
+    course = db.query(Course).filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED).first()
+    if not course:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
     # for now, return the first lesson
     lesson = (
         db.query(Lesson)
-        .filter(Lesson.course_id == course_id, Lesson.is_published == True)
+        .filter(Lesson.course_id == course.id, Lesson.is_published == True)
         .first()
     )
     return create_response(data=lesson)

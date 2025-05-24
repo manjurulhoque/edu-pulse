@@ -20,7 +20,7 @@ class Course(BaseModel):
     __tablename__ = "courses"
 
     id = Column(Integer, primary_key=True, index=True)
-    slug = Column(String(30), nullable=False)
+    slug = Column(String(30), nullable=False, unique=True)
     title = Column(String, index=True)
     short_description = Column(Text, nullable=True)
     level = Column(String(20), nullable=True)
