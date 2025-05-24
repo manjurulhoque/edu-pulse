@@ -1,6 +1,4 @@
-import { useParams } from "next/navigation";
 import { getCourseDetails } from "@/app/actions/getSingleCourse";
-
 
 export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
     const course = await getCourseDetails(params.slug);
@@ -10,9 +8,8 @@ export const generateMetadata = async ({ params }: { params: { slug: string } })
     };
 };
 
-const LessonDetailsPage = () => {
-    const { slug, lessonId } = useParams();
-    return <div>LessonPage {slug} {lessonId}</div>;
+const LessonViewPage = () => {
+    return <div>Lesson Page</div>;
 };
 
-export default LessonDetailsPage;
+export default LessonViewPage;
