@@ -1,6 +1,6 @@
 import { getCourseDetails } from "@/app/actions/getSingleCourse";
 import { getCourseLessons, getLesson } from "@/app/actions/lessonInfo";
-import CourseSidebar from "@/app/(course)/courses/_components/CourseSidebar";
+import LessonSidebar from "@/app/(course)/courses/_components/LessonSidebar";
 import { notFound } from "next/navigation";
 import CourseLessonView from "@/app/(course)/courses/_components/CourseLessonView";
 
@@ -35,7 +35,7 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
         <div className="container-fluid">
             <div className="row">
                 <div className="col-md-3">
-                    <CourseSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
+                    <LessonSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
                 </div>
                 <div className="col-md-9">
                     <CourseLessonView lesson={lesson} />
