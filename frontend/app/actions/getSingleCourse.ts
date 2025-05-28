@@ -7,7 +7,8 @@ export async function getCourseDetails(slug: string) {
     const result = await store.dispatch(CourseApi.endpoints.courseDetails.initiate({ slug }));
 
     if ("error" in result) {
-        throw new Error(result.error.data?.message || "Failed to fetch the course.");
+        console.log(result);
+        return null;
     }
 
     return result.data;

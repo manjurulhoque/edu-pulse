@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, Text, ForeignKey, URL
+from sqlalchemy import Boolean, Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from conf.database import Base
 
@@ -8,7 +8,7 @@ class Lesson(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    url = Column(URL, nullable=True) # Youtube URL for now
+    url = Column(Text, nullable=True) # Youtube URL for now
     content = Column(Text, nullable=True)
     # is_completed = Column(Boolean, default=False)
     is_free = Column(Boolean, default=False)
