@@ -2,6 +2,7 @@ import { getCourseDetails } from "@/app/actions/getSingleCourse";
 import { getCourseLessons, getLesson } from "@/app/actions/lessonInfo";
 import CourseSidebar from "@/app/(course)/courses/_components/CourseSidebar";
 import { notFound } from "next/navigation";
+import CourseLessonView from "@/app/(course)/courses/_components/CourseLessonView";
 
 export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
     const course = await getCourseDetails(params.slug);
@@ -37,11 +38,7 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
                     <CourseSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
                 </div>
                 <div className="col-md-9">
-                    <div className="card">
-                        <div className="card-body">
-                            <h1>{lesson?.title}</h1>
-                        </div>
-                    </div>
+                    <CourseLessonView lesson={lesson} />
                 </div>
             </div>
         </div>

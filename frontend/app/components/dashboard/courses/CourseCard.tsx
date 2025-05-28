@@ -14,7 +14,7 @@ const CourseCard = ({ course }: { course: Course }) => {
     
     return (
         <Col key={course.id} xs={12} md={6} lg={3}>
-            <Link href={`/courses/${course.slug}/learn/lesson/`} className="text-decoration-none">
+            <Link href={`/courses/${course.slug}/learn/`} className="text-decoration-none">
                 <Card className="h-100 position-relative">
                     <div style={{ position: "relative", height: "200px" }}>
                         <Image
