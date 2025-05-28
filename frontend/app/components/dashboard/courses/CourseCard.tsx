@@ -1,6 +1,6 @@
 "use client";
 
-import { Col, Card } from "react-bootstrap";
+import { Col, Card, Modal, Button, Form } from "react-bootstrap";
 import { getCourseImagePath } from "@/app/utils/image-path";
 import { PlayCircle, MoreVertical, Star, StarOff } from "lucide-react";
 import Image from "next/image";
@@ -11,7 +11,16 @@ import { Course } from "@/app/models/course.interface";
 const CourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
-    
+    const [showRatingModal, setShowRatingModal] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState("");
+
+    const handleRatingClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowRatingModal(true);
+    };
+
     return (
         <Col key={course.id} xs={12} md={6} lg={3}>
             <Link href={`/courses/${course.slug}/learn/`} className="text-decoration-none">
@@ -159,7 +168,7 @@ const CourseCard = ({ course }: { course: Course }) => {
                             />
                         </div>
                         <div style={{ fontSize: 13, marginBottom: 8 }}>0% complete</div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 4 }} onClick={handleRatingClick}>
                             {[1, 2, 3, 4, 5].map((star) =>
                                 0 >= star ? (
                                     <Star key={star} size={16} color="#f5c518" fill="#f5c518" />
@@ -172,6 +181,50 @@ const CourseCard = ({ course }: { course: Course }) => {
                     </Card.Body>
                 </Card>
             </Link>
+            {/* Rating Modal */}
+            <Modal show={showRatingModal} onHide={() => setShowRatingModal(false)} centered size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Rate this Course</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span key={star} style={{ cursor: "pointer" }} onClick={() => setRating(star)}>
+                                {rating >= star ? (
+                                    <Star size={24} color="#f5c518" fill="#f5c518" />
+                                ) : (
+                                    <StarOff size={24} color="#f5c518" />
+                                )}
+                            </span>
+                        ))}
+                    </div>
+                    <Form.Group>
+                        <Form.Label>Comment (Optional)</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder="Share your thoughts about this course..."
+                        />
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowRatingModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            // TODO: Submit rating and comment here
+                            setShowRatingModal(false);
+                        }}
+                        disabled={rating === 0}
+                    >
+                        Submit
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Col>
     );
 };
