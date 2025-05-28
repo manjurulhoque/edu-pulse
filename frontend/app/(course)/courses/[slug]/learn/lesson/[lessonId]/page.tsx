@@ -3,6 +3,7 @@ import { getCourseLessons, getLesson } from "@/app/actions/lessonInfo";
 import LessonSidebar from "@/app/(course)/courses/_components/LessonSidebar";
 import { notFound } from "next/navigation";
 import CourseLessonView from "@/app/(course)/courses/_components/CourseLessonView";
+import Link from "next/link";
 
 export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
     const course = await getCourseDetails(params.slug);
@@ -20,7 +21,6 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
         getLesson(params.lessonId),
     ]);
     const [courseResult, lessonsResult, lessonResult] = await promises;
-    console.log(courseResult, lessonsResult, lessonResult);
     if (
         courseResult.status === "rejected" ||
         lessonsResult.status === "rejected" ||
@@ -38,6 +38,9 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
                     <LessonSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
                 </div>
                 <div className="col-md-9">
+                    <Link href={`/student/dashboard/my-courses`} className="button -md -yellow-1 text-dark-1 mb-3">
+                        &larr; Back to Course
+                    </Link>
                     <CourseLessonView lesson={lesson} />
                 </div>
             </div>
