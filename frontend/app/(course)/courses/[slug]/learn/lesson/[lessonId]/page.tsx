@@ -38,9 +38,6 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
                     <LessonSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
                 </div>
                 <div className="col-md-9">
-                    <Link href={`/student/dashboard/my-courses`} className="button -md -yellow-1 text-dark-1 mb-3">
-                        &larr; Back to Course
-                    </Link>
                     <CourseLessonView lesson={lesson} />
                 </div>
             </div>

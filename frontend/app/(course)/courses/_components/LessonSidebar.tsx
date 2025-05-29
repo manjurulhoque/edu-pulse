@@ -2,6 +2,9 @@
 
 import { Course } from "@/app/models/course.interface";
 import { Lesson } from "@/app/models/lesson.interface";
+import { CheckCircle2, Circle } from "lucide-react";
+import styles from "./LessonSidebar.module.css";
+import Link from "next/link";
 
 interface LessonSidebarProps {
     course: Course;
@@ -11,22 +14,29 @@ interface LessonSidebarProps {
 
 export default function LessonSidebar({ course, lessons, currentLessonId }: LessonSidebarProps) {
     return (
-        <div className="bg-white border-end vh-100 p-3 sticky-top" style={{ minWidth: 250 }}>
-            <h5 className="mb-4">{course.title}</h5>
-            <ul className="list-group list-group-flush">
+        <div className={styles.sidebar}>
+            <div className={styles.header}>
+                <h5 className={styles.title}>{course.title}</h5>
+            </div>
+            <div className={styles.lessonsList}>
                 {lessons.map((lesson) => (
-                    <a
+                    <Link
                         key={lesson.id}
                         href={`/courses/${course.slug}/learn/lesson/${lesson.id}`}
-                        className={`list-group-item list-group-item-action${
-                            lesson.id === currentLessonId ? " active" : ""
-                        }`}
-                        style={{ cursor: "pointer" }}
+                        className={`${styles.lessonItem} ${lesson.id === currentLessonId ? styles.active : ""}`}
                     >
-                        {lesson.title}
-                    </a>
+                        <div className={styles.lessonContent}>
+                            {lesson.is_completed ? (
+                                <CheckCircle2 className="text-success" size={18} />
+                            ) : (
+                                <Circle className="text-muted" size={18} />
+                            )}
+                            <span className={styles.lessonTitle}>{lesson.title}</span>
+                        </div>
+                        {lesson.duration && <span className={styles.duration}>{lesson.duration}</span>}
+                    </Link>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

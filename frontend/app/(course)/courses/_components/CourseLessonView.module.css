@@ -1,5 +1,5 @@
 .container {
-    padding: 20px;
+    padding: 1.5rem;
     min-height: 100vh;
     background-color: #f8f9fa;
 }
@@ -37,11 +37,99 @@
     background-color: #ffffff;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
 .title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #212529;
-    margin-bottom: 1rem;
+    color: #1f2937;
+    margin: 0;
+}
+
+.headerActions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.actionButton {
+    padding: 0.5rem;
+    border-radius: 6px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.actionButton:hover {
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+.actionButton.primary {
+    background: #2563eb;
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+.actionButton.primary:hover {
+    background: #1d4ed8;
+    color: white;
+}
+
+.videoContainer {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.contentCard {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+.tabContent {
+    padding: 1.5rem;
+}
+
+.dropdownMenu {
+    min-width: 200px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+.dropdownItem {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    color: #4b5563;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdownItem:hover {
+    background: #f3f4f6;
+    color: #1f2937;
 }
 
 .description {
