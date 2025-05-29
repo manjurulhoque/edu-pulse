@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { Course } from "@/app/models/course.interface";
+import { useCreateReviewMutation, useGetMyReviewForCourseQuery } from "@/app/store/reducers/reviews/api";
+import { toast } from "react-toastify";
 
 const CourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
@@ -14,11 +16,26 @@ const CourseCard = ({ course }: { course: Course }) => {
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+    const [createReview, { isLoading }] = useCreateReviewMutation();
+    const { data: myReview, isLoading: isMyReviewLoading, refetch: refetchMyReview } = useGetMyReviewForCourseQuery({ courseId: course.id });
+    const isMyReview = myReview?.data;
+    const { rating: myReviewRating = 0 } = isMyReview || {};
 
     const handleRatingClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
         setShowRatingModal(true);
+    };
+
+    const handleSubmitRating = async () => {
+        try {
+            await createReview({ courseId: course.id, review: { rating, comment } }).unwrap();
+            toast.success("Rating submitted successfully");
+            setShowRatingModal(false);
+            refetchMyReview();
+        } catch (error) {
+            toast.error("Failed to submit rating");
+        }
     };
 
     return (
@@ -168,15 +185,22 @@ const CourseCard = ({ course }: { course: Course }) => {
                             />
                         </div>
                         <div style={{ fontSize: 13, marginBottom: 8 }}>0% complete</div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 4 }} onClick={handleRatingClick}>
+                        <div
+                            style={{ display: "flex", alignItems: "center", gap: 4 }}
+                            onClick={isMyReview ? undefined : handleRatingClick}
+                        >
                             {[1, 2, 3, 4, 5].map((star) =>
-                                0 >= star ? (
+                                isMyReview ? (
+                                    <Star key={star} size={16} color="#f5c518" fill={myReviewRating >= star ? "#f5c518" : "none"} />
+                                ) : 0 >= star ? (
                                     <Star key={star} size={16} color="#f5c518" fill="#f5c518" />
                                 ) : (
                                     <StarOff key={star} size={16} color="#f5c518" />
                                 )
                             )}
-                            <span style={{ fontSize: 13, marginLeft: 6 }}>{0 ? "Your rating" : "Leave a rating"}</span>
+                            <span style={{ fontSize: 13, marginLeft: 6 }}>
+                                {isMyReview ? "Your rating" : "Leave a rating"}
+                            </span>
                         </div>
                     </Card.Body>
                 </Card>
@@ -213,14 +237,7 @@ const CourseCard = ({ course }: { course: Course }) => {
                     <Button variant="secondary" onClick={() => setShowRatingModal(false)}>
                         Cancel
                     </Button>
-                    <Button
-                        variant="primary"
-                        onClick={() => {
-                            // TODO: Submit rating and comment here
-                            setShowRatingModal(false);
-                        }}
-                        disabled={rating === 0}
-                    >
+                    <Button variant="primary" onClick={handleSubmitRating} disabled={rating === 0 || isLoading}>
                         Submit
                     </Button>
                 </Modal.Footer>

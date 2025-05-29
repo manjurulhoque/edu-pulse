@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 const Star: React.FC<{
     star: number;
     textSize?: string;
     textColor?: string;
-}> = ({star, textSize, textColor}) => {
+}> = ({ star, textSize, textColor }) => {
     const [rating, setRating] = useState<string[]>([]);
 
     useEffect(() => {
@@ -27,6 +27,6 @@ const Star: React.FC<{
             ))}
         </>
     );
-}
+};
 
 export default Star;

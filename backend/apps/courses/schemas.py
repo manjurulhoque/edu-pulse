@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
 
@@ -12,7 +13,7 @@ class CourseSchema(BaseModel):
     actual_price: float
     discounted_price: float | None
     is_free: bool
-    preview_image: str | None
+    preview_image: Optional[str] = None
 
     class Config:
         # orm_mode = True

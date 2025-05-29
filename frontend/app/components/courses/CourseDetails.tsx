@@ -38,8 +38,8 @@ const CourseDetails = () => {
                 >
                     <Grid
                         visible={true}
-                        height="300"
-                        width="300"
+                        height="100"
+                        width="100"
                         color="#4fa94d"
                         ariaLabel="grid-loading"
                         radius="12.5"

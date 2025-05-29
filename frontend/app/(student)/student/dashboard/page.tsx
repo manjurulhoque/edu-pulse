@@ -2,7 +2,7 @@ import StudentDashboardHome from "@/app/components/dashboard/student/StudentDash
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Student Dashboard",
+    title: "Student Dashboard | EduPulse - Professional LMS Online Education Course",
     description: "Student Dashboard",
 };
 

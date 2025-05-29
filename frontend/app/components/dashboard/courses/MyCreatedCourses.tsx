@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
-import CoursesCardDashboard from "@/app/components/dashboard/courses/CoursesCardDashboard";
+import MyCreatedCourseCard from "@/app/components/dashboard/courses/MyCreatedCourseCard";
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Course } from "@/app/models/course.interface";
@@ -186,7 +186,7 @@ const MyCreatedCourses: React.FC = () => {
                                                     )}
                                                     {pageItems?.length > 0 &&
                                                         pageItems?.map((course: Course, i: any) => (
-                                                            <CoursesCardDashboard course={course} key={i} />
+                                                            <MyCreatedCourseCard course={course} key={i} />
                                                         ))}
                                                 </>
                                             )}

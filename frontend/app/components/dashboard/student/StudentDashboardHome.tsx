@@ -6,6 +6,7 @@ import { Grid } from "react-loader-spinner";
 import StatsCards from "@/app/components/dashboard/student/StatsCards";
 import EnrolledCourses from "@/app/components/dashboard/student/EnrolledCourses";
 import RecentActivity from "@/app/components/dashboard/student/RecentActivity";
+import { useGetEnrolledCoursesQuery } from "@/app/store/reducers/courses/api";
 
 // Fake data for demonstration
 const fakeEnrolledCourses = [
@@ -68,6 +69,16 @@ const fakeRecentActivity = [
 
 const StudentDashboardHome = () => {
     const [isLoading] = useState(false);
+    const {
+        data,
+        isLoading: isEnrolledCoursesLoading,
+        error,
+    } = useGetEnrolledCoursesQuery({
+        page: 1,
+        page_size: 3,
+    });
+
+    let courses = data?.results;
 
     return (
         <div className="dashboard__main">
@@ -100,8 +111,12 @@ const StudentDashboardHome = () => {
                         ) : (
                             <>
                                 <StatsCards stats={fakeStats} />
-                                <EnrolledCourses courses={fakeEnrolledCourses} />
-                                <RecentActivity activities={fakeRecentActivity} />
+                                <EnrolledCourses
+                                    courses={courses ?? []}
+                                    loading={isEnrolledCoursesLoading}
+                                    error={error}
+                                />
+                                {/* <RecentActivity activities={fakeRecentActivity} /> */}
                             </>
                         )}
                     </Container>

@@ -109,13 +109,15 @@ async def create_course(
 async def update_course(
     course_id: int,
     course_input: str = Form(...),
-    preview_image: Optional[UploadFile] = File(None),
+    preview_image: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: User = Depends(instructor_required),
 ):
     """
     Update course
     """
+    print(preview_image)
+    print(course_input)
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         return create_response(

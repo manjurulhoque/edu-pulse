@@ -1,16 +1,18 @@
 "use client";
 
 import React from "react";
-import {useState, useEffect} from "react";
-import {Button, Modal} from "react-bootstrap";
-import {usePublishCourseMutation} from "@/app/store/reducers/courses/api";
-import {toast} from "react-toastify";
-import {redirect} from "next/navigation";
+import { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { usePublishCourseMutation } from "@/app/store/reducers/courses/api";
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
 import { CourseStatus } from "@/app/enums/course.enum";
+import { getCourseImagePath } from "@/app/utils/image-path";
+import Image from "next/image";
 
-export default function CoursesCardDashboard({course}: { course: Course }) {
+export default function MyCreatedCourseCard({ course }: { course: Course }) {
     const [activeShare, setActiveShare] = useState(false);
     const [rating, setRating] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -22,14 +24,10 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
         // }
     }, []);
 
-    const getImageSrc = () => {
-        return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
-    }
-
     const onPublishCourse = async () => {
         const formData = new FormData();
         formData.append("course_id", JSON.stringify(course.id));
-        const result: any = await publishCourse(formData);
+        const result = await publishCourse(formData);
         if (result?.data) {
             toast.success("Course published successfully");
             redirect(`/instructor/dashboard/my-created-courses`);
@@ -37,7 +35,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
             toast.warning(result?.data?.message || "Something went wrong. Please try again later");
         }
         setShowModal(false);
-    }
+    };
 
     return (
         <>
@@ -47,20 +45,20 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                 </Modal.Header>
                 <Modal.Footer>
                     <Button onClick={() => onPublishCourse()}>Confirm</Button>
-                    <Button onClick={() => setShowModal(false)} variant={"secondary"}>Close</Button>
+                    <Button onClick={() => setShowModal(false)} variant={"secondary"}>
+                        Close
+                    </Button>
                 </Modal.Footer>
             </Modal>
-            <div className="w-1/5 xl:w-1/3 lg:w-1/2 sm:w-1/1">
-                <div className="relative">
-                    {/* <Image
-                        width={560}
-                        height={325}
-                        className="rounded-8 w-1/1"
-                        src={getImageSrc()}
+            <div className="w-1/4 xl:w-1/3 lg:w-1/2 sm:w-1/1">
+                <div className="relative" style={{ position: "relative", height: "200px" }}>
+                    <Image
+                        fill
+                        style={{ objectFit: "cover" }}
+                        src={getCourseImagePath(course)}
                         alt="image"
                         priority={true}
-                    /> */}
-                    <img src={getImageSrc()} alt="image" className="rounded-8 w-1/1" />
+                    />
 
                     <button
                         onClick={() => setActiveShare((pre) => !pre)}
@@ -73,9 +71,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                     </button>
 
                     <div
-                        className={`toggle-element -dshb-more js-more-1-toggle ${
-                            activeShare ? "-is-el-visible" : ""
-                        } `}
+                        className={`toggle-element -dshb-more js-more-1-toggle ${activeShare ? "-is-el-visible" : ""} `}
                     >
                         <div className="px-25 py-25 bg-white -dark-bg-dark-2 shadow-1 border-light rounded-8">
                             <Link
@@ -86,7 +82,10 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                                 <div className="text-17 lh-1 fw-500 ml-12">Edit</div>
                             </Link>
 
-                            <Link href={`/instructor/dashboard/edit-course/${course.slug}/curriculum`} className="d-flex items-center mt-20">
+                            <Link
+                                href={`/instructor/dashboard/edit-course/${course.slug}/curriculum`}
+                                className="d-flex items-center mt-20"
+                            >
                                 <div className="icon-bookmark"></div>
                                 <div className="text-17 lh-1 fw-500 ml-12">Edit Curriculum</div>
                             </Link>
@@ -96,15 +95,16 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                                 <div className="text-17 lh-1 fw-500 ml-12">Favorite</div>
                             </a>
 
-                            {
-                                course.status !== CourseStatus.PUBLISHED && (
-                                    <a href="javascript:void(0)" className="d-flex items-center mt-20"
-                                       onClick={() => setShowModal(true)}>
-                                        <div className="icon-access"></div>
-                                        <div className="text-17 lh-1 fw-500 ml-12">Publish</div>
-                                    </a>
-                                )
-                            }
+                            {course.status !== CourseStatus.PUBLISHED && (
+                                <a
+                                    href="javascript:void(0)"
+                                    className="d-flex items-center mt-20"
+                                    onClick={() => setShowModal(true)}
+                                >
+                                    <div className="icon-access"></div>
+                                    <div className="text-17 lh-1 fw-500 ml-12">Publish</div>
+                                </a>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -114,9 +114,7 @@ export default function CoursesCardDashboard({course}: { course: Course }) {
                         <div className="text-14 lh-1">Me</div>
 
                         <div className="d-flex items-center">
-                            <div className="text-14 lh-1 text-yellow-1 mr-10">
-                                5
-                            </div>
+                            <div className="text-14 lh-1 text-yellow-1 mr-10">5</div>
                             <div className="d-flex x-gap-5 items-center">
                                 {rating.map((itm, i) => (
                                     <div key={i} className="icon-star text-9 text-yellow-1"></div>

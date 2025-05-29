@@ -58,7 +58,7 @@ export const CourseApi = createApi({
         updateCourse: builder.mutation({
             query: ({ id, formData }) => {
                 return {
-                    url: `update-course/${id}/`,
+                    url: `update-course/${id}`,
                     method: "PUT",
                     body: formData,
                 };

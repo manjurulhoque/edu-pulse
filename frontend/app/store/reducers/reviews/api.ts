@@ -14,7 +14,41 @@ export const ReviewApi = createApi({
                 url: `reviews/courses/${courseId}`,
             }),
         }),
+        createReview: builder.mutation<
+            Response<CourseReview>,
+            { courseId: number; review: { rating: number; comment?: string } }
+        >({
+            query: ({ courseId, review }) => ({
+                url: `reviews/courses/${courseId}`,
+                method: "POST",
+                body: review,
+            }),
+        }),
+        getMyReviewForCourse: builder.query<Response<CourseReview>, { courseId: number }>({
+            query: ({ courseId }) => ({
+                url: `reviews/courses/${courseId}/my-review`,
+            }),
+        }),
+        getAverageRatingForCourse: builder.query<Response<number>, { courseId: number }>({
+            query: ({ courseId }) => ({
+                url: `reviews/courses/${courseId}/average-rating`,
+            }),
+        }),
+        getRatingDistributionForCourse: builder.query<
+            Response<{ distribution: { [key: string]: number }; total_reviews: number }>,
+            { courseId: number }
+        >({
+            query: ({ courseId }) => ({
+                url: `reviews/courses/${courseId}/rating-distribution`,
+            }),
+        }),
     }),
 });
 
-export const { useGetReviewsForCourseQuery } = ReviewApi;
+export const {
+    useGetReviewsForCourseQuery,
+    useCreateReviewMutation,
+    useGetMyReviewForCourseQuery,
+    useGetAverageRatingForCourseQuery,
+    useGetRatingDistributionForCourseQuery,
+} = ReviewApi;
