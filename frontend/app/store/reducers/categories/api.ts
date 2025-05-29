@@ -11,7 +11,7 @@ export const CategoryApi = createApi({
         categories: builder.query<Category[], null>({
             query: () => {
                 return {
-                    url: `categories/`,
+                    url: `categories`,
                 };
             },
             providesTags: ["Category"],

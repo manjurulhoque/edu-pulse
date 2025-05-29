@@ -16,7 +16,11 @@ const MyCreatedCourses: React.FC = () => {
     const [activeTab, setActiveTab] = useState(1);
     const [pageData, setPageData] = useState<Course[]>([]);
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
-    const { data: courses, isLoading: isCoursesLoading } = useMyCreatedCoursesQuery(null);
+    const { data: coursesResponse, isLoading: isCoursesLoading } = useMyCreatedCoursesQuery({
+        page: 1,
+        page_size: 8,
+    });
+    const courses = coursesResponse?.results;
 
     useEffect(() => {
         if (courses) {
@@ -27,7 +31,7 @@ const MyCreatedCourses: React.FC = () => {
                 setPageData([...(courses ?? [])?.filter((course: Course) => course.status !== CourseStatus.PUBLISHED)]);
             }
         }
-    }, [activeTab, courses]);
+    }, [activeTab, coursesResponse]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();

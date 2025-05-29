@@ -33,17 +33,14 @@ export const CourseApi = createApi({
                 return data;
             },
         }),
-        myCreatedCourses: builder.query<Course[], null>({
-            query: () => {
+        myCreatedCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
+            query: ({ page, page_size }) => {
                 return {
                     url: "my-created-courses",
+                    params: { page, page_size },
                 };
             },
             providesTags: ["Course"],
-            transformResponse: (rawResult: { data: Course[]; message: string }, meta) => {
-                const { data } = rawResult;
-                return data;
-            },
         }),
         createCourse: builder.mutation({
             query: (formData) => {

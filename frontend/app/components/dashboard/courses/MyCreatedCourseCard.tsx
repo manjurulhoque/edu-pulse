@@ -11,6 +11,7 @@ import { Course } from "@/app/models/course.interface";
 import { CourseStatus } from "@/app/enums/course.enum";
 import { getCourseImagePath } from "@/app/utils/image-path";
 import Image from "next/image";
+import StarRating from "../../common/StarRating";
 
 export default function MyCreatedCourseCard({ course }: { course: Course }) {
     const [activeShare, setActiveShare] = useState(false);
@@ -116,9 +117,10 @@ export default function MyCreatedCourseCard({ course }: { course: Course }) {
                         <div className="d-flex items-center">
                             <div className="text-14 lh-1 text-yellow-1 mr-10">5</div>
                             <div className="d-flex x-gap-5 items-center">
-                                {rating.map((itm, i) => (
+                                {/* {rating.map((itm, i) => (
                                     <div key={i} className="icon-star text-9 text-yellow-1"></div>
-                                ))}
+                                ))} */}
+                                <StarRating />
                             </div>
                         </div>
                     </div>

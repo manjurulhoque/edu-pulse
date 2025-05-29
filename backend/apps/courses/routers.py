@@ -47,15 +47,23 @@ async def all_courses(
         .limit(params["page_size"])
         .all()
     )
-    
+
     # Add lessons count for each course
     for course in courses:
         try:
             # Safely remove password if it exists
-            if course.user and hasattr(course.user, "password") and course.user.password:
+            if (
+                course.user
+                and hasattr(course.user, "password")
+                and course.user.password
+            ):
                 delattr(course.user, "password")
             # Count total lessons in the course
-            course.lessons_count = db.query(Lesson).filter(Lesson.course_id == course.id, Lesson.is_published == True).count()
+            course.lessons_count = (
+                db.query(Lesson)
+                .filter(Lesson.course_id == course.id, Lesson.is_published == True)
+                .count()
+            )
         except Exception as e:
             print(e)
             pass
@@ -116,8 +124,6 @@ async def update_course(
     """
     Update course
     """
-    print(preview_image)
-    print(course_input)
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         return create_response(
@@ -170,12 +176,29 @@ async def update_course(
 def my_created_courses(
     db: Session = Depends(get_db),
     current_user: User = Depends(instructor_required),
+    params: dict = Depends(common_parameters),
 ):
     """
     Get all courses created by the current user
     """
-    courses = db.query(Course).filter(Course.user_id == current_user.id).all()
-    return create_response(data=courses)
+    page = params.get("page", 1)
+    page_size = params.get("page_size", 8)
+    skip = (page - 1) * page_size
+    total = db.query(Course).filter(Course.user_id == current_user.id).count()
+    courses = (
+        db.query(Course)
+        .filter(Course.user_id == current_user.id)
+        .offset(skip)
+        .limit(page_size)
+        .all()
+    )
+    return create_paginated_response(
+        data=courses,
+        total=total,
+        page=page,
+        page_size=page_size,
+        path="/my-created-courses",
+    )
 
 
 @router.post("/publish-course", summary="Publish course")
