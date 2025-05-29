@@ -17,6 +17,13 @@ export const LessonApi = createApi({
         getLastAccessedLesson: builder.query<Response<Lesson>, { slug: string }>({
             query: ({ slug }) => `/lessons/last-accessed/${slug}`,
         }),
+        markLessonAsStarted: builder.mutation<Response<Lesson>, { lesson_id: number }>({
+            query: ({ lesson_id }) => ({
+                url: `/enrollments/mark-lesson-as-started`,
+                method: "POST",
+                body: { lesson_id },
+            }),
+        }),
         markLessonAsCompleted: builder.mutation<Response<Lesson>, { lesson_id: number }>({
             query: ({ lesson_id }) => ({
                 url: `/enrollments/mark-lesson-as-completed`,

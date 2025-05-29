@@ -31,6 +31,7 @@ class LessonCompletion(Base):
     enrollment_id = Column(Integer, ForeignKey("enrollments.id"))
     lesson_id = Column(Integer, ForeignKey("lessons.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
+    is_completed = Column(Boolean, default=False)
     completed_at = Column(DateTime)
     time_spent = Column(Integer)
 
