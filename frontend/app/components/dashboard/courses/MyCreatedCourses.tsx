@@ -2,14 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import { useQueryState, parseAsBoolean } from "nuqs";
-import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import MyCreatedCourseCard from "@/app/components/dashboard/courses/MyCreatedCourseCard";
 import { useMyCreatedCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Course } from "@/app/models/course.interface";
 import { CourseStatus } from "@/app/enums/course.enum";
+import Pagination from "@/app/components/common/Pagination";
 
 const MyCreatedCourses: React.FC = () => {
+    const [pageNumber, setPageNumber] = useState(1);
     const [isPublished, setIsPublished] = useQueryState("is_published", parseAsBoolean.withDefault(true));
     const [currentCategory, setCurrentCategory] = useState<number>(0);
     const [pageItems, setPageItems] = useState<Course[]>([]);
@@ -17,7 +18,7 @@ const MyCreatedCourses: React.FC = () => {
     const [pageData, setPageData] = useState<Course[]>([]);
     const { data: categories, isLoading: isCategoriesLoading } = useCategoriesQuery(null);
     const { data: coursesResponse, isLoading: isCoursesLoading } = useMyCreatedCoursesQuery({
-        page: 1,
+        page: pageNumber,
         page_size: 8,
     });
     const courses = coursesResponse?.results;
@@ -197,7 +198,13 @@ const MyCreatedCourses: React.FC = () => {
                                         </div>
 
                                         <div className="row justify-center pt-30">
-                                            <div className="col-auto">{/*<Pagination/>*/}</div>
+                                            <div className="col-auto">
+                                                <Pagination
+                                                    pageNumber={pageNumber}
+                                                    setPageNumber={setPageNumber}
+                                                    data={coursesResponse as any}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -206,8 +213,6 @@ const MyCreatedCourses: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            <FooterDashboard />
         </div>
     );
 };

@@ -14,7 +14,7 @@ from utils.response_utils import create_response
 router = APIRouter()
 
 
-@router.get("/categories/", response_model=List[CategorySchema])
+@router.get("/categories", response_model=List[CategorySchema])
 def get_categories(db: Session = Depends(get_db)):
     categories = db.query(Category).all()
     category_schemas = [
@@ -26,7 +26,7 @@ def get_categories(db: Session = Depends(get_db)):
     )
 
 
-@router.post("/categories/")
+@router.post("/categories")
 def create_category(
     category_data: CategorySchema,  # Include the category data in the request
     db: Session = Depends(get_db),
