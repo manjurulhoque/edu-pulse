@@ -13,6 +13,7 @@ export interface LessonCompletion {
     lesson_id: number;
     user_id: number;
     enrollment_id: number;
+    is_completed: boolean;
     completed_at: string;
     time_spent: number;
 }

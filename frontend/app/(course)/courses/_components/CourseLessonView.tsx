@@ -36,7 +36,7 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     const [key, setKey] = useState("overview");
     const [showShare, setShowShare] = useState(false);
     const [shareUrl, setShareUrl] = useState("");
-    const [completed, setCompleted] = useState(!!lesson.lesson_completion);
+    const [completed, setCompleted] = useState(lesson.lesson_completion?.is_completed || false);
     const [markLessonAsCompleted] = useMarkLessonAsCompletedMutation();
     const [markLessonAsIncomplete] = useMarkLessonAsIncompleteMutation();
 

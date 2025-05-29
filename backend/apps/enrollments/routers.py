@@ -61,6 +61,7 @@ async def mark_lesson_as_started(
     )
     db.add(lesson_completion)
     db.commit()
+    db.refresh(lesson_completion)
     return create_response(data=lesson_completion, status_code=status.HTTP_201_CREATED)
 
 
@@ -122,7 +123,8 @@ async def mark_lesson_as_completed(
     lesson_completion.time_spent = 0
     db.add(lesson_completion)
     db.commit()
-    return create_response(data=lesson_completion, status_code=status.HTTP_201_CREATED)
+    db.refresh(lesson_completion)
+    return create_response(data=lesson_completion, status_code=status.HTTP_200_OK)
 
 
 @router.post("/mark-lesson-as-incomplete")
@@ -182,4 +184,5 @@ async def mark_lesson_as_incomplete(
     lesson_completion.time_spent = 0
     db.add(lesson_completion)
     db.commit()
+    db.refresh(lesson_completion)
     return create_response(data=lesson, status_code=status.HTTP_200_OK)

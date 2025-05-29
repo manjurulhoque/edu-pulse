@@ -1,5 +1,5 @@
 import { getCourseDetails } from "@/app/actions/getSingleCourse";
-import { getCourseLessons, getLesson } from "@/app/actions/lessonInfo";
+import { getCourseLessons, getLesson, markLessonAsStarted } from "@/app/actions/lessonInfo";
 import LessonSidebar from "@/app/(course)/courses/_components/LessonSidebar";
 import { notFound } from "next/navigation";
 import CourseLessonView from "@/app/(course)/courses/_components/CourseLessonView";
@@ -26,11 +26,17 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
         lessonsResult.status === "rejected" ||
         lessonResult.status === "rejected"
     ) {
-        return notFound();
+        notFound();
     }
     const course = courseResult.value || null;
     const lessons = lessonsResult.value?.data || [];
-    const lesson = lessonResult.value?.data || null;
+    let lesson = lessonResult.value?.data || null;
+    if (!lesson?.lesson_completion) {
+        const result = await markLessonAsStarted(params.lessonId);
+        if (result) {
+            lesson = { ...lesson, lesson_completion: result?.data };
+        }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
