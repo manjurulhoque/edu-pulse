@@ -34,6 +34,7 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     const [key, setKey] = useState("overview");
     const [showShare, setShowShare] = useState(false);
     const [shareUrl, setShareUrl] = useState("");
+    const [completed, setCompleted] = useState(lesson.is_completed || false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -100,6 +101,17 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
                 </div>
             </div>
 
+            <div className="d-flex justify-content-end align-items-center mb-2" style={{ gap: "0.5rem" }}>
+                <button className="btn btn-success" disabled={completed} onClick={() => setCompleted(true)}>
+                    {completed ? (
+                        <>
+                            <span className="me-2">&#10003;</span> Lesson Completed
+                        </>
+                    ) : (
+                        <>Mark as Complete</>
+                    )}
+                </button>
+            </div>
             <div className={styles.contentCard}>
                 <Tab.Container activeKey={key} onSelect={(k) => setKey(k || "overview")}>
                     <Nav variant="tabs" className="border-0">
