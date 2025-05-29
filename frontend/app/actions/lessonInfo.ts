@@ -4,7 +4,9 @@ import { store } from "../store";
 import { LessonApi } from "../store/reducers/lessons/api";
 
 export async function getLastAccessedLesson(slug: string) {
-    const result = await store.dispatch(LessonApi.endpoints.getLastAccessedLesson.initiate({ slug }));
+    const result = await store.dispatch(LessonApi.endpoints.getLastAccessedLesson.initiate({ slug }, {
+        forceRefetch: true,
+    }));
     if ("error" in result) {
         return null;
     }
@@ -12,7 +14,11 @@ export async function getLastAccessedLesson(slug: string) {
 }
 
 export async function getLesson(lesson_id: number) {
-    const result = await store.dispatch(LessonApi.endpoints.getLesson.initiate({ lesson_id }));
+    const result = await store.dispatch(
+        LessonApi.endpoints.getLesson.initiate({ lesson_id }, {
+            forceRefetch: true,
+        }),
+    );
     if ("error" in result) {
         return null;
     }
@@ -20,7 +26,9 @@ export async function getLesson(lesson_id: number) {
 }
 
 export async function getCourseLessons(slug: string) {
-    const result = await store.dispatch(LessonApi.endpoints.getCourseLessons.initiate({ slug }));
+    const result = await store.dispatch(LessonApi.endpoints.getCourseLessons.initiate({ slug }, {
+        forceRefetch: true,
+    }));
     if ("error" in result) {
         return null;
     }

@@ -7,6 +7,7 @@ export const LessonApi = createApi({
     baseQuery: DynamicBaseQuery,
     reducerPath: "lesson",
     tagTypes: ["Lesson", "LastAccessedLesson"],
+    keepUnusedDataFor: 0,
     endpoints: (builder) => ({
         getCourseLessons: builder.query<Response<Lesson[]>, { slug: string }>({
             query: ({ slug }) => `/lessons/course/${slug}`,

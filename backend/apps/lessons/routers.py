@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from conf.database import get_db
 from apps.lessons.models import Lesson
-from apps.enrollments.models import LessonCompletion
+from apps.enrollments.models import LessonCompletion, Enrollment
 from apps.courses.models import Course, CourseStatus
 from apps.users.models import User
 from apps.core.decorators import auth_required
@@ -82,9 +82,27 @@ async def get_lesson(
             status_code=status.HTTP_404_NOT_FOUND,
             message="Lesson not found",
         )
+    enrollment = (
+        db.query(Enrollment)
+        .filter(
+            Enrollment.user_id == current_user.id,
+            Enrollment.course_id == lesson.course_id,
+        )
+        .first()
+    )
+    if not enrollment:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Enrollment not found",
+        )
     lesson.lesson_completion = (
         db.query(LessonCompletion)
-        .filter(LessonCompletion.lesson_id == lesson.id, LessonCompletion.user_id == current_user.id)
+        .filter(
+            LessonCompletion.lesson_id == lesson.id,
+            LessonCompletion.user_id == current_user.id,
+            LessonCompletion.enrollment_id == enrollment.id,
+        )
         .first()
     )
     return create_response(data=lesson)

@@ -51,6 +51,20 @@ async def mark_lesson_as_started(
             status_code=status.HTTP_404_NOT_FOUND,
             message="Enrollment not found",
         )
+    existing_lesson_completion = (
+        db.query(enrollment_models.LessonCompletion)
+        .filter(
+            enrollment_models.LessonCompletion.lesson_id == lesson_id,
+            enrollment_models.LessonCompletion.user_id == current_user.id,
+            enrollment_models.LessonCompletion.enrollment_id == enrollment.id,
+        )
+        .first()
+    )
+    if existing_lesson_completion:
+        return create_response(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            message="Lesson already started",
+        )
     lesson_completion = enrollment_models.LessonCompletion(
         lesson_id=lesson_id,
         user_id=current_user.id,
@@ -110,6 +124,7 @@ async def mark_lesson_as_completed(
         .filter(
             enrollment_models.LessonCompletion.lesson_id == lesson_id,
             enrollment_models.LessonCompletion.user_id == current_user.id,
+            enrollment_models.LessonCompletion.enrollment_id == enrollment.id,
         )
         .first()
     )
@@ -171,6 +186,7 @@ async def mark_lesson_as_incomplete(
         .filter(
             enrollment_models.LessonCompletion.lesson_id == lesson_id,
             enrollment_models.LessonCompletion.user_id == current_user.id,
+            enrollment_models.LessonCompletion.enrollment_id == enrollment.id,
         )
         .first()
     )

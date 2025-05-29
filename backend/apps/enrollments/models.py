@@ -1,4 +1,12 @@
-from sqlalchemy import Column, Integer, ForeignKey, Boolean, DateTime, func
+from sqlalchemy import (
+    Column,
+    Integer,
+    ForeignKey,
+    Boolean,
+    DateTime,
+    func,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import relationship
 from conf.database import Base
 
@@ -26,6 +34,9 @@ class Enrollment(Base):
 
 class LessonCompletion(Base):
     __tablename__ = "lesson_completions"
+    __table_args__ = (
+        UniqueConstraint("enrollment_id", "lesson_id", name="uix_enrollment_lesson"),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     enrollment_id = Column(Integer, ForeignKey("enrollments.id"))
