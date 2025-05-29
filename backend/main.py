@@ -23,6 +23,7 @@ from apps.wishlist import routers as wishlist_routers
 from utils.response_utils import create_response
 from apps.cart import routers as cart_routers
 from apps.lessons import routers as lesson_routers
+from apps.enrollments import routers as enrollment_routers
 from apps.core import admin_routers
 
 load_dotenv()
@@ -107,3 +108,6 @@ app.include_router(checkout_routers.router, tags=["checkout"])
 app.include_router(admin_routers.admin_router, tags=["admin"])
 app.include_router(wishlist_routers.router, prefix="/wishlist", tags=["wishlist"])
 app.include_router(lesson_routers.router, prefix="/lessons", tags=["lessons"])
+app.include_router(
+    enrollment_routers.router, prefix="/enrollments", tags=["enrollments"]
+)

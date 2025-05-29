@@ -12,7 +12,7 @@ from utils.response_utils import create_response
 router = APIRouter()
 
 
-@router.post("/enrollments/mark-lesson-as-completed")
+@router.post("/mark-lesson-as-completed")
 async def mark_lesson_as_completed(
     request: Request,
     db: Session = Depends(get_db),
@@ -61,10 +61,10 @@ async def mark_lesson_as_completed(
     )
     db.add(lesson_completion)
     db.commit()
-    return create_response(data=lesson)
+    return create_response(data=lesson_completion, status_code=status.HTTP_201_CREATED)
 
 
-@router.post("/enrollments/mark-lesson-as-incomplete")
+@router.post("/mark-lesson-as-incomplete")
 async def mark_lesson_as_incomplete(
     request: Request,
     db: Session = Depends(get_db),
@@ -118,4 +118,4 @@ async def mark_lesson_as_incomplete(
         )
     db.delete(lesson_completion)
     db.commit()
-    return create_response(data=lesson)
+    return create_response(data=lesson, status_code=status.HTTP_200_OK)

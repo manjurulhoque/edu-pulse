@@ -1,5 +1,5 @@
 export interface Lesson {
-    id?: number | null | undefined;
+    id: number;
     title: string;
     url: string;
     content: string;
@@ -9,7 +9,7 @@ export interface Lesson {
 }
 
 export interface LessonCompletion {
-    id?: number | null | undefined;
+    id: number;
     lesson_id: number;
     user_id: number;
     enrollment_id: number;

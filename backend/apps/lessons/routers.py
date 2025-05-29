@@ -82,6 +82,11 @@ async def get_lesson(
             status_code=status.HTTP_404_NOT_FOUND,
             message="Lesson not found",
         )
+    lesson.lesson_completion = (
+        db.query(LessonCompletion)
+        .filter(LessonCompletion.lesson_id == lesson.id, LessonCompletion.user_id == current_user.id)
+        .first()
+    )
     return create_response(data=lesson)
 
 

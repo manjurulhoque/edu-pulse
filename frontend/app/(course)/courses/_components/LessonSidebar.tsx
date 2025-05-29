@@ -26,14 +26,14 @@ export default function LessonSidebar({ course, lessons, currentLessonId }: Less
                         className={`${styles.lessonItem} ${lesson.id === currentLessonId ? styles.active : ""}`}
                     >
                         <div className={styles.lessonContent}>
-                            {lesson.is_completed ? (
+                            {lesson.lesson_completion ? (
                                 <CheckCircle2 className="text-success" size={18} />
                             ) : (
                                 <Circle className="text-muted" size={18} />
                             )}
                             <span className={styles.lessonTitle}>{lesson.title}</span>
                         </div>
-                        {lesson.duration && <span className={styles.duration}>{lesson.duration}</span>}
+                        {/* {lesson.duration && <span className={styles.duration}>{lesson.duration}</span>} */}
                     </Link>
                 ))}
             </div>

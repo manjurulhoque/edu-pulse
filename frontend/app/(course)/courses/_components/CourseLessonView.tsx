@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import styles from "./CourseLessonView.module.css";
 import ShareModal from "./ShareModal";
+import { useMarkLessonAsCompletedMutation, useMarkLessonAsIncompleteMutation } from "@/app/store/reducers/lessons/api";
+import { toast } from "react-toastify";
 
 interface CourseLessonViewProps {
     lesson: Lesson;
@@ -35,6 +37,8 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     const [showShare, setShowShare] = useState(false);
     const [shareUrl, setShareUrl] = useState("");
     const [completed, setCompleted] = useState(!!lesson.lesson_completion);
+    const [markLessonAsCompleted] = useMarkLessonAsCompletedMutation();
+    const [markLessonAsIncomplete] = useMarkLessonAsIncompleteMutation();
 
     useEffect(() => {
         setIsMounted(true);
@@ -46,6 +50,26 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     if (!isMounted) {
         return null;
     }
+
+    const handleMarkLessonAsCompleted = () => {
+        try {
+            markLessonAsCompleted({ lesson_id: lesson.id });
+            setCompleted(true);
+            toast.success("Lesson marked as completed");
+        } catch (error) {
+            toast.error("Failed to mark lesson as completed");
+        }
+    };
+
+    const handleMarkLessonAsIncomplete = () => {
+        try {
+            markLessonAsIncomplete({ lesson_id: lesson.id });
+            setCompleted(false);
+            toast.success("Lesson marked as incomplete");
+        } catch (error) {
+            toast.error("Failed to mark lesson as incomplete");
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -102,7 +126,10 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
             </div>
 
             <div className="d-flex justify-content-end align-items-center mb-2" style={{ gap: "0.5rem" }}>
-                <button className="btn btn-success" disabled={completed} onClick={() => setCompleted(true)}>
+                <button
+                    className="btn btn-success"
+                    onClick={completed ? handleMarkLessonAsIncomplete : handleMarkLessonAsCompleted}
+                >
                     {completed ? (
                         <>
                             <span className="me-2">&#10003;</span> Lesson Completed
