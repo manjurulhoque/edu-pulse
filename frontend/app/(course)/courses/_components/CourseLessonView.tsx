@@ -16,17 +16,30 @@ import {
     ArrowLeft,
 } from "lucide-react";
 import styles from "./CourseLessonView.module.css";
+import ShareModal from "./ShareModal";
 
 interface CourseLessonViewProps {
     lesson: Lesson;
 }
 
+const getShareUrl = () => {
+    if (typeof window !== "undefined") {
+        return window.location.href;
+    }
+    return "";
+};
+
 const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     const [isMounted, setIsMounted] = useState(false);
     const [key, setKey] = useState("overview");
+    const [showShare, setShowShare] = useState(false);
+    const [shareUrl, setShareUrl] = useState("");
 
     useEffect(() => {
         setIsMounted(true);
+        if (typeof window !== "undefined") {
+            setShareUrl(window.location.href);
+        }
     }, []);
 
     if (!isMounted) {
@@ -41,6 +54,10 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
                     <button className={`${styles.actionButton} ${styles.primary}`}>
                         <ArrowLeft size={18} />
                         Back to Course
+                    </button>
+                    <button className={styles.actionButton} onClick={() => setShowShare(true)}>
+                        <Share2 size={20} />
+                        Share
                     </button>
                     <Dropdown>
                         <Dropdown.Toggle as="div" className={styles.actionButton}>
@@ -68,6 +85,8 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
                     </Dropdown>
                 </div>
             </div>
+
+            <ShareModal show={showShare} onHide={() => setShowShare(false)} shareUrl={shareUrl} />
 
             <div className={styles.videoContainer}>
                 <div className="ratio ratio-16x9">
