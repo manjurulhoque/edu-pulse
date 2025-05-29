@@ -34,7 +34,7 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
     const [key, setKey] = useState("overview");
     const [showShare, setShowShare] = useState(false);
     const [shareUrl, setShareUrl] = useState("");
-    const [completed, setCompleted] = useState(lesson.is_completed || false);
+    const [completed, setCompleted] = useState(!!lesson.lesson_completion);
 
     useEffect(() => {
         setIsMounted(true);
@@ -137,7 +137,7 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
 
                     <Tab.Content className={styles.tabContent}>
                         <Tab.Pane eventKey="overview">
-                            <p className="text-secondary">{lesson.description || lesson.content}</p>
+                            <p className="text-secondary">{lesson.content}</p>
                         </Tab.Pane>
                         <Tab.Pane eventKey="qa">
                             <div className="text-center text-muted py-5">
@@ -146,28 +146,10 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
                             </div>
                         </Tab.Pane>
                         <Tab.Pane eventKey="resources">
-                            {lesson.resources && lesson.resources.length > 0 ? (
-                                <ul className="list-group">
-                                    {lesson.resources.map((resource, index) => (
-                                        <li key={index} className="list-group-item">
-                                            <a
-                                                href={resource}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="d-flex align-items-center gap-2"
-                                            >
-                                                <LinkIcon size={18} />
-                                                Resource {index + 1}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div className="text-center text-muted py-5">
-                                    <h5>No resources available</h5>
-                                    <p>Check back later for additional materials</p>
-                                </div>
-                            )}
+                            <div className="text-center text-muted py-5">
+                                <h5>No resources available</h5>
+                                <p>Check back later for additional materials</p>
+                            </div>
                         </Tab.Pane>
                     </Tab.Content>
                 </Tab.Container>

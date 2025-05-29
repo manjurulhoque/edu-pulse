@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from conf.database import get_db
 from apps.lessons.models import Lesson
+from apps.enrollments.models import LessonCompletion
 from apps.courses.models import Course, CourseStatus
 from apps.users.models import User
 from apps.core.decorators import auth_required
@@ -26,7 +27,11 @@ async def get_course_lessons(
     Returns:
         The lessons for the course
     """
-    course = db.query(Course).filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED).first()
+    course = (
+        db.query(Course)
+        .filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED)
+        .first()
+    )
     if not course:
         return create_response(
             data=None,
@@ -39,6 +44,15 @@ async def get_course_lessons(
         .filter(Lesson.course_id == course_id, Lesson.is_published == True)
         .all()
     )
+    for lesson in lessons:
+        lesson.lesson_completion = (
+            db.query(LessonCompletion)
+            .filter(
+                LessonCompletion.lesson_id == lesson.id,
+                LessonCompletion.user_id == current_user.id,
+            )
+            .first()
+        )
     return create_response(data=lessons)
 
 
@@ -86,7 +100,11 @@ async def get_last_accessed_lesson(
     Returns:
         The last accessed lesson for the course
     """
-    course = db.query(Course).filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED).first()
+    course = (
+        db.query(Course)
+        .filter(Course.slug == slug, Course.status == CourseStatus.PUBLISHED)
+        .first()
+    )
     if not course:
         return create_response(
             data=None,

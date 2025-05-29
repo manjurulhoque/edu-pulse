@@ -5,8 +5,14 @@ export interface Lesson {
     content: string;
     is_free: boolean;
     is_published: boolean;
-    duration?: string; // Duration in format "HH:MM:SS"
-    is_completed?: boolean;
-    description?: string;
-    resources?: string[];
+    lesson_completion?: LessonCompletion | null;
+}
+
+export interface LessonCompletion {
+    id?: number | null | undefined;
+    lesson_id: number;
+    user_id: number;
+    enrollment_id: number;
+    completed_at: string;
+    time_spent: number;
 }
