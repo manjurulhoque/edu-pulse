@@ -192,6 +192,7 @@ def my_created_courses(
     courses = (
         db.query(Course)
         .filter(Course.user_id == current_user.id)
+        .order_by(Course.updated_at.desc())
         .offset(skip)
         .limit(page_size)
         .all()
