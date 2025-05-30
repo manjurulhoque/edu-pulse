@@ -9,6 +9,7 @@ import HomeCourseCard from "./HomeCourseCard";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import { Course } from "@/app/models/course.interface";
+import CourseCardSkeleton from "../skeleton/CourseCardSkeleton";
 
 export default function HomeCourses() {
     const [pageItems, setPageItems] = useState<Course[]>([]);
@@ -201,12 +202,10 @@ export default function HomeCourses() {
                 </div>
 
                 {isCourseLoading && (
-                    <div className="row justify-center pt-60 lg:pt-40">
-                        <div className="col-auto">
-                            <div className="spinner-border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
+                    <div className="row y-gap-30 justify-start pt-50">
+                        {[...Array(8)].map((_, i) => (
+                            <CourseCardSkeleton key={i} />
+                        ))}
                     </div>
                 )}
 

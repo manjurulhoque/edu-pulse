@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useMeQuery, useUpdateProfileMutation } from "@/app/store/reducers/user/api";
 import { User } from "@/app/models/user.interface";
 import { toast } from "react-toastify";
-import UserProfileSkeleton from "./UserProfileSkeleton";
+import UserProfileSkeleton from "../skeleton/UserProfileSkeleton";
 
 const UserProfile = () => {
     const [formData, setFormData] = useState<
