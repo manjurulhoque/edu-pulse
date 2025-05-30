@@ -12,7 +12,7 @@ export const UserApi = createApi({
         }),
         updateProfile: builder.mutation<
             User,
-            Omit<User, "id" | "created_at" | "is_admin" | "is_instructor" | "is_active">
+            Omit<User, "id" | "created_at" | "is_admin" | "is_instructor" | "is_active" | "username">
         >({
             query: (data) => ({
                 url: "/users/profile",

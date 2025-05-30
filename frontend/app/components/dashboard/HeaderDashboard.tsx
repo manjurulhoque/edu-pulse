@@ -181,7 +181,7 @@ const HeaderDashboard: React.FC = () => {
                                             width={50}
                                             height={50}
                                             className="size-50"
-                                            src="/assets/img/misc/user-profile.png"
+                                            src="/assets/img/avatars/anonymous_user.webp"
                                             alt="image"
                                         />
                                     </a>

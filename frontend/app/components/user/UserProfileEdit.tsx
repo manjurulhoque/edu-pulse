@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 import { useMeQuery, useUpdateProfileMutation } from "@/app/store/reducers/user/api";
 import { User } from "@/app/models/user.interface";
 import { toast } from "react-toastify";
+import UserProfileSkeleton from "./UserProfileSkeleton";
 
 const UserProfile = () => {
     const [formData, setFormData] = useState<
-        Omit<User, "id" | "created_at" | "is_admin" | "is_instructor" | "is_active">
+        Omit<User, "id" | "created_at" | "is_admin" | "is_instructor" | "is_active" | "username">
     >({
         name: "",
         email: "",
@@ -55,13 +56,14 @@ const UserProfile = () => {
 
     if (isLoadingUser) {
         return (
-            <Container style={{ marginTop: "100px" }}>
-                <div className="d-flex justify-content-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-            </Container>
+            // <Container style={{ marginTop: "100px" }}>
+            //     <div className="d-flex justify-content-center">
+            //         <div className="spinner-border" role="status">
+            //             <span className="visually-hidden">Loading...</span>
+            //         </div>
+            //     </div>
+            // </Container>
+            <UserProfileSkeleton />
         );
     }
 
