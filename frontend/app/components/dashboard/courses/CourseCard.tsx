@@ -9,6 +9,7 @@ import { useState, useRef } from "react";
 import { Course } from "@/app/models/course.interface";
 import { useCreateReviewMutation, useGetMyReviewForCourseQuery } from "@/app/store/reducers/reviews/api";
 import { toast } from "react-toastify";
+import { useGetCourseProgressQuery } from "@/app/store/reducers/courses/api";
 
 const CourseCard = ({ course }: { course: Course }) => {
     const [openMenuId, setOpenMenuId] = useState<null | number>(null);
@@ -17,9 +18,11 @@ const CourseCard = ({ course }: { course: Course }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
     const [createReview, { isLoading }] = useCreateReviewMutation();
+    const { data: courseProgressResponse, isLoading: isCourseProgressLoading } = useGetCourseProgressQuery({ course_id: course.id });
     const { data: myReview, isLoading: isMyReviewLoading, refetch: refetchMyReview } = useGetMyReviewForCourseQuery({ courseId: course.id });
     const isMyReview = myReview?.data;
     const { rating: myReviewRating = 0 } = isMyReview || {};
+    const courseProgress = courseProgressResponse?.data || 0;
 
     const handleRatingClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -178,13 +181,13 @@ const CourseCard = ({ course }: { course: Course }) => {
                             <div
                                 className="progress-bar"
                                 role="progressbar"
-                                style={{ width: `${0}%` }}
+                                style={{ width: `${courseProgress}%` }}
                                 aria-valuenow={0}
                                 aria-valuemin={0}
                                 aria-valuemax={100}
                             />
                         </div>
-                        <div style={{ fontSize: 13, marginBottom: 8 }}>0% complete</div>
+                        <div style={{ fontSize: 13, marginBottom: 8 }}>{courseProgress}% complete</div>
                         <div
                             style={{ display: "flex", alignItems: "center", gap: 4 }}
                             onClick={isMyReview ? undefined : handleRatingClick}

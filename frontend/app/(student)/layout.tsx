@@ -1,6 +1,7 @@
 import "../globals.css";
 import "../../public/assets/sass/styles.scss";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 import { permanentRedirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -48,6 +49,7 @@ const DashboardLayout: React.FC<Props> = async ({ children }) => {
                         </NuqsAdapter>
                     </ReduxProvider>
                     <ToastContainer />
+                    <Toaster />
                 </body>
             </html>
         </NextAuthProvider>

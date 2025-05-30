@@ -30,6 +30,7 @@
         "react-bootstrap": "^2.10.2",
         "react-dom": "^18",
         "react-dropzone": "^14.2.3",
+        "react-hot-toast": "^2.5.2",
         "react-leaflet": "^4.2.1",
         "react-loader-spinner": "^6.1.6",
         "react-player": "^2.16.0",

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import "../../public/assets/sass/styles.scss";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -41,6 +42,7 @@ const RootLayout: React.FC<Props> = async ({ children }) => {
                             {children}
                             <Footer />
                             <ToastContainer />
+                            <Toaster />
                         </NextAuthProvider>
                     </ReduxProvider>
                 </ReactQueryProvider>

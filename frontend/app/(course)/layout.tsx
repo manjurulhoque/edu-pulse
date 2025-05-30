@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import "../globals.css";
 import "../../public/assets/sass/styles.scss";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import React from "react";
 import { NextAuthProvider } from "@/app/components/NextAuthProvider";
 import { getServerSession } from "next-auth";
-import Footer from "@/app/components/layout/Footer";
-import Header from "@/app/components/layout/Header";
 import { AOSInit } from "@/app/components/aos-init";
 import { ToastContainer } from "react-toastify";
 import ReduxProvider from "@/app/components/ReduxProvider";
@@ -39,6 +38,7 @@ const CourseLayout: React.FC<Props> = async ({ children }) => {
                         <NextAuthProvider session={session}>
                             {children}
                             <ToastContainer />
+                            <Toaster />
                         </NextAuthProvider>
                     </ReduxProvider>
                 </ReactQueryProvider>
