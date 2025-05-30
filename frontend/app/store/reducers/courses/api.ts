@@ -124,6 +124,13 @@ export const CourseApi = createApi({
                 };
             },
         }),
+        getCourseReviewRating: builder.query<Response<{ total_review_count: number; total_rating: number; average_rating: number }>, { course_id: number }>({
+            query: ({ course_id }) => {
+                return {
+                    url: `course-review-rating/${course_id}`,
+                };
+            },
+        }),
     }),
 });
 
@@ -140,4 +147,5 @@ export const {
     useCourseDetailsForAdminAndInstructorQuery,
     useIsAlreadyEnrolledQuery,
     useGetCourseProgressQuery,
+    useGetCourseReviewRatingQuery,
 } = CourseApi;
