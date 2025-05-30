@@ -117,6 +117,13 @@ export const CourseApi = createApi({
                 };
             },
         }),
+        getCourseProgress: builder.query<Response<number>, { course_id: number }>({
+            query: ({ course_id }) => {
+                return {
+                    url: `course-progress/${course_id}`,
+                };
+            },
+        }),
     }),
 });
 
@@ -132,4 +139,5 @@ export const {
     useGetEnrolledCoursesQuery,
     useCourseDetailsForAdminAndInstructorQuery,
     useIsAlreadyEnrolledQuery,
+    useGetCourseProgressQuery,
 } = CourseApi;

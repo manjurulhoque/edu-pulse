@@ -1,4 +1,4 @@
-import { getCourseDetails } from "@/app/actions/getSingleCourse";
+import { getCourseDetails } from "@/app/actions/courseInfo";
 import { getCourseLessons, getLesson, markLessonAsStarted } from "@/app/actions/lessonInfo";
 import LessonSidebar from "@/app/(course)/courses/_components/LessonSidebar";
 import { notFound } from "next/navigation";

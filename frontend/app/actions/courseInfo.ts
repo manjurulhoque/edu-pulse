@@ -13,3 +13,13 @@ export async function getCourseDetails(slug: string) {
 
     return result.data;
 }
+
+export async function getCourseProgress(course_id: number) {
+    const result = await store.dispatch(CourseApi.endpoints.getCourseProgress.initiate({ course_id }));
+
+    if ("error" in result) {
+        console.log(result);
+        return 0;
+    }
+    return result.data || 0;
+}
