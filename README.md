@@ -1,6 +1,12 @@
-# <table><tr><td><img src="frontend/public/assets/img/general/logo.svg" alt="EduPulse Logo" width="50"/></td><td>EduPulse</td></tr></table>
+<div align="center">
+  <a href="">
+    <img alt="EduPulse" height="80px" src="frontend/public/assets/img/general/logo.svg">
+  </a>
+</div>
 
-EduPulse is a modern educational platform that connects students and educators, providing an interactive learning environment with real-time feedback and progress tracking.
+EduPulse is a modern educational platform that connects students and educators, providing an interactive learning environment with feedback and progress tracking. 
+
+Note: For now, just adding a youtube video would work
 
 ## 📸 Screenshots
 
@@ -9,6 +15,22 @@ EduPulse is a modern educational platform that connects students and educators, 
 
 ### Course Details
 ![Course Details](screenshots/details.png)
+
+### Lesson Player
+![Lesson Player](screenshots/lesson-player.png)
+
+### Update course curriculum
+![Update course curriculum](screenshots/update-course-curriculum.png)
+
+### Student Dashboard
+![Student Dashboard](screenshots/student-dashboard.png)
+
+### Admin Panel
+![Admin Categories](screenshots/admin-categories.png)
+![Admin Sales](screenshots/admin-sales.png)
+
+### API Documentation
+![API Documentation](screenshots/swagger.png)
 
 ## 🌟 Features
 

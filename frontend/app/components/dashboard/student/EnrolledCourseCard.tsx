@@ -25,7 +25,7 @@ const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
                     <p className="text-muted small mb-2">Instructor: {course.user.name}</p>
                     <div className="mb-2">
                         <small className="text-muted">Progress</small>
-                        <ProgressBar now={courseProgress} label={`${courseProgress}%`} variant="success" />
+                        <ProgressBar now={parseInt(courseProgress.toString())} label={`${parseInt(courseProgress.toString())}%`} variant="success" />
                     </div>
                     {/* <small className="text-muted">Last accessed: {course.lastAccessed}</small> */}
                 </Card.Body>
