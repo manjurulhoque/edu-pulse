@@ -8,8 +8,18 @@ import { Course } from "@/app/models/course.interface";
 import { getCourseAuthorImagePath, getCourseImagePath } from "@/app/utils/image-path";
 import { BookOpen, CircleGauge } from "lucide-react";
 import StarRating from "../common/StarRating";
+import { useGetCourseReviewRatingQuery } from "@/app/store/reducers/courses/api";
 
 export default function HomeCourseCard({ course, index }: { course: Course; index: number }) {
+    const { data: courseReviewRating, isLoading: isCourseReviewRatingLoading } = useGetCourseReviewRatingQuery({
+        course_id: course.id,
+    });
+    const courseReviewRatingData = courseReviewRating?.data;
+    const { total_review_count, total_rating, average_rating } = courseReviewRatingData || {
+        total_review_count: 0,
+        total_rating: 0,
+        average_rating: 0,
+    };
     const [rating, setRating] = useState<string[]>([]);
     useEffect(() => {
         // Reset rating array before adding new stars
@@ -61,11 +71,11 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
 
                     <div className="h-100 pt-15 pb-10 px-20">
                         <div className="d-flex items-center">
-                            <div className="text-14 lh-1 text-yellow-1 mr-10">4</div>
+                            <div className="text-14 lh-1 text-yellow-1 mr-10">{average_rating.toFixed(1)}</div>
                             <div className="d-flex x-gap-5 items-center">
-                                <StarRating star={5} filledStar={3} />
+                                <StarRating star={5} filledStar={parseInt(average_rating.toFixed(0))} />
                             </div>
-                            <div className="text-13 lh-1 ml-10">(5)</div>
+                            <div className="text-13 lh-1 ml-10">({total_review_count})</div>
                         </div>
 
                         <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
@@ -100,7 +110,9 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                                 <div className="mr-8">
                                     <CircleGauge size={16} />
                                 </div>
-                                <div className="text-14 lh-1">{course.level.charAt(0).toUpperCase() + course.level.slice(1)}</div>
+                                <div className="text-14 lh-1">
+                                    {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+                                </div>
                             </div>
                         </div>
 

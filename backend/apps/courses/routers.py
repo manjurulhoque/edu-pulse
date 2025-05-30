@@ -119,7 +119,7 @@ async def create_course(
 async def update_course(
     course_id: int,
     course_input: str = Form(...),
-    preview_image: UploadFile = File(...),
+    preview_image: UploadFile = File(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(instructor_required),
 ):
@@ -157,6 +157,8 @@ async def update_course(
     course_data_dict = course_data.model_dump()
     if preview_image:
         course_data_dict["preview_image"] = await save_image(preview_image)
+    elif course.preview_image:
+        course_data_dict["preview_image"] = course.preview_image
 
     for key, value in course_data_dict.items():
         setattr(course, key, value)

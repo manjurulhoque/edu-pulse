@@ -24,7 +24,7 @@ interface FormValues {
     category_id: number | null;
     is_free: boolean;
     actual_price: number | null;
-    discounted_price: number | null;
+    discounted_price?: number | null;
 }
 
 const MAX_FILE_SIZE = 5000000;
@@ -38,7 +38,13 @@ const formSchema = z.object({
     short_description: z.string().min(10, "At least 10 characters is required"),
     is_free: z.boolean(),
     actual_price: z.number().multipleOf(0.01),
-    discounted_price: z.number().multipleOf(0.01),
+    discounted_price: z
+        .union([
+            z.number().multipleOf(0.01),
+            z.string().transform((val) => (val === "" ? null : Number(val))),
+            z.null(),
+        ])
+        .optional(),
     preview_image: z.union([
         z.string(),
         z
@@ -157,6 +163,7 @@ const EditCourse: React.FC = () => {
             setPreviewUrl(`${process.env.BACKEND_DOCKER_BASE_URL}/${course.preview_image}`);
         }
     }, [course]);
+    console.log(formik.errors);
 
     return (
         <div className="dashboard__main">
@@ -346,11 +353,10 @@ const EditCourse: React.FC = () => {
 
                                     <div className="col-md-5">
                                         <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Price after discount*
+                                            Price after discount
                                         </label>
 
                                         <input
-                                            required
                                             className="form-control"
                                             type="number"
                                             step={0.01}
@@ -412,7 +418,7 @@ const EditCourse: React.FC = () => {
                                             <button
                                                 className="button -md -purple-1 text-white -right"
                                                 type="submit"
-                                                disabled={formik.isSubmitting}
+                                                disabled={formik.isSubmitting || !formik.isValid}
                                             >
                                                 Update
                                             </button>
@@ -424,8 +430,6 @@ const EditCourse: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            <FooterDashboard />
         </div>
     );
 };

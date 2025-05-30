@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class CourseSchema(BaseModel):
@@ -11,9 +11,15 @@ class CourseSchema(BaseModel):
     level: str
     category_id: int
     actual_price: float
-    discounted_price: float | None
+    discounted_price: Optional[float] = None
     is_free: bool
     preview_image: Optional[str] = None
+
+    @validator('discounted_price', pre=True)
+    def validate_discounted_price(cls, v):
+        if v == '' or v is None:
+            return None
+        return float(v)
 
     class Config:
         # orm_mode = True
