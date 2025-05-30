@@ -18,7 +18,7 @@ from apps.courses import services
 from apps.courses.decorators import course_owner_required
 from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseSchema
-from apps.enrollments.models import Enrollment
+from apps.enrollments.models import Enrollment, LessonCompletion
 from apps.lessons.models import Lesson
 from apps.users.models import User
 from conf.database import get_db
@@ -524,3 +524,71 @@ async def is_already_enrolled(
     if not enrollment:
         return create_response(data=None)
     return create_response(data=dict(enrolled=True, enrolled_at=enrollment.enrolled_at))
+
+
+@router.get("/course-progress/{course_id}", summary="Get course progress")
+async def get_course_progress(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(auth_required),
+):
+    """
+    Get course progress for the current user
+    """
+    course = (
+        db.query(Course)
+        .filter(Course.id == course_id, Course.status == CourseStatus.PUBLISHED)
+        .first()
+    )
+    if not course:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="Course not found",
+        )
+    enrollment = (
+        db.query(Enrollment)
+        .filter(
+            Enrollment.user_id == current_user.id, Enrollment.course_id == course_id
+        )
+        .first()
+    )
+    if not enrollment:
+        return create_response(
+            data=None,
+            status_code=status.HTTP_404_NOT_FOUND,
+            message="You are not enrolled in this course",
+        )
+    total_lessons = (
+        db.query(Lesson)
+        .filter(
+            Lesson.course_id == course_id,
+            Lesson.is_published == True,
+        )
+        .count()
+    )
+    # get completed lessons for the current user
+    # Query to count completed lessons:
+    # 1. Get LessonCompletion records for current user
+    # 2. Filter for lessons that belong to this course (using subquery)
+    # 3. Only count lessons marked as completed (is_completed=True) 
+    # 4. Ensure completion timestamp exists (completed_at not null)
+    completed_lessons = (
+        db.query(LessonCompletion)
+        .filter(
+            LessonCompletion.user_id == current_user.id,
+            LessonCompletion.lesson_id.in_(
+                db.query(Lesson.id).filter(
+                    Lesson.course_id == course_id, Lesson.is_published == True
+                )
+            ),
+            LessonCompletion.is_completed == True,
+            LessonCompletion.completed_at.isnot(None),
+        )
+        .count()
+    )
+
+    # Calculate progress percentage by dividing completed lessons by total lessons
+    # Multiply by 100 to get percentage value
+    progress = (completed_lessons / total_lessons) * 100
+    return create_response(data=progress)
