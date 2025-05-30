@@ -8,6 +8,7 @@ import { Grid } from "react-loader-spinner";
 import Pagination from "@/app/components/common/Pagination";
 import { Course } from "@/app/models/course.interface";
 import HomeCourseCard from "./HomeCourseCard";
+import CourseCardSkeleton from "../skeleton/CourseCardSkeleton";
 
 export default function CourseList() {
     const [pageSize, setPageSize] = useState(8);
@@ -136,7 +137,7 @@ export default function CourseList() {
 
             <section className="layout-pt-md layout-pb-lg">
                 <div className="container">
-                    <div
+                    {/* <div
                         style={{
                             display: isCoursesLoading ? "flex" : "none",
                             justifyContent: "center",
@@ -154,7 +155,14 @@ export default function CourseList() {
                             wrapperStyle={{}}
                             wrapperClass="grid-wrapper"
                         />
-                    </div>
+                    </div> */}
+                    {isCoursesLoading && (
+                        <div className="row y-gap-30 justify-start pt-50">
+                            {[...Array(8)].map((_, i) => (
+                                <CourseCardSkeleton key={i} />
+                            ))}
+                        </div>
+                    )}
 
                     {!isCoursesLoading && (
                         <>

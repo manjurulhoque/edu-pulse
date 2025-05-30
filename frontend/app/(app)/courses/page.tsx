@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 const CoursesPage = () => {
     return (
         <div className="main-content">
-            <Header/>
+            <Header />
 
             <div className="content-wrapper js-content-wrapper overflow-hidden">
-                <PageLinks dark={null}/>
-                <CourseList/>
+                <PageLinks dark={null} />
+                <CourseList />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CoursesPage;
