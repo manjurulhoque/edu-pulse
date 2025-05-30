@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Course } from "@/app/models/course.interface";
 import { getCourseAuthorImagePath, getCourseImagePath } from "@/app/utils/image-path";
 import { BookOpen, CircleGauge } from "lucide-react";
+import StarRating from "../common/StarRating";
 
 export default function HomeCourseCard({ course, index }: { course: Course; index: number }) {
     const [rating, setRating] = useState<string[]>([]);
@@ -62,9 +63,7 @@ export default function HomeCourseCard({ course, index }: { course: Course; inde
                         <div className="d-flex items-center">
                             <div className="text-14 lh-1 text-yellow-1 mr-10">4</div>
                             <div className="d-flex x-gap-5 items-center">
-                                {rating.map((itm, i) => (
-                                    <div key={i} className="icon-star text-9 text-yellow-1"></div>
-                                ))}
+                                <StarRating star={5} filledStar={3} />
                             </div>
                             <div className="text-13 lh-1 ml-10">(5)</div>
                         </div>

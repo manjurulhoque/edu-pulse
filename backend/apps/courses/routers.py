@@ -3,6 +3,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import ValidationError
+from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 from starlette import status
 from starlette.requests import Request
@@ -20,6 +21,7 @@ from apps.courses.models import Course, CourseSection
 from apps.courses.schemas import CourseSchema
 from apps.enrollments.models import Enrollment, LessonCompletion
 from apps.lessons.models import Lesson
+from apps.reviews.models import CourseReview
 from apps.users.models import User
 from conf.database import get_db
 from utils.params import common_parameters
@@ -571,7 +573,7 @@ async def get_course_progress(
     # Query to count completed lessons:
     # 1. Get LessonCompletion records for current user
     # 2. Filter for lessons that belong to this course (using subquery)
-    # 3. Only count lessons marked as completed (is_completed=True) 
+    # 3. Only count lessons marked as completed (is_completed=True)
     # 4. Ensure completion timestamp exists (completed_at not null)
     completed_lessons = (
         db.query(LessonCompletion)
@@ -592,3 +594,43 @@ async def get_course_progress(
     # Multiply by 100 to get percentage value
     progress = (completed_lessons / total_lessons) * 100
     return create_response(data=progress)
+
+
+@router.get("/course-review-rating/{course_id}", summary="Get course review rating")
+async def get_course_review_rating(course_id: int, db: Session = Depends(get_db)):
+    """
+    Get course review rating
+    """
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if not course:
+        return create_response(
+            data=None, status_code=status.HTTP_404_NOT_FOUND, message="Course not found"
+        )
+    
+    # get course total review count
+    total_review_count = (
+        db.query(CourseReview).filter(CourseReview.course_id == course_id).count()
+    )
+    
+    if total_review_count == 0:
+        return create_response(
+            data={
+                "total_review_count": 0,
+                "total_rating": 0,
+                "average_rating": 0,
+            }
+        )
+    
+    # get course total rating
+    total_rating = db.query(func.sum(CourseReview.rating)).filter(CourseReview.course_id == course_id).scalar() or 0
+    
+    # get course average rating
+    average_rating = round(total_rating / total_review_count, 2)
+    
+    return create_response(
+        data={
+            "total_review_count": total_review_count,
+            "total_rating": total_rating,
+            "average_rating": average_rating,
+        }
+    )
