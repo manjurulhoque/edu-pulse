@@ -2,6 +2,14 @@
 
 EduPulse is a modern educational platform that connects students and educators, providing an interactive learning environment with real-time feedback and progress tracking.
 
+## 📸 Screenshots
+
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Course Details
+![Course Details](screenshots/details.png)
+
 ## 🌟 Features
 
 ### User Roles
