@@ -19,19 +19,16 @@ import styles from "./CourseLessonView.module.css";
 import ShareModal from "./ShareModal";
 import { useMarkLessonAsCompletedMutation, useMarkLessonAsIncompleteMutation } from "@/app/store/reducers/lessons/api";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { Course } from "@/app/models/course.interface";
 
 interface CourseLessonViewProps {
     lesson: Lesson;
+    course: Course;
 }
 
-const getShareUrl = () => {
-    if (typeof window !== "undefined") {
-        return window.location.href;
-    }
-    return "";
-};
-
-const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
+const CourseLessonView = ({ lesson, course }: CourseLessonViewProps) => {
+    const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
     const [key, setKey] = useState("overview");
     const [showShare, setShowShare] = useState(false);
@@ -76,9 +73,12 @@ const CourseLessonView = ({ lesson }: CourseLessonViewProps) => {
             <div className={styles.header}>
                 <h4 className={styles.title}>{lesson.title}</h4>
                 <div className={styles.headerActions}>
-                    <button className={`${styles.actionButton} ${styles.primary}`}>
+                    <button
+                        className={`${styles.actionButton} ${styles.primary}`}
+                        onClick={() => router.push(`/student/dashboard/my-courses`)}
+                    >
                         <ArrowLeft size={18} />
-                        Back to Course
+                        Back to courses
                     </button>
                     <button className={styles.actionButton} onClick={() => setShowShare(true)}>
                         <Share2 size={20} />

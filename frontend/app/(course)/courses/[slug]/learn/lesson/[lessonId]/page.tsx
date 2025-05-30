@@ -44,7 +44,7 @@ const LessonViewPage = async ({ params }: { params: { slug: string; lessonId: nu
                     <LessonSidebar course={course} lessons={lessons} currentLessonId={lesson.id} />
                 </div>
                 <div className="col-md-9">
-                    <CourseLessonView lesson={lesson} />
+                    <CourseLessonView lesson={lesson} course={course} />
                 </div>
             </div>
         </div>
